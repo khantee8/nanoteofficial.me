@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { roadmap, type RoadmapItem } from "@/lib/profile";
+import { roadmap, pick, type RoadmapItem } from "@/lib/profile";
+import { t, type Lang } from "@/lib/i18n";
 
 const statusStyles: Record<RoadmapItem["status"], string> = {
   Planned:
@@ -11,14 +12,14 @@ const statusStyles: Record<RoadmapItem["status"], string> = {
   Live: "bg-emerald-100 text-emerald-900 border-emerald-300 dark:bg-emerald-500/15 dark:text-emerald-200 dark:border-emerald-500/40",
 };
 
-export function Roadmap() {
+export function Roadmap({ lang }: { lang: Lang }) {
   return (
     <div className="grid gap-5 md:grid-cols-2">
       {roadmap.map((item) => (
         <Link
           key={item.key}
           href={item.href}
-          className={`group relative overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-7 transition-all hover:-translate-y-0.5 hover:border-[var(--accent)] hover:shadow-[0_4px_24px_rgba(15,23,42,0.06)]`}
+          className="group relative overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-7 transition-all hover:-translate-y-0.5 hover:border-[var(--accent)] hover:shadow-[0_4px_24px_rgba(15,23,42,0.06)]"
         >
           <div
             aria-hidden
@@ -30,27 +31,27 @@ export function Roadmap() {
                 {item.subdomain}
               </p>
               <h3 className="mt-2 text-2xl font-semibold tracking-tight">
-                {item.title}
+                {pick(item.title, lang)}
               </h3>
-              <p className="mt-1 text-sm text-[var(--muted)]">{item.tagline}</p>
+              <p className="mt-1 text-sm text-[var(--muted)]">{pick(item.tagline, lang)}</p>
             </div>
             <span
               className={`shrink-0 rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider ${statusStyles[item.status]}`}
             >
-              {item.status}
+              {t(`status.${item.status}` as const, lang)}
             </span>
           </div>
-          <p className="relative mt-5 text-sm leading-relaxed">{item.description}</p>
+          <p className="relative mt-5 text-sm leading-relaxed">{pick(item.description, lang)}</p>
           <ul className="relative mt-5 grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-sm text-[var(--muted)]">
-            {item.features.map((f) => (
-              <li key={f} className="flex gap-2">
+            {item.features.map((f, i) => (
+              <li key={i} className="flex gap-2">
                 <span aria-hidden className="text-[var(--accent)] font-bold">•</span>
-                <span>{f}</span>
+                <span>{pick(f, lang)}</span>
               </li>
             ))}
           </ul>
           <div className="relative mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--accent)]">
-            Explore preview
+            {t("cta.preview", lang)}
             <span
               aria-hidden
               className="transition-transform group-hover:translate-x-0.5"

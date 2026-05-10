@@ -1,26 +1,20 @@
-import { profile } from "@/lib/profile";
+import { profile, pick } from "@/lib/profile";
+import type { Lang } from "@/lib/i18n";
 
-export function Skills() {
+export function Skills({ lang }: { lang: Lang }) {
   return (
-    <div className="grid gap-5 md:grid-cols-3">
-      {profile.skills.map((s) => (
-        <div
-          key={s.group}
-          className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5"
-        >
-          <h3 className="text-sm font-semibold tracking-tight">{s.group}</h3>
-          <ul className="mt-3 flex flex-wrap gap-1.5">
-            {s.items.map((it) => (
-              <li
-                key={it}
-                className="rounded-full border border-[var(--border)] bg-[var(--background)] px-2.5 py-1 text-xs text-[var(--foreground)]"
-              >
-                {it}
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
+    <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6">
+      <ul className="grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4">
+        {profile.personality.items.map((it, i) => (
+          <li
+            key={i}
+            className="flex items-center gap-2 text-sm"
+          >
+            <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
+            <span>{pick(it, lang)}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

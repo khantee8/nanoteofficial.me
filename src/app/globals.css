@@ -24,8 +24,9 @@
   --color-surface: var(--surface);
   --color-border: var(--border);
   --color-accent: var(--accent);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-geist-sans), var(--font-noto-thai);
   --font-mono: var(--font-geist-mono);
+  --font-thai: var(--font-noto-thai);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -54,9 +55,13 @@ body {
 }
 
 body {
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), var(--font-noto-thai), Arial, Helvetica, sans-serif;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+}
+
+html[lang="th"] body {
+  font-family: var(--font-noto-thai), var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
 
 ::selection {

@@ -1,36 +1,34 @@
 import type { Metadata } from "next";
-import { roadmap } from "@/lib/profile";
+import { roadmap, pick } from "@/lib/profile";
+import { getLang, t } from "@/lib/i18n";
 import { SubdomainHero, FeatureGrid } from "@/components/SubdomainHero";
 
 const item = roadmap.find((r) => r.key === "kb")!;
 
-export const metadata: Metadata = {
-  title: `${item.title} — ${item.tagline}`,
-  description: item.description,
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const lang = await getLang();
+  return {
+    title: `${pick(item.title, lang)} — ${pick(item.tagline, lang)}`,
+    description: pick(item.description, lang),
+    robots: { index: false, follow: false },
+  };
+}
 
-export default function KbPage() {
+export default async function KbPage() {
+  const lang = await getLang();
   return (
     <>
-      <SubdomainHero item={item} />
+      <SubdomainHero item={item} lang={lang} />
       <section className="mx-auto max-w-md px-6 pb-12">
-        <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)]/60 p-7">
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-7">
           <p className="font-mono text-xs uppercase tracking-[0.18em] text-[var(--accent)]">
-            Private access
+            {t("kb.private", lang)}
           </p>
-          <h2 className="mt-2 text-2xl font-semibold tracking-tight">Sign in</h2>
-          <p className="mt-2 text-sm text-[var(--muted)]">
-            This knowledge base is private. Auth is not yet wired up — this is a
-            visual placeholder for the planned login form.
-          </p>
-          <form
-            className="mt-5 space-y-3"
-            action="#"
-            aria-label="Sign in (preview)"
-          >
+          <h2 className="mt-2 text-2xl font-semibold tracking-tight">{t("kb.signin", lang)}</h2>
+          <p className="mt-2 text-sm text-[var(--muted)]">{t("kb.signinHint", lang)}</p>
+          <form className="mt-5 space-y-3" action="#" aria-label={t("kb.signin", lang)}>
             <label className="block text-sm">
-              <span className="text-[var(--muted)]">Email</span>
+              <span className="text-[var(--muted)]">{t("kb.email", lang)}</span>
               <input
                 type="email"
                 disabled
@@ -39,7 +37,7 @@ export default function KbPage() {
               />
             </label>
             <label className="block text-sm">
-              <span className="text-[var(--muted)]">Password</span>
+              <span className="text-[var(--muted)]">{t("kb.password", lang)}</span>
               <input
                 type="password"
                 disabled
@@ -52,12 +50,12 @@ export default function KbPage() {
               disabled
               className="w-full rounded-lg bg-[var(--foreground)] text-[var(--background)] px-4 py-2 text-sm font-medium opacity-50 cursor-not-allowed"
             >
-              Sign in (disabled in preview)
+              {t("kb.disabled", lang)}
             </button>
           </form>
         </div>
       </section>
-      <FeatureGrid features={item.features} />
+      <FeatureGrid features={item.features} lang={lang} />
     </>
   );
 }

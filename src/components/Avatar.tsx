@@ -1,14 +1,8 @@
 import Image from "next/image";
 import { existsSync } from "node:fs";
 import path from "node:path";
-import { profile } from "@/lib/profile";
-
-const monogram = profile.name
-  .split(" ")
-  .map((n) => n[0])
-  .slice(0, 2)
-  .join("")
-  .toUpperCase();
+import { profile, pick } from "@/lib/profile";
+import type { Lang } from "@/lib/i18n";
 
 function hasPhoto() {
   try {
@@ -18,18 +12,26 @@ function hasPhoto() {
   }
 }
 
-export function Avatar({ size = 144 }: { size?: number }) {
+export function Avatar({ size = 144, lang = "en" }: { size?: number; lang?: Lang }) {
   const photo = hasPhoto();
+  const name = pick(profile.name, lang);
+  const monogram = name
+    .split(" ")
+    .map((n) => n[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
   return (
     <div
       className="relative shrink-0 rounded-full overflow-hidden ring-1 ring-[var(--border)] shadow-[0_1px_2px_rgba(15,23,42,0.06),0_8px_24px_rgba(15,23,42,0.08)]"
       style={{ width: size, height: size }}
-      aria-label={`${profile.name} portrait`}
+      aria-label={`${name} portrait`}
     >
       {photo ? (
         <Image
           src="/profile.jpg"
-          alt={`${profile.name} portrait`}
+          alt={`${name} portrait`}
           width={size * 2}
           height={size * 2}
           priority

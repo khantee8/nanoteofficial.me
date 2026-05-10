@@ -14,8 +14,8 @@ export function Section({
   children: ReactNode;
 }) {
   return (
-    <section id={id} className="mx-auto max-w-6xl px-6 py-20 md:py-28 scroll-mt-20">
-      <div className="max-w-2xl mb-12">
+    <section id={id} className="mx-auto max-w-6xl px-6 py-20 md:py-24 scroll-mt-20">
+      <div className="max-w-2xl mb-10">
         {eyebrow && (
           <p className="text-xs uppercase tracking-[0.18em] text-[var(--accent)] font-mono mb-3">
             {eyebrow}
