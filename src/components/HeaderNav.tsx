@@ -104,7 +104,7 @@ export function HeaderNavLinks() {
           <Link
             key={n.href}
             href={n.href}
-            aria-current={isActive ? "true" : undefined}
+            aria-current={isActive ? "page" : undefined}
             className={`relative transition-colors hover:text-[var(--foreground)] ${
               isActive ? "text-[var(--foreground)]" : ""
             }`}
@@ -200,7 +200,7 @@ function MobileSheet() {
                   <Link
                     href={n.href}
                     onClick={() => setOpen(false)}
-                    aria-current={isActive ? "true" : undefined}
+                    aria-current={isActive ? "page" : undefined}
                     className={`flex items-center justify-between rounded-lg px-3 py-3 text-base transition-colors ${
                       isActive
                         ? "bg-[var(--surface)] text-[var(--foreground)]"
