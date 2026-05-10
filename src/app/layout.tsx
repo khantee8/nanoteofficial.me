@@ -4,8 +4,9 @@ import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { FeatureSync } from "@/components/FeatureSync";
+import { BackToTop } from "@/components/BackToTop";
 import { profile, pick } from "@/lib/profile";
-import { getLang } from "@/lib/i18n";
+import { getLang, t } from "@/lib/i18n";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
@@ -50,6 +51,7 @@ export default async function RootLayout({
         <Header lang={lang} />
         <main className="flex-1">{children}</main>
         <Footer lang={lang} />
+        <BackToTop label={t("cta.backToTop", lang)} />
       </body>
     </html>
   );

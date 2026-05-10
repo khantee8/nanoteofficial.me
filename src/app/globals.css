@@ -147,6 +147,17 @@
   }
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 html,
 body {
   background: var(--background);
@@ -197,4 +208,29 @@ input:focus-visible {
     transparent 2px,
     transparent 8px
   );
+}
+
+/* Reveal-on-scroll. CSS-only: scroll-timeline drives a fade-up while the
+ * element enters the viewport. Browsers without animation-timeline support
+ * (Firefox, today) skip the @supports block and the section renders fully
+ * visible from the start — graceful degradation, no JS. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    [data-reveal] {
+      animation: reveal-fade-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 22%;
+    }
+  }
+}
+
+@keyframes reveal-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

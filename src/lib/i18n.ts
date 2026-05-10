@@ -58,6 +58,9 @@ type UiKey =
   | "footer.github"
   | "footer.email"
   | "lang.toggle.label"
+  | "nav.menu"
+  | "nav.close"
+  | "cta.backToTop"
   | "kb.private"
   | "kb.signin"
   | "kb.signinHint"
@@ -146,6 +149,9 @@ const dict: Record<UiKey, Record<Lang, string>> = {
   "footer.github": { en: "GitHub", th: "กิตฮับ" },
   "footer.email": { en: "Email", th: "อีเมล" },
   "lang.toggle.label": { en: "Language", th: "ภาษา" },
+  "nav.menu": { en: "Menu", th: "เมนู" },
+  "nav.close": { en: "Close menu", th: "ปิดเมนู" },
+  "cta.backToTop": { en: "Back to top", th: "กลับขึ้นด้านบน" },
   "kb.private": { en: "Private access", th: "การเข้าถึงเฉพาะเจ้าของ" },
   "kb.signin": { en: "Sign in", th: "เข้าสู่ระบบ" },
   "kb.signinHint": {
