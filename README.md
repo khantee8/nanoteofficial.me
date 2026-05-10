@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# nanoteofficial.me
 
-## Getting Started
+Personal portfolio + roadmap site for **Saksit Jantila** — a single Next.js 16 app
+that serves the main profile and four planned subdomain projects:
 
-First, run the development server:
+| Subdomain                       | Project                                           |
+| ------------------------------- | ------------------------------------------------- |
+| `finance.nanoteofficial.me`     | Client portfolio analytics & financial planning   |
+| `cyber.nanoteofficial.me`       | Real-time threat monitoring for security pros    |
+| `kb.nanoteofficial.me`          | Private personal knowledge base                   |
+| `art.nanoteofficial.me`         | Visual art & short-form video                     |
+
+## Stack
+
+- Next.js 16 (App Router, Turbopack)
+- React 19, TypeScript, Tailwind v4
+- Subdomain rewrite via `src/proxy.ts` (renamed from `middleware.ts` in Next 16)
+
+## Local development
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev          # localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+In dev, the four projects are reachable at path-based routes:
+`/finance`, `/cyber`, `/kb`, `/art`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+In production, `proxy.ts` maps the corresponding subdomain hostnames onto
+those routes, so each subdomain serves the right page.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Editing your profile
 
-## Learn More
+All bio, experience, skills, and roadmap copy lives in
+[`src/lib/profile.ts`](./src/lib/profile.ts). The placeholders are clearly
+marked — replace them with your real LinkedIn data.
 
-To learn more about Next.js, take a look at the following resources:
+## Quality checks
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run lint          # eslint
+npx tsc --noEmit      # type check
+npm audit             # known CVEs (postcss build-time advisory is non-exploitable here)
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Security headers
 
-## Deploy on Vercel
+`next.config.ts` sets `X-Frame-Options`, `X-Content-Type-Options`,
+`Referrer-Policy`, `Permissions-Policy`, and HSTS. `X-Powered-By` is removed.
+`/kb` is excluded from `robots.txt` and noindexed because it's intended to be
+private once auth is wired up.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Roadmap
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [x] Home page + roadmap + four subdomain stub pages
+- [x] Subdomain routing via `proxy.ts`
+- [x] Security headers, robots, sitemap
+- [ ] Wire real LinkedIn content into `src/lib/profile.ts`
+- [ ] `kb.*` authentication
+- [ ] `finance.*` integration with the existing Personal Investment Project
+- [ ] `cyber.*` live feed source
+- [ ] `art.*` content uploader
+- [ ] Deploy to Vercel + DNS for the four subdomains
