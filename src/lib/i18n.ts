@@ -89,7 +89,7 @@ const dict: Record<UiKey, Record<Lang, string>> = {
   "nav.education": { en: "Education", th: "การศึกษา" },
   "nav.certs": { en: "Certifications", th: "ใบรับรอง" },
   "nav.projects": { en: "Projects", th: "โปรเจกต์" },
-  "cta.hire": { en: "Hire me", th: "ร่วมงาน" },
+  "cta.hire": { en: "Say hello", th: "ทักทาย" },
   "cta.roadmap": { en: "See the roadmap", th: "ดูโรดแมป" },
   "cta.contact": { en: "Get in touch", th: "ติดต่อผม" },
   "cta.email": { en: "Email", th: "อีเมล" },
@@ -136,7 +136,7 @@ const dict: Record<UiKey, Record<Lang, string>> = {
     th: "ช่องทางที่เร็วที่สุดคืออีเมล ผมมักตอบกลับภายในหนึ่งวัน",
   },
   "hero.location": { en: "Bangkok, Thailand", th: "กรุงเทพมหานคร, ประเทศไทย" },
-  "hero.available": { en: "available for new opportunities", th: "เปิดรับโอกาสใหม่ ๆ" },
+  "hero.available": { en: "open to a conversation", th: "เปิดรับการพูดคุย" },
   "hero.scrollHint": { en: "Scroll to explore", th: "เลื่อนเพื่อดูเพิ่มเติม" },
   "footer.builtWith": {
     en: "Built with Next.js & Tailwind.",

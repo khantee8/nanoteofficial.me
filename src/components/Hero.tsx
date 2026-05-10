@@ -28,14 +28,14 @@ export function Hero({ lang }: { lang: Lang }) {
             <div className="mt-10 flex flex-wrap gap-3">
               <Link
                 href="/#roadmap"
-                className="inline-flex items-center gap-2 rounded-full bg-[var(--foreground)] text-[var(--background)] px-5 py-2.5 text-sm font-medium hover:opacity-90 transition-opacity"
+                className="inline-flex items-center gap-2 rounded-full bg-[var(--brand-accent)] text-white px-5 py-2.5 text-sm font-semibold shadow-[0_2px_10px_color-mix(in_oklab,var(--brand-accent)_30%,transparent)] hover:brightness-110 transition-all"
               >
                 {t("cta.roadmap", lang)}
                 <span aria-hidden>→</span>
               </Link>
               <a
                 href={`mailto:${profile.email}`}
-                className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-5 py-2.5 text-sm font-medium hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors"
+                className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--foreground)] px-5 py-2.5 text-sm font-medium hover:border-[var(--brand-accent)] hover:text-[var(--brand-accent)] transition-colors"
               >
                 {t("cta.contact", lang)}
               </a>

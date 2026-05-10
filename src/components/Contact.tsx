@@ -13,7 +13,7 @@ export function Contact({ lang }: { lang: Lang }) {
       <div className="flex flex-wrap gap-3">
         <a
           href={`mailto:${profile.email}`}
-          className="inline-flex items-center gap-2 rounded-full bg-[var(--foreground)] text-[var(--background)] px-5 py-2.5 text-sm font-medium hover:opacity-90"
+          className="inline-flex items-center gap-2 rounded-full bg-[var(--brand-accent)] text-white px-5 py-2.5 text-sm font-semibold shadow-[0_2px_10px_color-mix(in_oklab,var(--brand-accent)_30%,transparent)] hover:brightness-110 transition-all"
         >
           {profile.email}
         </a>
