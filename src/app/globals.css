@@ -1,6 +1,29 @@
 @import "tailwindcss";
 
+/*
+ * nanoteofficial.me — Corporate Identity v0.1
+ *
+ * Brand voice: precise, calm, cross-disciplinary. The mark is a lowercase "n"
+ * followed by a colored dot. The dot changes color depending on which feature
+ * (Finance / Cyber / KB / Art) is in focus, expressing the same identity in
+ * four distinct moods.
+ *
+ * Brand color   — Midnight Indigo  #1A1F3A → #5566F1 (accent)
+ * Finance       — Goldleaf         #B45309 / #D97706
+ * Cyber         — Pulse            #0E7490 / #0891B2
+ * Knowledge     — Sage             #047857 / #059669
+ * Art           — Ember            #BE123C / #E11D48
+ */
+
 :root {
+  /* Brand */
+  --brand-deep: #11142a;
+  --brand: #1a1f3a;
+  --brand-soft: #2a2f45;
+  --brand-accent: #5566f1;
+  --brand-accent-soft: #eef0ff;
+
+  /* Surface system */
   --background: #ffffff;
   --foreground: #0a0e17;
   --muted: #3f4a5c;
@@ -9,12 +32,53 @@
   --surface-2: #eef2f7;
   --border: #d6deea;
   --border-soft: #e6ebf2;
-  --accent: #4338ca;
-  --accent-soft: #eef2ff;
+  --accent: var(--brand-accent);
+  --accent-soft: var(--brand-accent-soft);
+
+  /* Status (for roadmap badges) */
   --status-planned: #b45309;
   --status-design: #1d4ed8;
   --status-prototyping: #047857;
   --status-live: #047857;
+
+  /* Per-feature CI tokens — switched on root via [data-feature] */
+  --feature-color: var(--brand-accent);
+  --feature-color-strong: #4338ca;
+  --feature-tint: rgba(85, 102, 241, 0.08);
+  --feature-tint-strong: rgba(85, 102, 241, 0.16);
+  --feature-glow: radial-gradient(ellipse at top, rgba(85, 102, 241, 0.15), transparent 60%);
+}
+
+[data-feature="finance"] {
+  --feature-color: #d97706;
+  --feature-color-strong: #b45309;
+  --feature-tint: rgba(217, 119, 6, 0.1);
+  --feature-tint-strong: rgba(217, 119, 6, 0.2);
+  --feature-glow: radial-gradient(ellipse at top, rgba(217, 119, 6, 0.16), transparent 65%);
+}
+
+[data-feature="cyber"] {
+  --feature-color: #0891b2;
+  --feature-color-strong: #0e7490;
+  --feature-tint: rgba(8, 145, 178, 0.1);
+  --feature-tint-strong: rgba(8, 145, 178, 0.2);
+  --feature-glow: radial-gradient(ellipse at top, rgba(8, 145, 178, 0.18), transparent 65%);
+}
+
+[data-feature="kb"] {
+  --feature-color: #059669;
+  --feature-color-strong: #047857;
+  --feature-tint: rgba(5, 150, 105, 0.1);
+  --feature-tint-strong: rgba(5, 150, 105, 0.2);
+  --feature-glow: radial-gradient(ellipse at top, rgba(5, 150, 105, 0.16), transparent 65%);
+}
+
+[data-feature="art"] {
+  --feature-color: #e11d48;
+  --feature-color-strong: #be123c;
+  --feature-tint: rgba(225, 29, 72, 0.1);
+  --feature-tint-strong: rgba(225, 29, 72, 0.2);
+  --feature-glow: radial-gradient(ellipse at top, rgba(225, 29, 72, 0.18), transparent 65%);
 }
 
 @theme inline {
@@ -24,6 +88,8 @@
   --color-surface: var(--surface);
   --color-border: var(--border);
   --color-accent: var(--accent);
+  --color-brand: var(--brand);
+  --color-feature: var(--feature-color);
   --font-sans: var(--font-geist-sans), var(--font-noto-thai);
   --font-mono: var(--font-geist-mono);
   --font-thai: var(--font-noto-thai);
@@ -39,12 +105,45 @@
     --surface-2: #151b25;
     --border: #232b39;
     --border-soft: #1a212c;
-    --accent: #a5b4fc;
-    --accent-soft: rgba(165, 180, 252, 0.12);
+    --brand: #11142a;
+    --brand-deep: #06080d;
+    --brand-soft: #1f2540;
+    --brand-accent: #818cf8;
+    --brand-accent-soft: rgba(129, 140, 248, 0.12);
+    --accent: var(--brand-accent);
+    --accent-soft: var(--brand-accent-soft);
     --status-planned: #fbbf24;
     --status-design: #93c5fd;
     --status-prototyping: #6ee7b7;
     --status-live: #6ee7b7;
+  }
+  [data-feature="finance"] {
+    --feature-color: #fbbf24;
+    --feature-color-strong: #f59e0b;
+    --feature-tint: rgba(251, 191, 36, 0.12);
+    --feature-tint-strong: rgba(251, 191, 36, 0.24);
+    --feature-glow: radial-gradient(ellipse at top, rgba(251, 191, 36, 0.18), transparent 65%);
+  }
+  [data-feature="cyber"] {
+    --feature-color: #22d3ee;
+    --feature-color-strong: #06b6d4;
+    --feature-tint: rgba(34, 211, 238, 0.12);
+    --feature-tint-strong: rgba(34, 211, 238, 0.24);
+    --feature-glow: radial-gradient(ellipse at top, rgba(34, 211, 238, 0.2), transparent 65%);
+  }
+  [data-feature="kb"] {
+    --feature-color: #34d399;
+    --feature-color-strong: #10b981;
+    --feature-tint: rgba(52, 211, 153, 0.12);
+    --feature-tint-strong: rgba(52, 211, 153, 0.24);
+    --feature-glow: radial-gradient(ellipse at top, rgba(52, 211, 153, 0.18), transparent 65%);
+  }
+  [data-feature="art"] {
+    --feature-color: #fb7185;
+    --feature-color-strong: #f43f5e;
+    --feature-tint: rgba(251, 113, 133, 0.12);
+    --feature-tint-strong: rgba(251, 113, 133, 0.24);
+    --feature-glow: radial-gradient(ellipse at top, rgba(251, 113, 133, 0.2), transparent 65%);
   }
 }
 
@@ -65,17 +164,15 @@ html[lang="th"] body {
 }
 
 ::selection {
-  background: color-mix(in oklab, var(--accent) 35%, transparent);
+  background: color-mix(in oklab, var(--feature-color) 35%, transparent);
 }
 
-a {
-  color: inherit;
-}
+a { color: inherit; }
 
 a:focus-visible,
 button:focus-visible,
 input:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--feature-color);
   outline-offset: 3px;
   border-radius: 6px;
 }
@@ -86,4 +183,18 @@ input:focus-visible {
     linear-gradient(to bottom, color-mix(in oklab, var(--border) 90%, transparent) 1px, transparent 1px);
   background-size: 48px 48px;
   mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+
+.feature-glow {
+  background: var(--feature-glow);
+}
+
+.brand-tape {
+  background-image: repeating-linear-gradient(
+    135deg,
+    var(--feature-color) 0,
+    var(--feature-color) 2px,
+    transparent 2px,
+    transparent 8px
+  );
 }

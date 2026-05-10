@@ -17,11 +17,22 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function KbPage() {
   const lang = await getLang();
   return (
-    <>
+    <div data-feature="kb">
       <SubdomainHero item={item} lang={lang} />
       <section className="mx-auto max-w-md px-6 pb-12">
-        <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-7">
-          <p className="font-mono text-xs uppercase tracking-[0.18em] text-[var(--accent)]">
+        <div
+          className="relative rounded-2xl border bg-[var(--surface)] p-7 overflow-hidden"
+          style={{ borderColor: "color-mix(in oklab, var(--feature-color) 25%, var(--border))" }}
+        >
+          <div
+            aria-hidden
+            className="absolute inset-x-0 top-0 h-0.5"
+            style={{ background: "var(--feature-color)" }}
+          />
+          <p
+            className="font-mono text-xs uppercase tracking-[0.18em]"
+            style={{ color: "var(--feature-color-strong)" }}
+          >
             {t("kb.private", lang)}
           </p>
           <h2 className="mt-2 text-2xl font-semibold tracking-tight">{t("kb.signin", lang)}</h2>
@@ -33,7 +44,7 @@ export default async function KbPage() {
                 type="email"
                 disabled
                 placeholder="you@example.com"
-                className="mt-1 w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm disabled:opacity-50"
+                className="mt-1 w-full rounded-lg border border-[var(--border)] bg-[var(--surface-2)] px-3 py-2 text-sm text-[var(--muted)] placeholder:text-[var(--muted-soft)] cursor-not-allowed"
               />
             </label>
             <label className="block text-sm">
@@ -42,13 +53,14 @@ export default async function KbPage() {
                 type="password"
                 disabled
                 placeholder="••••••••"
-                className="mt-1 w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm disabled:opacity-50"
+                className="mt-1 w-full rounded-lg border border-[var(--border)] bg-[var(--surface-2)] px-3 py-2 text-sm text-[var(--muted)] placeholder:text-[var(--muted-soft)] cursor-not-allowed"
               />
             </label>
             <button
               type="button"
               disabled
-              className="w-full rounded-lg bg-[var(--foreground)] text-[var(--background)] px-4 py-2 text-sm font-medium opacity-50 cursor-not-allowed"
+              aria-disabled="true"
+              className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface-2)] text-[var(--muted)] px-4 py-2 text-sm font-medium cursor-not-allowed"
             >
               {t("kb.disabled", lang)}
             </button>
@@ -56,6 +68,6 @@ export default async function KbPage() {
         </div>
       </section>
       <FeatureGrid features={item.features} lang={lang} />
-    </>
+    </div>
   );
 }

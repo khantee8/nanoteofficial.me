@@ -9,9 +9,6 @@ export function Contact({ lang }: { lang: Lang }) {
           {t("contact.cta.title", lang)}
         </h3>
         <p className="mt-2 text-[var(--muted)]">{t("contact.cta.description", lang)}</p>
-        <p className="mt-3 text-sm text-[var(--muted-soft)]">
-          {profile.email} &middot; {profile.phone}
-        </p>
       </div>
       <div className="flex flex-wrap gap-3">
         <a

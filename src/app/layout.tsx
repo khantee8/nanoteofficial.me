@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Noto_Sans_Thai } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { FeatureSync } from "@/components/FeatureSync";
 import { profile, pick } from "@/lib/profile";
 import { getLang } from "@/lib/i18n";
 
@@ -45,6 +46,7 @@ export default async function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${notoThai.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <FeatureSync />
         <Header lang={lang} />
         <main className="flex-1">{children}</main>
         <Footer lang={lang} />

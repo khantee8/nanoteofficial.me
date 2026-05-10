@@ -39,15 +39,6 @@ export function Hero({ lang }: { lang: Lang }) {
               >
                 {t("cta.contact", lang)}
               </a>
-              <a
-                href={lang === "th" ? profile.cvTh : profile.cvEn}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-5 py-2.5 text-sm font-medium hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors"
-              >
-                {lang === "th" ? t("cta.cvTh", lang) : t("cta.cvEn", lang)}
-                <span aria-hidden>↓</span>
-              </a>
             </div>
           </div>
           <div className="mb-8 md:mb-0 md:pt-2">

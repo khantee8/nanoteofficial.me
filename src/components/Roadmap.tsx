@@ -19,19 +19,34 @@ export function Roadmap({ lang }: { lang: Lang }) {
         <Link
           key={item.key}
           href={item.href}
-          className="group relative overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-7 transition-all hover:-translate-y-0.5 hover:border-[var(--accent)] hover:shadow-[0_4px_24px_rgba(15,23,42,0.06)]"
+          data-feature={item.key}
+          className="group relative overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-7 transition-all hover:-translate-y-0.5 hover:shadow-[0_4px_24px_rgba(15,23,42,0.06)]"
+          style={{
+            // hover state ring color uses feature color via inline var
+            borderColor: undefined,
+          }}
         >
           <div
             aria-hidden
-            className={`pointer-events-none absolute -top-24 -right-24 h-56 w-56 rounded-full bg-gradient-to-br ${item.accent} opacity-70 blur-2xl`}
+            className="pointer-events-none absolute -top-24 -right-24 h-56 w-56 rounded-full blur-2xl opacity-80"
+            style={{ background: "var(--feature-tint-strong)" }}
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-0 h-0.5"
+            style={{ background: "var(--feature-color)" }}
           />
           <div className="relative flex items-start justify-between gap-4">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-[var(--muted-soft)]">
+              <p
+                className="font-mono text-xs uppercase tracking-[0.18em]"
+                style={{ color: "var(--feature-color-strong)" }}
+              >
                 {item.subdomain}
               </p>
               <h3 className="mt-2 text-2xl font-semibold tracking-tight">
                 {pick(item.title, lang)}
+                <span style={{ color: "var(--feature-color)" }}>.</span>
               </h3>
               <p className="mt-1 text-sm text-[var(--muted)]">{pick(item.tagline, lang)}</p>
             </div>
@@ -45,12 +60,21 @@ export function Roadmap({ lang }: { lang: Lang }) {
           <ul className="relative mt-5 grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-sm text-[var(--muted)]">
             {item.features.map((f, i) => (
               <li key={i} className="flex gap-2">
-                <span aria-hidden className="text-[var(--accent)] font-bold">•</span>
+                <span
+                  aria-hidden
+                  className="font-bold"
+                  style={{ color: "var(--feature-color)" }}
+                >
+                  •
+                </span>
                 <span>{pick(f, lang)}</span>
               </li>
             ))}
           </ul>
-          <div className="relative mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--accent)]">
+          <div
+            className="relative mt-6 inline-flex items-center gap-1.5 text-sm font-semibold"
+            style={{ color: "var(--feature-color-strong)" }}
+          >
             {t("cta.preview", lang)}
             <span
               aria-hidden

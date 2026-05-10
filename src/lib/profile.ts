@@ -54,16 +54,9 @@ export const profile = {
     en: "Bangkok, Thailand",
     th: "กรุงเทพมหานคร, ประเทศไทย",
   } as LStr,
-  address: {
-    en: "9/66 Charan Sanit Wong Rd, Bang O, Bang Phlat, Bangkok 10700",
-    th: "9/66 ถนนจรัญสนิทวงศ์ แขวงบางอ้อ เขตบางพลัด กรุงเทพฯ 10700",
-  } as LStr,
   email: "saksit.jantila@gmail.com",
-  phone: "+66 87 430 4719",
   linkedin: "https://www.linkedin.com/in/saksit-jantila-83b32614b/",
   github: "https://github.com/khantee8",
-  cvEn: "/cv/Saksit-CV-2026-EN.pdf",
-  cvTh: "/cv/Saksit-CV-2026-TH.pdf",
   summary: {
     en: "My career has equipped me with critical skills such as adaptability, resilience, and advanced problem-solving. I am passionate about connecting with the professional community, sharing knowledge, and contributing to successful project outcomes in the ever-changing world of IT, cybersecurity, and AI.",
     th: "เส้นทางอาชีพหล่อหลอมทักษะสำคัญให้ผม ทั้งการปรับตัว ความยืดหยุ่น และการแก้ปัญหาขั้นสูง ผมหลงใหลในการเชื่อมต่อกับ Community วิชาชีพ แบ่งปันความรู้ และร่วมสร้างความสำเร็จให้กับโครงการต่าง ๆ ในโลกของไอที ความมั่นคงปลอดภัยไซเบอร์ และ AI ที่เปลี่ยนแปลงอย่างรวดเร็ว",

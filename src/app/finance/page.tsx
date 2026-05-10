@@ -25,15 +25,20 @@ export default async function FinancePage() {
     { label: t("subdomain.pnl", lang), hint: t("subdomain.pnlHint", lang) },
   ];
   return (
-    <>
+    <div data-feature="finance">
       <SubdomainHero item={item} lang={lang} />
       <section className="mx-auto max-w-5xl px-6 pb-12">
         <div className="grid gap-5 md:grid-cols-3">
           {stats.map((s) => (
             <div
               key={s.label}
-              className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5"
+              className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5 relative overflow-hidden"
             >
+              <div
+                aria-hidden
+                className="absolute inset-x-0 top-0 h-0.5"
+                style={{ background: "var(--feature-color)" }}
+              />
               <p className="text-xs uppercase tracking-[0.16em] font-mono text-[var(--muted)]">
                 {s.label}
               </p>
@@ -45,6 +50,6 @@ export default async function FinancePage() {
       </section>
       <FeatureGrid features={item.features} lang={lang} />
       <ComingSoonCTA subdomain={item.subdomain} lang={lang} />
-    </>
+    </div>
   );
 }

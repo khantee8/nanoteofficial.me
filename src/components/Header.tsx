@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { profile, pick } from "@/lib/profile";
+import { profile } from "@/lib/profile";
 import { t, type Lang } from "@/lib/i18n";
 import { LangToggle } from "@/components/LangToggle";
+import { Logo } from "@/components/Logo";
 
 export function Header({ lang }: { lang: Lang }) {
   const nav = [
@@ -15,14 +16,7 @@ export function Header({ lang }: { lang: Lang }) {
   return (
     <header className="sticky top-0 z-30 border-b border-[var(--border-soft)] bg-[var(--background)]/85 backdrop-blur supports-[backdrop-filter]:bg-[var(--background)]/65">
       <div className="mx-auto max-w-6xl px-6 h-16 flex items-center justify-between gap-4">
-        <Link href="/" className="flex items-center gap-2 font-semibold tracking-tight shrink-0">
-          <span
-            aria-hidden
-            className="inline-block h-2.5 w-2.5 rounded-full bg-[var(--accent)] shadow-[0_0_0_4px_color-mix(in_oklab,var(--accent)_22%,transparent)]"
-          />
-          {profile.handle}
-          <span className="text-[var(--muted-soft)] font-normal">.me</span>
-        </Link>
+        <Logo />
         <nav className="hidden lg:flex items-center gap-6 text-sm text-[var(--muted)]">
           {nav.map((n) => (
             <Link
@@ -47,5 +41,3 @@ export function Header({ lang }: { lang: Lang }) {
     </header>
   );
 }
-
-export { pick };

@@ -53,7 +53,7 @@ const feedItems: { sev: keyof typeof sevColor; title: Record<Lang, string>; time
 export default async function CyberPage() {
   const lang = await getLang();
   return (
-    <>
+    <div data-feature="cyber">
       <SubdomainHero item={item} lang={lang} />
       <section className="mx-auto max-w-5xl px-6 pb-12">
         <h2 className="text-sm uppercase tracking-[0.18em] text-[var(--accent)] font-mono mb-4">
@@ -75,6 +75,6 @@ export default async function CyberPage() {
       </section>
       <FeatureGrid features={item.features} lang={lang} />
       <ComingSoonCTA subdomain={item.subdomain} lang={lang} />
-    </>
+    </div>
   );
 }
