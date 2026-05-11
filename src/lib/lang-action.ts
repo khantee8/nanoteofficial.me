@@ -10,5 +10,6 @@ export async function setLang(lang: Lang) {
     path: "/",
     maxAge: 60 * 60 * 24 * 365,
     sameSite: "lax",
+    httpOnly: true,
   });
 }

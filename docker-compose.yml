@@ -1,0 +1,15 @@
+services:
+  nanoteofficial:
+    image: node:22-alpine
+    container_name: nanoteofficial-me
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: sh -c "node_modules/.bin/next start"
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    security_opt:
+      - apparmor=unconfined

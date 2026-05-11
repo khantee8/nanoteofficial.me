@@ -37,7 +37,7 @@ export default async function KbPage() {
           </p>
           <h2 className="mt-2 text-2xl font-semibold tracking-tight">{t("kb.signin", lang)}</h2>
           <p className="mt-2 text-sm text-[var(--muted)]">{t("kb.signinHint", lang)}</p>
-          <form className="mt-5 space-y-3" action="#" aria-label={t("kb.signin", lang)} onSubmit={(e) => e.preventDefault()}>
+          <form className="mt-5 space-y-3" aria-label={t("kb.signin", lang)}>
             <label className="block text-sm">
               <span className="text-[var(--muted)]">{t("kb.email", lang)}</span>
               <input
