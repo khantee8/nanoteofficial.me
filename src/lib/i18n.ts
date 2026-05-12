@@ -82,7 +82,10 @@ type UiKey =
   | "status.Planned"
   | "status.In design"
   | "status.Prototyping"
-  | "status.Live";
+  | "status.Live"
+  | "subdomain.launchApp"
+  | "subdomain.nowLive"
+  | "subdomain.liveDescription";
 
 const dict: Record<UiKey, Record<Lang, string>> = {
   "nav.about": { en: "About", th: "เกี่ยวกับ" },
@@ -186,6 +189,12 @@ const dict: Record<UiKey, Record<Lang, string>> = {
   "status.In design": { en: "In design", th: "ออกแบบ" },
   "status.Prototyping": { en: "Prototyping", th: "ทำต้นแบบ" },
   "status.Live": { en: "Live", th: "ใช้งานจริง" },
+  "subdomain.launchApp": { en: "Open Finance App", th: "เปิดแอป Finance" },
+  "subdomain.nowLive": { en: "Now live", th: "ใช้งานจริงแล้ว" },
+  "subdomain.liveDescription": {
+    en: "The full platform is deployed and ready. Advisor and client portals, portfolio analytics, Monte Carlo simulations, and the AI assistant are all live.",
+    th: "แพลตฟอร์มเต็มรูปแบบถูกดีพลอยและพร้อมใช้งานแล้ว ทั้งพอร์ทัลที่ปรึกษา พอร์ทัลลูกค้า การวิเคราะห์พอร์ต การจำลอง Monte Carlo และผู้ช่วย AI",
+  },
 };
 
 export function t(key: UiKey, lang: Lang): string {
