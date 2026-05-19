@@ -33,6 +33,8 @@ If you add a new subdomain, update `subdomainMap` in `proxy.ts` and create the c
 
 Single source of truth for all resume/portfolio data. `profile` holds experience, education, skills, certs, and projects. `roadmap` holds the four subdomain items. All user-facing strings use `type LStr = Record<"en" | "th", string>` — every field must have both languages. Edit only this file to update page content.
 
+`hardSkills` is `LStr[]` (competency labels, no percentages). `certifications` is `string[]` — each entry maps to a metadata record in `Certifications.tsx` that provides vendor name, brand color, category, and an SVG logo path from `public/logos/`. When adding a cert, add both the string to the array and a `CERT_META` entry.
+
 ### i18n (`src/lib/i18n.ts` + `src/lib/lang-action.ts`)
 
 Cookie-based, server-side. `getLang()` reads the `lang` cookie in RSC. `setLang()` is a Server Action (validated allow-list: `"en" | "th"`) called by `LangToggle`. The `t()` function is typed — every new UI string requires a new entry in the `UiKey` union **and** the `dict` object in `i18n.ts`. TypeScript will error if a key is missing from either.
@@ -41,7 +43,7 @@ Cookie is set with `httpOnly: true` and `secure: true` in production — it is o
 
 ### Feature theming (`src/app/globals.css` + `src/components/FeatureSync.tsx`)
 
-CSS tokens (`--feature-color`, `--feature-tint`, `--feature-color-strong`, `--feature-glow`) are defined on `:root` (indigo brand default) and overridden per `[data-feature="finance|cyber|kb|art"]`, with separate dark-mode overrides in `@media (prefers-color-scheme: dark)`.
+CSS tokens (`--feature-color`, `--feature-tint`, `--feature-color-strong`, `--feature-glow`) are defined on `:root` (executive navy brand default `#3B4FBF`) and overridden per `[data-feature="finance|cyber|kb|art"]`, with separate dark-mode overrides in `@media (prefers-color-scheme: dark)`.
 
 `FeatureSync` (client component) sets `data-feature` on `<body>` via `usePathname()` for global token inheritance. Subdomain pages also set it on their own root div for SSR correctness before hydration. Use `var(--feature-color)` in any component to automatically adopt the active accent.
 
@@ -64,3 +66,5 @@ CSP uses `'unsafe-inline'` on both `script-src` and `style-src`. `script-src` re
 - `/kb` is intentionally excluded from `sitemap.ts` and blocked in `robots.ts` (private page).
 - The `postcss` package is overridden to `>=8.5.10` in `package.json` to resolve a known advisory — do not remove the override.
 - The scroll-spy IntersectionObserver in `HeaderNav.tsx` only watches sections that exist on the homepage (`about`, `experience`, `projects`, `roadmap`, `contact`) — it has no effect on subdomain pages.
+- Certification vendor logos live in `public/logos/` as SVGs. Real logos (Cisco, ISC², Fortinet, Palo Alto, CompTIA) were sourced from Simple Icons CDN; others (EC-Council, PMI, ServiceNow, SEC Thailand) are hand-crafted SVGs.
+- CV download files (`public/cv-en.pdf`, `public/cv-th.pdf`) are copied from `/project/Profile/` — update them there first, then copy to `public/`.
