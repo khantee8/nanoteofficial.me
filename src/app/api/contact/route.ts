@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const TO = "saksit.jantila@gmail.com";
+const TO = process.env.CONTACT_EMAIL ?? "khantee9@gmail.com";
 
 const MAX_NAME = 100;
 const MAX_EMAIL = 320;
