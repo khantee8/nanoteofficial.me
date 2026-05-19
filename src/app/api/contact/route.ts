@@ -36,7 +36,7 @@ export async function POST(req: Request) {
 
     const resend = new Resend(process.env.RESEND_API_KEY);
     const result = await resend.emails.send({
-      from: "nanoteofficial.me <onboarding@resend.dev>",
+      from: "Saksit Jantila <contact@nanoteofficial.me>",
       to: TO,
       replyTo: e,
       subject: `[nanoteofficial.me] Message from ${n}`,
