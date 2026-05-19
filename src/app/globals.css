@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(html.dark, html.dark *));
+
 /*
  * nanoteofficial.me — Corporate Identity v1.1
  *
@@ -94,56 +96,58 @@
   --font-thai: var(--font-noto-thai);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #06080d;
-    --foreground: #ecf0f7;
-    --muted: #a8b2c2;
-    --muted-soft: #7c8699;
-    --surface: #0e131b;
-    --surface-2: #151b25;
-    --border: #232b39;
-    --border-soft: #1a212c;
-    --brand: #0d1020;
-    --brand-deep: #060810;
-    --brand-soft: #1a2040;
-    --brand-accent: #7b8aeb;
-    --brand-accent-soft: rgba(123, 138, 235, 0.12);
-    --accent: var(--brand-accent);
-    --accent-soft: var(--brand-accent-soft);
-    --status-planned: #fbbf24;
-    --status-design: #93c5fd;
-    --status-prototyping: #6ee7b7;
-    --status-live: #6ee7b7;
-  }
-  [data-feature="finance"] {
-    --feature-color: #fbbf24;
-    --feature-color-strong: #f59e0b;
-    --feature-tint: rgba(251, 191, 36, 0.12);
-    --feature-tint-strong: rgba(251, 191, 36, 0.24);
-    --feature-glow: radial-gradient(ellipse at top, rgba(251, 191, 36, 0.18), transparent 65%);
-  }
-  [data-feature="cyber"] {
-    --feature-color: #22d3ee;
-    --feature-color-strong: #06b6d4;
-    --feature-tint: rgba(34, 211, 238, 0.12);
-    --feature-tint-strong: rgba(34, 211, 238, 0.24);
-    --feature-glow: radial-gradient(ellipse at top, rgba(34, 211, 238, 0.2), transparent 65%);
-  }
-  [data-feature="kb"] {
-    --feature-color: #34d399;
-    --feature-color-strong: #10b981;
-    --feature-tint: rgba(52, 211, 153, 0.12);
-    --feature-tint-strong: rgba(52, 211, 153, 0.24);
-    --feature-glow: radial-gradient(ellipse at top, rgba(52, 211, 153, 0.18), transparent 65%);
-  }
-  [data-feature="art"] {
-    --feature-color: #fb7185;
-    --feature-color-strong: #f43f5e;
-    --feature-tint: rgba(251, 113, 133, 0.12);
-    --feature-tint-strong: rgba(251, 113, 133, 0.24);
-    --feature-glow: radial-gradient(ellipse at top, rgba(251, 113, 133, 0.2), transparent 65%);
-  }
+html.dark {
+  --background: #06080d;
+  --foreground: #ecf0f7;
+  --muted: #a8b2c2;
+  --muted-soft: #7c8699;
+  --surface: #0e131b;
+  --surface-2: #151b25;
+  --border: #232b39;
+  --border-soft: #1a212c;
+  --brand: #0d1020;
+  --brand-deep: #060810;
+  --brand-soft: #1a2040;
+  --brand-accent: #7b8aeb;
+  --brand-accent-soft: rgba(123, 138, 235, 0.12);
+  --accent: var(--brand-accent);
+  --accent-soft: var(--brand-accent-soft);
+  --status-planned: #fbbf24;
+  --status-design: #93c5fd;
+  --status-prototyping: #6ee7b7;
+  --status-live: #6ee7b7;
+}
+
+html.dark [data-feature="finance"] {
+  --feature-color: #fbbf24;
+  --feature-color-strong: #f59e0b;
+  --feature-tint: rgba(251, 191, 36, 0.12);
+  --feature-tint-strong: rgba(251, 191, 36, 0.24);
+  --feature-glow: radial-gradient(ellipse at top, rgba(251, 191, 36, 0.18), transparent 65%);
+}
+
+html.dark [data-feature="cyber"] {
+  --feature-color: #22d3ee;
+  --feature-color-strong: #06b6d4;
+  --feature-tint: rgba(34, 211, 238, 0.12);
+  --feature-tint-strong: rgba(34, 211, 238, 0.24);
+  --feature-glow: radial-gradient(ellipse at top, rgba(34, 211, 238, 0.2), transparent 65%);
+}
+
+html.dark [data-feature="kb"] {
+  --feature-color: #34d399;
+  --feature-color-strong: #10b981;
+  --feature-tint: rgba(52, 211, 153, 0.12);
+  --feature-tint-strong: rgba(52, 211, 153, 0.24);
+  --feature-glow: radial-gradient(ellipse at top, rgba(52, 211, 153, 0.18), transparent 65%);
+}
+
+html.dark [data-feature="art"] {
+  --feature-color: #fb7185;
+  --feature-color-strong: #f43f5e;
+  --feature-tint: rgba(251, 113, 133, 0.12);
+  --feature-tint-strong: rgba(251, 113, 133, 0.24);
+  --feature-glow: radial-gradient(ellipse at top, rgba(251, 113, 133, 0.2), transparent 65%);
 }
 
 html {
@@ -219,8 +223,18 @@ input:focus-visible {
       animation: reveal-fade-up linear both;
       animation-timeline: view();
       animation-range: entry 0% cover 22%;
+      animation-delay: calc(var(--reveal-d, 0) * 1ms);
     }
   }
+}
+
+.card-hover {
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px color-mix(in oklab, var(--feature-color, var(--accent)) 12%, transparent);
+  border-color: color-mix(in oklab, var(--feature-color, var(--accent)) 35%, var(--border));
 }
 
 @keyframes reveal-fade-up {

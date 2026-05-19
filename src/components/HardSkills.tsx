@@ -7,7 +7,9 @@ export function HardSkills({ lang }: { lang: Lang }) {
       {profile.hardSkills.map((s, i) => (
         <div
           key={i}
-          className="group rounded-xl border border-[var(--border)] bg-[var(--surface)] px-5 py-4 flex items-center gap-3 transition-colors hover:border-[color-mix(in_oklab,var(--accent)_40%,var(--border))]"
+          data-reveal
+          style={{ "--reveal-d": i * 60 } as React.CSSProperties}
+          className="group rounded-xl border border-[var(--border)] bg-[var(--surface)] px-5 py-4 flex items-center gap-3 card-hover"
         >
           <span
             aria-hidden

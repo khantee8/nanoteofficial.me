@@ -15,16 +15,14 @@ const statusStyles: Record<RoadmapItem["status"], string> = {
 export function Roadmap({ lang }: { lang: Lang }) {
   return (
     <div className="grid gap-5 md:grid-cols-2">
-      {roadmap.map((item) => (
+      {roadmap.map((item, i) => (
         <Link
           key={item.key}
           href={item.href}
           data-feature={item.key}
-          className="group relative overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-7 transition-all hover:-translate-y-0.5 hover:shadow-[0_4px_24px_rgba(15,23,42,0.06)]"
-          style={{
-            // hover state ring color uses feature color via inline var
-            borderColor: undefined,
-          }}
+          data-reveal
+          style={{ "--reveal-d": i * 100 } as React.CSSProperties}
+          className="group relative overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-7 card-hover"
         >
           <div
             aria-hidden

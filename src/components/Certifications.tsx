@@ -20,12 +20,14 @@ export function Certifications({ lang }: { lang: Lang }) {
   return (
     <div className="space-y-6">
       <div className="grid gap-3 sm:grid-cols-2">
-        {profile.certifications.map((c) => {
+        {profile.certifications.map((c, i) => {
           const meta = CERT_META[c] ?? { vendor: "Vendor", color: "#6B7280", category: "Certification", logo: "" };
           return (
             <div
               key={c}
-              className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 flex items-center gap-3 relative overflow-hidden group transition-colors hover:border-[color-mix(in_oklab,_var(--accent)_40%,_var(--border))]"
+              data-reveal
+              style={{ "--reveal-d": i * 60 } as React.CSSProperties}
+              className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 flex items-center gap-3 relative overflow-hidden group card-hover"
             >
               <div
                 aria-hidden

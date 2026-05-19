@@ -37,15 +37,53 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+const themeScript = `(function(){try{var d=document.documentElement;var t=localStorage.getItem("theme");if(t==="dark"||(t!=="light"&&matchMedia("(prefers-color-scheme:dark)").matches))d.classList.add("dark")}catch(e){}})()`;
+
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const lang = await getLang();
+  const name = pick(profile.name, lang);
+  const headline = pick(profile.headline, lang);
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        name,
+        jobTitle: headline,
+        url: "https://nanoteofficial.me",
+        email: profile.email,
+        sameAs: [profile.linkedin, profile.github],
+        alumniOf: [
+          { "@type": "EducationOrganization", name: "NIDA" },
+          { "@type": "EducationOrganization", name: "Khon Kaen University" },
+        ],
+      },
+      {
+        "@type": "WebSite",
+        name: "nanoteofficial.me",
+        url: "https://nanoteofficial.me",
+      },
+    ],
+  };
+
   return (
     <html
       lang={lang}
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} ${notoThai.variable} h-full antialiased`}
     >
+      <head>
+        {/* Anti-FOWT: apply dark class before first paint — hardcoded script, no user input */}
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        {/* JSON-LD: structured data from hardcoded profile — no user input */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="min-h-full flex flex-col">
         <FeatureSync />
         <Header lang={lang} />

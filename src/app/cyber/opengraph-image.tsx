@@ -1,18 +1,17 @@
 import { ImageResponse } from "next/og";
-import { profile } from "@/lib/profile";
-import { getLang, t } from "@/lib/i18n";
+import { roadmap, pick } from "@/lib/profile";
+import { getLang } from "@/lib/i18n";
 
 export const runtime = "nodejs";
-export const alt = "nanoteofficial.me";
+export const alt = "Cyber — nanoteofficial.me";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
+const item = roadmap.find((r) => r.key === "cyber")!;
+const color = "#0891b2";
+
 export default async function OpengraphImage() {
   const lang = await getLang();
-  const name = profile.name[lang];
-  const headline = profile.headline[lang];
-  const tagline = t("hero.available", lang);
-
   return new ImageResponse(
     (
       <div
@@ -32,8 +31,7 @@ export default async function OpengraphImage() {
           style={{
             position: "absolute",
             inset: 0,
-            background:
-              "radial-gradient(ellipse 600px 400px at 85% 15%, rgba(85,102,241,0.25), transparent 60%)",
+            background: `radial-gradient(ellipse 600px 400px at 85% 15%, ${color}40, transparent 60%)`,
           }}
         />
         <div style={{ display: "flex", alignItems: "center", gap: 14, position: "relative" }}>
@@ -59,19 +57,17 @@ export default async function OpengraphImage() {
                 height: 4,
                 borderTopLeftRadius: 14,
                 borderTopRightRadius: 14,
-                background: "#3b4fbf",
+                background: color,
               }}
             />
             <span style={{ fontSize: 30, fontWeight: 700, letterSpacing: -1, color: "#ecf0f7" }}>
-              n
-              <span style={{ color: "#3b4fbf" }}>.</span>
+              n<span style={{ color }}>.</span>
             </span>
           </div>
           <span style={{ fontSize: 24, fontWeight: 600, letterSpacing: -0.4 }}>
-            nanoteofficial<span style={{ opacity: 0.55 }}>.me</span>
+            {item.subdomain}
           </span>
         </div>
-
         <div
           style={{
             display: "flex",
@@ -86,42 +82,18 @@ export default async function OpengraphImage() {
               fontSize: 18,
               letterSpacing: 6,
               textTransform: "uppercase",
-              color: "#3b4fbf",
+              color,
               fontWeight: 600,
             }}
           >
-            {tagline}
+            {pick(item.tagline, lang)}
           </span>
-          <span
-            style={{
-              fontSize: 88,
-              fontWeight: 700,
-              letterSpacing: -2,
-              lineHeight: 1.02,
-            }}
-          >
-            {name}.
+          <span style={{ fontSize: 72, fontWeight: 700, letterSpacing: -2, lineHeight: 1.02 }}>
+            {pick(item.title, lang)}.
           </span>
-          <span style={{ fontSize: 36, color: "#a8b2c2", fontWeight: 500, letterSpacing: -0.5 }}>
-            {headline}.
+          <span style={{ fontSize: 28, color: "#a8b2c2", fontWeight: 500 }}>
+            {pick(item.description, lang).slice(0, 90)}…
           </span>
-        </div>
-
-        <div
-          style={{
-            position: "absolute",
-            right: 80,
-            bottom: 70,
-            display: "flex",
-            gap: 10,
-          }}
-        >
-          {["#d97706", "#0891b2", "#059669", "#e11d48"].map((c) => (
-            <div
-              key={c}
-              style={{ width: 32, height: 8, borderRadius: 4, background: c }}
-            />
-          ))}
         </div>
       </div>
     ),

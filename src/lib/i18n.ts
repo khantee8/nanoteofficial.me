@@ -87,7 +87,12 @@ type UiKey =
   | "subdomain.nowLive"
   | "subdomain.liveDescription"
   | "subdomain.prototypeDescription"
-  | "subdomain.inPrototype";
+  | "subdomain.inPrototype"
+  | "contact.form.title"
+  | "contact.form.subtitle"
+  | "subdomain.threatsToday"
+  | "subdomain.criticalCount"
+  | "subdomain.lastUpdated";
 
 const dict: Record<UiKey, Record<Lang, string>> = {
   "nav.about": { en: "About", th: "เกี่ยวกับ" },
@@ -202,6 +207,17 @@ const dict: Record<UiKey, Record<Lang, string>> = {
     th: "แพลตฟอร์มอยู่ในระยะต้นแบบ — ฟีเจอร์หลักกำลังถูกทดสอบกับผู้ใช้กลุ่มแรก การวิเคราะห์พอร์ต การประเมินความเสี่ยง และแดชบอร์ดอยู่ระหว่างการพัฒนา",
   },
   "subdomain.inPrototype": { en: "Prototype phase", th: "ระยะต้นแบบ" },
+  "contact.form.title": {
+    en: "Or send a message directly",
+    th: "หรือส่งข้อความถึงผมได้โดยตรง",
+  },
+  "contact.form.subtitle": {
+    en: "I'll get back to you within one business day.",
+    th: "ผมจะตอบกลับภายในหนึ่งวันทำการ",
+  },
+  "subdomain.threatsToday": { en: "Threats today", th: "ภัยคุกคามวันนี้" },
+  "subdomain.criticalCount": { en: "Critical", th: "วิกฤต" },
+  "subdomain.lastUpdated": { en: "Last updated", th: "อัปเดตล่าสุด" },
 };
 
 export function t(key: UiKey, lang: Lang): string {

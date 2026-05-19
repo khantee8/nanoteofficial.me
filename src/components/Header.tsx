@@ -1,6 +1,7 @@
 import { profile } from "@/lib/profile";
 import { t, type Lang } from "@/lib/i18n";
 import { LangToggle } from "@/components/LangToggle";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { Logo } from "@/components/Logo";
 import {
   HeaderNavRoot,
@@ -31,6 +32,7 @@ export function Header({ lang }: { lang: Lang }) {
           <Logo />
           <HeaderNavLinks />
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             <LangToggle current={lang} />
             <a
               href={`mailto:${profile.email}`}
