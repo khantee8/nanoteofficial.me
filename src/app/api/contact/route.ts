@@ -35,7 +35,7 @@ export async function POST(req: Request) {
     }
 
     const resend = new Resend(process.env.RESEND_API_KEY);
-    await resend.emails.send({
+    const result = await resend.emails.send({
       from: "nanoteofficial.me <onboarding@resend.dev>",
       to: TO,
       replyTo: e,
@@ -43,7 +43,11 @@ export async function POST(req: Request) {
       text: `Name: ${n}\nEmail: ${e}\n\n${m}`,
     });
 
-    return NextResponse.json({ ok: true });
+    if (result.error) {
+      return NextResponse.json({ error: result.error.message }, { status: 422 });
+    }
+
+    return NextResponse.json({ ok: true, id: result.data?.id });
   } catch {
     return NextResponse.json(
       { error: "Failed to send" },
