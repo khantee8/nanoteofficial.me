@@ -1,14 +1,13 @@
 @import "tailwindcss";
 
 /*
- * nanoteofficial.me — Corporate Identity v0.1
+ * nanoteofficial.me — Corporate Identity v1.1
  *
- * Brand voice: precise, calm, cross-disciplinary. The mark is a lowercase "n"
- * followed by a colored dot. The dot changes color depending on which feature
- * (Finance / Cyber / KB / Art) is in focus, expressing the same identity in
- * four distinct moods.
+ * Brand voice: strategic, authoritative, cross-disciplinary. The mark is a
+ * lowercase "n" followed by a colored dot. The dot changes color depending on
+ * which feature (Finance / Cyber / KB / Art) is in focus.
  *
- * Brand color   — Midnight Indigo  #1A1F3A → #5566F1 (accent)
+ * Brand color   — Executive Navy   #151A30 → #3B4FBF (accent)
  * Finance       — Goldleaf         #B45309 / #D97706
  * Cyber         — Pulse            #0E7490 / #0891B2
  * Knowledge     — Sage             #047857 / #059669
@@ -17,11 +16,11 @@
 
 :root {
   /* Brand */
-  --brand-deep: #11142a;
-  --brand: #1a1f3a;
-  --brand-soft: #2a2f45;
-  --brand-accent: #5566f1;
-  --brand-accent-soft: #eef0ff;
+  --brand-deep: #0d1020;
+  --brand: #151a30;
+  --brand-soft: #252b42;
+  --brand-accent: #3b4fbf;
+  --brand-accent-soft: #e8ebf7;
 
   /* Surface system */
   --background: #ffffff;
@@ -43,10 +42,10 @@
 
   /* Per-feature CI tokens — switched on root via [data-feature] */
   --feature-color: var(--brand-accent);
-  --feature-color-strong: #4338ca;
-  --feature-tint: rgba(85, 102, 241, 0.08);
-  --feature-tint-strong: rgba(85, 102, 241, 0.16);
-  --feature-glow: radial-gradient(ellipse at top, rgba(85, 102, 241, 0.15), transparent 60%);
+  --feature-color-strong: #2c3a8f;
+  --feature-tint: rgba(59, 79, 191, 0.08);
+  --feature-tint-strong: rgba(59, 79, 191, 0.16);
+  --feature-glow: radial-gradient(ellipse at top, rgba(59, 79, 191, 0.15), transparent 60%);
 }
 
 [data-feature="finance"] {
@@ -105,11 +104,11 @@
     --surface-2: #151b25;
     --border: #232b39;
     --border-soft: #1a212c;
-    --brand: #11142a;
-    --brand-deep: #06080d;
-    --brand-soft: #1f2540;
-    --brand-accent: #818cf8;
-    --brand-accent-soft: rgba(129, 140, 248, 0.12);
+    --brand: #0d1020;
+    --brand-deep: #060810;
+    --brand-soft: #1a2040;
+    --brand-accent: #7b8aeb;
+    --brand-accent-soft: rgba(123, 138, 235, 0.12);
     --accent: var(--brand-accent);
     --accent-soft: var(--brand-accent-soft);
     --status-planned: #fbbf24;

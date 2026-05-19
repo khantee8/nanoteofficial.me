@@ -85,7 +85,9 @@ type UiKey =
   | "status.Live"
   | "subdomain.launchApp"
   | "subdomain.nowLive"
-  | "subdomain.liveDescription";
+  | "subdomain.liveDescription"
+  | "subdomain.prototypeDescription"
+  | "subdomain.inPrototype";
 
 const dict: Record<UiKey, Record<Lang, string>> = {
   "nav.about": { en: "About", th: "เกี่ยวกับ" },
@@ -106,12 +108,12 @@ const dict: Record<UiKey, Record<Lang, string>> = {
   "cta.back": { en: "Back to home", th: "กลับหน้าแรก" },
   "section.about.eyebrow": { en: "About", th: "เกี่ยวกับ" },
   "section.about.title": {
-    en: "Two disciplines, one mindset.",
-    th: "สองศาสตร์ หนึ่งวิธีคิด",
+    en: "Strategy meets execution.",
+    th: "กลยุทธ์พบการลงมือทำ",
   },
   "section.about.description": {
-    en: "I treat security and personal finance as the same kind of problem: identify exposure, decide what's worth defending, then build systems that hold up when conditions change.",
-    th: "ผมมองงานความมั่นคงปลอดภัยไซเบอร์และการเงินส่วนบุคคลเป็นปัญหาเดียวกัน คือ ระบุความเสี่ยง ตัดสินใจว่าจะปกป้องอะไร แล้วออกแบบระบบที่ยังเชื่อถือได้เมื่อสภาพแวดล้อมเปลี่ยน",
+    en: "I bridge technology strategy with hands-on delivery — aligning cybersecurity, enterprise transformation, and business objectives to create resilient organizations.",
+    th: "ผมเชื่อมกลยุทธ์เทคโนโลยีเข้ากับการส่งมอบงานจริง — ประสานความมั่นคงปลอดภัยไซเบอร์ การเปลี่ยนผ่านองค์กร และเป้าหมายธุรกิจ เพื่อสร้างองค์กรที่แข็งแกร่ง",
   },
   "section.roadmap.eyebrow": { en: "Roadmap", th: "โรดแมป" },
   "section.roadmap.title": { en: "What I'm building.", th: "สิ่งที่กำลังสร้าง" },
@@ -123,10 +125,10 @@ const dict: Record<UiKey, Record<Lang, string>> = {
   "section.experience.title": { en: "Where I've worked.", th: "เส้นทางการทำงาน" },
   "section.education.eyebrow": { en: "Education", th: "การศึกษา" },
   "section.education.title": { en: "Academic background.", th: "ประวัติการศึกษา" },
-  "section.skills.eyebrow": { en: "Personality", th: "บุคลิก" },
-  "section.skills.title": { en: "How I work.", th: "วิธีการทำงาน" },
-  "section.hardSkills.eyebrow": { en: "Hard skills", th: "ทักษะเฉพาะด้าน" },
-  "section.hardSkills.title": { en: "Technical depth.", th: "ความเชี่ยวชาญทางเทคนิค" },
+  "section.skills.eyebrow": { en: "Working Style", th: "วิธีการทำงาน" },
+  "section.skills.title": { en: "How I operate.", th: "แนวทางการทำงาน" },
+  "section.hardSkills.eyebrow": { en: "Competencies", th: "สมรรถนะ" },
+  "section.hardSkills.title": { en: "Core capabilities.", th: "ความสามารถหลัก" },
   "section.certs.eyebrow": { en: "Certifications", th: "ใบรับรอง" },
   "section.certs.title": { en: "Industry credentials.", th: "ประกาศนียบัตรในสายงาน" },
   "section.projects.eyebrow": { en: "Projects", th: "โปรเจกต์ที่ผ่านมา" },
@@ -195,6 +197,11 @@ const dict: Record<UiKey, Record<Lang, string>> = {
     en: "The full platform is deployed and ready. Advisor and client portals, portfolio analytics, Monte Carlo simulations, and the AI assistant are all live.",
     th: "แพลตฟอร์มเต็มรูปแบบถูกดีพลอยและพร้อมใช้งานแล้ว ทั้งพอร์ทัลที่ปรึกษา พอร์ทัลลูกค้า การวิเคราะห์พอร์ต การจำลอง Monte Carlo และผู้ช่วย AI",
   },
+  "subdomain.prototypeDescription": {
+    en: "The platform is in active prototype phase — core features are being validated with early users. Portfolio analytics, risk evaluation, and the dashboard are under development.",
+    th: "แพลตฟอร์มอยู่ในระยะต้นแบบ — ฟีเจอร์หลักกำลังถูกทดสอบกับผู้ใช้กลุ่มแรก การวิเคราะห์พอร์ต การประเมินความเสี่ยง และแดชบอร์ดอยู่ระหว่างการพัฒนา",
+  },
+  "subdomain.inPrototype": { en: "Prototype phase", th: "ระยะต้นแบบ" },
 };
 
 export function t(key: UiKey, lang: Lang): string {

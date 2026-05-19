@@ -23,8 +23,6 @@ export type SkillGroup = {
   items: LStr[];
 };
 
-export type HardSkill = { label: LStr; pct: number };
-
 export type ProjectGroup = {
   role: LStr;
   period: string;
@@ -47,8 +45,8 @@ export const profile = {
   name: { en: "Saksit Jantila", th: "ศักดิ์สิทธิ์ จันทิหล้า" } as LStr,
   handle: "nanoteofficial",
   headline: {
-    en: "Senior Account Engineer — Cybersecurity",
-    th: "Senior Account Engineer — ความมั่นคงปลอดภัยไซเบอร์",
+    en: "Technology Strategy & Cybersecurity | MBA — Finance & MIS",
+    th: "กลยุทธ์เทคโนโลยีและความมั่นคงปลอดภัยไซเบอร์ | MBA — การเงินและ MIS",
   } as LStr,
   location: {
     en: "Bangkok, Thailand",
@@ -58,21 +56,21 @@ export const profile = {
   linkedin: "https://www.linkedin.com/in/saksit-jantila-83b32614b/",
   github: "https://github.com/khantee8",
   summary: {
-    en: "My career has equipped me with critical skills such as adaptability, resilience, and advanced problem-solving. I am passionate about connecting with the professional community, sharing knowledge, and contributing to successful project outcomes in the ever-changing world of IT, cybersecurity, and AI.",
-    th: "เส้นทางอาชีพหล่อหลอมทักษะสำคัญให้ผม ทั้งการปรับตัว ความยืดหยุ่น และการแก้ปัญหาขั้นสูง ผมหลงใหลในการเชื่อมต่อกับ Community วิชาชีพ แบ่งปันความรู้ และร่วมสร้างความสำเร็จให้กับโครงการต่าง ๆ ในโลกของไอที ความมั่นคงปลอดภัยไซเบอร์ และ AI ที่เปลี่ยนแปลงอย่างรวดเร็ว",
+    en: "My career has equipped me with adaptability, resilience, and strong problem-solving capabilities through enterprise technology and cybersecurity projects across government and financial-sector organizations. I am passionate about technology innovation, AI, cybersecurity, and continuous learning, with strong interest in business transformation and strategic technology initiatives.",
+    th: "เส้นทางอาชีพได้หล่อหลอมทักษะด้านการปรับตัว ความยืดหยุ่น และความสามารถในการแก้ปัญหา ผ่านประสบการณ์ด้านเทคโนโลยีองค์กรและโครงการด้านความมั่นคงปลอดภัยไซเบอร์สำหรับหน่วยงานภาครัฐและองค์กรภาคการเงิน ผมมีความสนใจในนวัตกรรมเทคโนโลยี AI ความมั่นคงปลอดภัยไซเบอร์ และการเรียนรู้อย่างต่อเนื่อง พร้อมทั้งมุ่งมั่นในด้าน Business Transformation และ Strategic Technology Initiatives",
   } as LStr,
   about: [
     {
-      en: "Cybersecurity practitioner across SIEM, SOAR, SOC-as-a-Service, and Managed Security (MSSP) — with hands-on delivery for Thai government, banking, and critical-infrastructure clients.",
-      th: "ผู้ปฏิบัติงานด้านความมั่นคงปลอดภัยไซเบอร์ ครอบคลุม SIEM, SOAR, SOC-as-a-Service และบริการ MSSP — ส่งมอบงานจริงให้กับลูกค้าภาครัฐ ธนาคาร และโครงสร้างพื้นฐานสำคัญของประเทศไทย",
+      en: "Enterprise technology strategist and cybersecurity leader — driving security transformation, governance, and operational resilience for government and financial-sector organizations across Thailand.",
+      th: "ผู้นำด้านกลยุทธ์เทคโนโลยีและความมั่นคงปลอดภัยไซเบอร์ — ขับเคลื่อนการเปลี่ยนผ่านด้านความมั่นคงปลอดภัย การกำกับดูแล และความยืดหยุ่นในการดำเนินงานให้กับหน่วยงานภาครัฐและองค์กรภาคการเงินในประเทศไทย",
     },
     {
-      en: "Network & SDN architect with deep Cisco, Palo Alto, and Fortinet experience — translating vendor capability into outcomes that map to NIST and ISO 27001.",
-      th: "สถาปนิกเครือข่ายและ SDN ที่มีประสบการณ์ลึกกับ Cisco, Palo Alto และ Fortinet — แปลงความสามารถของผลิตภัณฑ์ให้กลายเป็นผลลัพธ์ที่สอดคล้องกับ NIST และ ISO 27001",
+      en: "Deep expertise spanning SIEM, SOAR, SOC-as-a-Service, SDN architecture, and enterprise security — bridging technical delivery with business strategy and stakeholder alignment.",
+      th: "ความเชี่ยวชาญเชิงลึกครอบคลุม SIEM, SOAR, SOC-as-a-Service, สถาปัตยกรรม SDN และ Enterprise Security — เชื่อมโยงการส่งมอบเทคนิคเข้ากับกลยุทธ์ธุรกิจและการประสานงานกับผู้มีส่วนเกี่ยวข้อง",
     },
     {
-      en: "MBA candidate at NIDA in Finance & MIS, exploring how applied AI shortens the loop between signal and decision for security and personal finance alike.",
-      th: "กำลังศึกษาปริญญาโท MBA ที่ NIDA สาขาการเงินและระบบสารสนเทศเพื่อการจัดการ — ค้นคว้าเรื่อง AI ที่ช่วยย่นเวลาจากสัญญาณสู่การตัดสินใจ ทั้งในงานความปลอดภัยและการเงินส่วนบุคคล",
+      en: "MBA graduate from NIDA in Finance & MIS, passionate about business transformation, strategic technology initiatives, and applied AI to shorten the loop between insight and decision.",
+      th: "สำเร็จการศึกษา MBA จาก NIDA สาขาการเงินและ MIS มีความสนใจในด้าน Business Transformation กลยุทธ์เทคโนโลยี และ AI เพื่อย่นระยะเวลาจาก Insight สู่การตัดสินใจ",
     },
   ],
   experience: [
@@ -88,16 +86,24 @@ export const profile = {
       period: { en: "Apr 2024 — Present", th: "เม.ย. 2024 — ปัจจุบัน" },
       bullets: [
         {
-          en: "Lead cybersecurity project coordination across SIEM, SOAR, and SOC-as-a-Service engagements with strategic partners.",
-          th: "นำการประสานงานโครงการด้านความมั่นคงปลอดภัยไซเบอร์ ครอบคลุม SIEM, SOAR และ SOC-as-a-Service ร่วมกับพันธมิตรเชิงกลยุทธ์",
+          en: "Led cybersecurity transformation initiatives for enterprise and government-sector clients by coordinating stakeholders, partners, and technical teams to deliver strategic security solutions, including SIEM, SOAR, and SOC-as-a-Service.",
+          th: "นำโครงการด้าน Cybersecurity Transformation สำหรับองค์กรภาครัฐและองค์กรระดับ Enterprise โดยประสานงานร่วมกับผู้มีส่วนเกี่ยวข้อง พันธมิตร และทีมเทคนิค เพื่อส่งมอบโซลูชันด้านความมั่นคงปลอดภัย เช่น SIEM, SOAR และ SOC-as-a-Service",
         },
         {
-          en: "Advise clients on best-practice compliance with NIST, ISO 27001, and Thai NCSA regulatory guidance.",
-          th: "ให้คำปรึกษาด้าน Best Practice ตามมาตรฐาน NIST, ISO 27001 และข้อกำหนดของ สกมช. แก่ลูกค้า",
+          en: "Advised clients on cybersecurity governance, risk management, and compliance alignment based on NIST, ISO 27001, and NCSA frameworks to strengthen organizational security posture and operational resilience.",
+          th: "ให้คำปรึกษาด้าน Cybersecurity Governance, Risk Management และ Compliance ตามมาตรฐาน NIST, ISO 27001 และแนวทางของ NCSA เพื่อเสริมสร้าง Security Posture และ Operational Resilience ขององค์กร",
         },
         {
-          en: "Design SOC and SOC-as-a-Service workflow processes that ensure high-quality MSSP delivery.",
-          th: "ออกแบบกระบวนการทำงานของ SOC และ SOC-as-a-Service เพื่อยกระดับคุณภาพบริการ MSSP",
+          en: "Designed and optimized SOC operational workflows and service processes, improving incident response coordination and enhancing managed security service quality.",
+          th: "ออกแบบและปรับปรุงกระบวนการดำเนินงานด้าน SOC และ Security Services เพื่อเพิ่มประสิทธิภาพในการตอบสนองต่อ Incident และยกระดับคุณภาพบริการด้าน Managed Security Services",
+        },
+        {
+          en: "Collaborated with enterprise stakeholders to align cybersecurity initiatives with organizational objectives, operational requirements, and long-term technology strategies.",
+          th: "ประสานงานร่วมกับผู้บริหารและหน่วยงานต่าง ๆ เพื่อให้โครงการด้าน Cybersecurity สอดคล้องกับเป้าหมายองค์กร กระบวนการดำเนินงาน และกลยุทธ์ด้านเทคโนโลยีระยะยาว",
+        },
+        {
+          en: "Supported strategic discussions and solution planning for digital infrastructure modernization and cyber resilience initiatives.",
+          th: "สนับสนุนการวางแผนเชิงกลยุทธ์และการออกแบบแนวทางด้าน Digital Infrastructure Transformation และ Cyber Resilience Initiatives",
         },
       ],
     },
@@ -113,16 +119,24 @@ export const profile = {
       period: { en: "Apr 2019 — Apr 2024", th: "เม.ย. 2019 — เม.ย. 2024" },
       bullets: [
         {
-          en: "Designed and rolled out enhancements to Software-Defined Networks for Thai government enterprises.",
-          th: "ออกแบบและขยายระบบ Software-Defined Network ให้กับองค์กรภาครัฐของไทย",
+          en: "Managed enterprise network and cybersecurity projects for major government and public-sector organizations, supporting digital transformation and infrastructure modernization initiatives.",
+          th: "บริหารและดำเนินโครงการด้าน Enterprise Network และ Cybersecurity สำหรับหน่วยงานภาครัฐและองค์กรขนาดใหญ่ เพื่อสนับสนุน Digital Transformation และการพัฒนาโครงสร้างพื้นฐานด้านเทคโนโลยี",
         },
         {
-          en: "Led project-based deployment and maintenance of Cisco SD-Access and Cisco Firepower stacks.",
-          th: "นำการติดตั้งและบำรุงรักษาเทคโนโลยี Cisco SD-Access และ Cisco Firepower ในโครงการต่าง ๆ",
+          en: "Led implementation and enhancement of Software Defined Network (SDN) and enterprise security solutions to improve scalability, operational efficiency, and system resilience.",
+          th: "นำการพัฒนาและปรับปรุงระบบ Software Defined Network (SDN) และ Enterprise Security Solutions เพื่อเพิ่มประสิทธิภาพ ความยืดหยุ่น และเสถียรภาพของระบบองค์กร",
         },
         {
-          en: "Provided network-security expertise across Palo Alto, Fortinet, and Palo Alto Cortex XDR endpoint solutions.",
-          th: "ให้ความเชี่ยวชาญด้านความปลอดภัยเครือข่าย ครอบคลุม Palo Alto, Fortinet และ Cortex XDR สำหรับปลายทาง",
+          en: "Coordinated with cross-functional stakeholders, technology partners, and client management teams to deliver complex technology projects aligned with business and operational goals.",
+          th: "ประสานงานกับหน่วยงานภายใน พันธมิตรทางเทคโนโลยี และผู้บริหารโครงการ เพื่อส่งมอบโครงการเทคโนโลยีที่สอดคล้องกับเป้าหมายทางธุรกิจและการดำเนินงาน",
+        },
+        {
+          en: "Provided strategic technical consultation for enterprise security architecture, network segmentation, endpoint protection, and infrastructure risk mitigation.",
+          th: "ให้คำปรึกษาด้าน Enterprise Security Architecture, Network Segmentation, Endpoint Protection และ Infrastructure Risk Mitigation สำหรับองค์กรระดับ Enterprise",
+        },
+        {
+          en: "Contributed to large-scale technology initiatives for organizations including DGA, NSTDA, Ministry of Finance, and other national agencies.",
+          th: "มีส่วนร่วมในโครงการด้านเทคโนโลยีระดับประเทศร่วมกับหน่วยงาน เช่น DGA, NSTDA, กระทรวงการคลัง และหน่วยงานภาครัฐอื่น ๆ",
         },
       ],
     },
@@ -135,12 +149,16 @@ export const profile = {
       period: { en: "Oct 2016 — Apr 2019", th: "ต.ค. 2016 — เม.ย. 2019" },
       bullets: [
         {
-          en: "Implemented core network and security infrastructure on-site for enterprise clients.",
-          th: "ติดตั้งโครงสร้างเครือข่ายหลักและระบบความปลอดภัยให้ลูกค้าองค์กรในสถานที่จริง",
+          en: "Supported implementation and maintenance of enterprise network and security infrastructure for government-sector clients.",
+          th: "สนับสนุนการติดตั้งและดูแลระบบ Enterprise Network และ Security Infrastructure สำหรับหน่วยงานภาครัฐ",
         },
         {
-          en: "Provided SLA-covered maintenance and on-call technical support, reducing system failure rates.",
-          th: "ให้บริการบำรุงรักษาตาม SLA และตอบสนองทางเทคนิคแบบ On-call ลดอัตราความล้มเหลวของระบบ",
+          en: "Managed SLA-based support services to ensure operational continuity and service reliability.",
+          th: "ดูแลการให้บริการตาม SLA เพื่อรักษาความต่อเนื่องในการดำเนินงานและเสถียรภาพของบริการ",
+        },
+        {
+          en: "Provided technical troubleshooting and infrastructure support that contributed to improved system stability and reduced operational disruptions.",
+          th: "สนับสนุนการวิเคราะห์และแก้ไขปัญหาด้านเทคนิค ซึ่งช่วยลดผลกระทบต่อระบบและเพิ่มเสถียรภาพในการดำเนินงานขององค์กร",
         },
       ],
     },
@@ -169,7 +187,7 @@ export const profile = {
       notes: [
         {
           en: "Software-defined networking and IT security research.",
-          th: "วิจัยด้านเครือข่ายที่กำหนดด้วยซอฟต์แวร์และความปลอดภัยของไอที",
+          th: "วิจัยด้านเครือข่ายที่กำหนดด้วยซอฟต์แวร์และความปลอดภัยของ IT",
         },
         {
           en: 'Published "A Security Analysis of a Hybrid Mechanism to Defend DDoS Attacks" — iEECON 2016.',
@@ -203,6 +221,7 @@ export const profile = {
     "PMI-ACP",
     "SAL1",
     "CompTIA CySA+",
+    "Investment Consultant (IC) License",
     "AI Solutions on Cisco Infrastructure Essentials",
   ],
   awards: [
@@ -210,30 +229,37 @@ export const profile = {
       en: "Great Employee of the Year — AIT (2024)",
       th: "พนักงานดีเด่นแห่งปี — AIT (2024)",
     },
-    { en: "CSAI Development Team", th: "ทีมพัฒนาของ CSAI" },
     { en: "AI Literacy Instructor", th: "ผู้สอนความรู้พื้นฐานด้าน AI" },
+    { en: "CSAI Development Team Member", th: "สมาชิกทีมพัฒนาของ CSAI" },
+    { en: "Welfare Committee Member", th: "กรรมการสวัสดิการ" },
+    { en: "ISO/IEC 27001 Internal Audit Team Member", th: "สมาชิกทีมตรวจสอบภายใน ISO/IEC 27001" },
   ],
   personality: {
-    group: { en: "Personality", th: "บุคลิก" },
+    group: { en: "Working Style", th: "วิธีการทำงาน" },
     items: [
-      { en: "Critical Thinking", th: "การคิดเชิงวิพากษ์" },
-      { en: "Problem Solving", th: "การแก้ปัญหา" },
-      { en: "Motivation & Self-Awareness", th: "แรงจูงใจและการรู้จักตนเอง" },
-      { en: "Agility", th: "ความคล่องตัว" },
-      { en: "Creative Thinking", th: "ความคิดสร้างสรรค์" },
-      { en: "Self-Taught", th: "เรียนรู้ด้วยตัวเอง" },
-      { en: "Leadership", th: "ภาวะผู้นำ" },
-      { en: "Empathy & Active Listening", th: "เห็นอกเห็นใจและรับฟังอย่างตั้งใจ" },
+      { en: "Strategic & Critical Thinking", th: "การคิดเชิงกลยุทธ์และเชิงวิเคราะห์" },
+      { en: "Problem Solving & Analytical Mindset", th: "การแก้ปัญหาและการคิดเชิงวิเคราะห์" },
+      { en: "Leadership & Stakeholder Coordination", th: "ภาวะผู้นำและการประสานงานกับผู้มีส่วนเกี่ยวข้อง" },
+      { en: "Communication & Active Listening", th: "การสื่อสารและการรับฟังอย่างมีประสิทธิภาพ" },
+      { en: "Adaptability & Learning Agility", th: "ความสามารถในการปรับตัวและการเรียนรู้อย่างต่อเนื่อง" },
+      { en: "Creative & Innovative Thinking", th: "ความคิดสร้างสรรค์และนวัตกรรม" },
+      { en: "Cross-Functional Collaboration", th: "การทำงานร่วมกันระหว่างหน่วยงาน" },
+      { en: "Resilience Under Pressure", th: "ความสามารถในการทำงานภายใต้แรงกดดัน" },
     ],
   } satisfies SkillGroup,
   hardSkills: [
-    { label: { en: "Network & Cybersecurity", th: "เครือข่ายและไซเบอร์ซีเคียวริตี้" }, pct: 95 },
-    { label: { en: "Project Management", th: "บริหารโครงการ" }, pct: 90 },
-    { label: { en: "SOC & MSSP", th: "SOC และ MSSP" }, pct: 85 },
-    { label: { en: "Standards & Compliance", th: "มาตรฐานและการกำกับ" }, pct: 70 },
-    { label: { en: "AI & Data Analytics", th: "AI และการวิเคราะห์ข้อมูล" }, pct: 70 },
-    { label: { en: "Cloud Security", th: "Cloud Security" }, pct: 60 },
-  ] as HardSkill[],
+    { en: "Technology Strategy & Planning", th: "การวางแผนและกลยุทธ์ด้านเทคโนโลยี" },
+    { en: "Cybersecurity Governance", th: "การกำกับดูแลด้านความมั่นคงปลอดภัยไซเบอร์" },
+    { en: "SOC & MSSP Operations", th: "การดำเนินงานด้าน SOC และ MSSP" },
+    { en: "Cloud & Network Security", th: "ความมั่นคงปลอดภัยด้าน Cloud และเครือข่าย" },
+    { en: "Enterprise Transformation", th: "การเปลี่ยนผ่านองค์กร" },
+    { en: "Cross-Functional Collaboration", th: "การทำงานร่วมกันระหว่างหน่วยงาน" },
+    { en: "IT Governance & Compliance", th: "การกำกับดูแลด้าน IT และการปฏิบัติตามข้อกำหนด" },
+    { en: "Digital Infrastructure (SDN)", th: "โครงสร้างพื้นฐานดิจิทัล (SDN)" },
+    { en: "AI & Technology Innovation", th: "นวัตกรรมด้าน AI และเทคโนโลยี" },
+    { en: "Risk & Compliance", th: "การบริหารความเสี่ยงและการปฏิบัติตามข้อกำหนด" },
+    { en: "Project & Program Management", th: "การบริหารโครงการ" },
+  ] as LStr[],
   projects: [
     {
       role: {
@@ -331,7 +357,7 @@ export const roadmap: RoadmapItem[] = [
         th: "ระบบเข้าใช้งานสำหรับลูกค้า รองรับหลายบัญชี",
       },
     ],
-    status: "Live",
+    status: "Prototyping",
     accent: "from-emerald-500/20 to-emerald-500/0 border-emerald-500/30",
     href: "/finance",
   },

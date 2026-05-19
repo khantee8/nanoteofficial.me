@@ -18,7 +18,7 @@ export function Hero({ lang }: { lang: Lang }) {
             </p>
             <h1 className="text-4xl md:text-6xl font-semibold tracking-tight leading-[1.05] max-w-3xl">
               {pick(profile.name, lang)}.
-              <span className="block text-[var(--muted)] mt-2">
+              <span className="block text-[var(--muted)] mt-2 text-2xl md:text-3xl font-medium">
                 {pick(profile.headline, lang)}.
               </span>
             </h1>
@@ -42,7 +42,7 @@ export function Hero({ lang }: { lang: Lang }) {
             </div>
           </div>
           <div className="mb-8 md:mb-0 md:pt-2">
-            <Avatar size={176} lang={lang} />
+            <Avatar size={220} lang={lang} />
           </div>
         </div>
       </div>

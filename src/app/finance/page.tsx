@@ -19,10 +19,10 @@ export default async function FinancePage() {
     <div data-feature="finance">
       <SubdomainHero item={item} lang={lang} />
 
-      {/* Live launch CTA */}
+      {/* Prototype phase CTA */}
       <section className="mx-auto max-w-5xl px-6 pb-10">
         <div
-          className="rounded-2xl border p-8 md:p-10 text-center"
+          className="rounded-2xl border border-dashed p-8 md:p-10 text-center"
           style={{
             borderColor: "color-mix(in oklab, var(--feature-color) 40%, var(--border))",
             background: "var(--feature-tint)",
@@ -37,24 +37,14 @@ export default async function FinancePage() {
               className="h-2 w-2 rounded-full animate-pulse"
               style={{ background: "var(--feature-color)" }}
             />
-            {t("subdomain.nowLive", lang)}
+            {t("subdomain.inPrototype", lang)}
           </p>
           <h3 className="mt-3 text-2xl font-semibold tracking-tight">
             {item.subdomain}
           </h3>
           <p className="mt-2 max-w-xl mx-auto text-[var(--muted)] text-sm leading-relaxed">
-            {t("subdomain.liveDescription", lang)}
+            {t("subdomain.prototypeDescription", lang)}
           </p>
-          <a
-            href={`https://${item.subdomain}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-6 inline-flex items-center gap-2 rounded-lg px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-            style={{ background: "var(--feature-color)" }}
-          >
-            {t("subdomain.launchApp", lang)}
-            <span aria-hidden>→</span>
-          </a>
         </div>
       </section>
 
