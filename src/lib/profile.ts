@@ -357,7 +357,7 @@ export const roadmap: RoadmapItem[] = [
         th: "ระบบเข้าใช้งานสำหรับลูกค้า รองรับหลายบัญชี",
       },
     ],
-    status: "Prototyping",
+    status: "Live",
     accent: "from-emerald-500/20 to-emerald-500/0 border-emerald-500/30",
     href: "/finance",
   },
