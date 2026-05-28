@@ -19,6 +19,11 @@ type UiKey =
   | "nav.education"
   | "nav.certs"
   | "nav.projects"
+  | "nav.company"
+  | "section.company.eyebrow"
+  | "section.company.title"
+  | "section.company.description"
+  | "section.company.cta"
   | "cta.hire"
   | "cta.roadmap"
   | "cta.contact"
@@ -102,6 +107,14 @@ const dict: Record<UiKey, Record<Lang, string>> = {
   "nav.education": { en: "Education", th: "การศึกษา" },
   "nav.certs": { en: "Certifications", th: "ใบรับรอง" },
   "nav.projects": { en: "Projects", th: "โปรเจกต์" },
+  "nav.company": { en: "Company", th: "บริษัท" },
+  "section.company.eyebrow": { en: "NaNote Corp", th: "NaNote Corp" },
+  "section.company.title": { en: "Meet the team.", th: "พบกับทีมงาน" },
+  "section.company.description": {
+    en: "NaNote Corp is a digital company powered by 5 AI department heads — CEO, Marketing, R&D, Operations, and Finance — managing real operations around the clock.",
+    th: "NaNote Corp คือบริษัทดิจิทัลที่ขับเคลื่อนด้วยหัวหน้าแผนก AI 5 ตำแหน่ง — CEO, Marketing, R&D, Operations และ Finance — บริหารงานจริงตลอด 24 ชั่วโมง",
+  },
+  "section.company.cta": { en: "Visit NaNote Corp →", th: "เยี่ยมชม NaNote Corp →" },
   "cta.hire": { en: "Say hello", th: "ทักทาย" },
   "cta.roadmap": { en: "See the roadmap", th: "ดูโรดแมป" },
   "cta.contact": { en: "Get in touch", th: "ติดต่อผม" },
