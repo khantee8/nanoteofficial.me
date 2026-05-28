@@ -65,6 +65,6 @@ CSP uses `'unsafe-inline'` on both `script-src` and `style-src`. `script-src` re
 
 - `/kb` is intentionally excluded from `sitemap.ts` and blocked in `robots.ts` (private page).
 - The `postcss` package is overridden to `>=8.5.10` in `package.json` to resolve a known advisory — do not remove the override.
-- The scroll-spy IntersectionObserver in `HeaderNav.tsx` only watches sections that exist on the homepage (`about`, `experience`, `projects`, `roadmap`, `contact`) — it has no effect on subdomain pages.
+- The scroll-spy IntersectionObserver in `HeaderNav.tsx` only watches sections that exist on the homepage (`about`, `company`, `experience`, `projects`, `roadmap`, `contact`) — it has no effect on subdomain pages.
 - Certification vendor logos live in `public/logos/` as SVGs. Real logos (Cisco, ISC², Fortinet, Palo Alto, CompTIA) were sourced from Simple Icons CDN; others (EC-Council, PMI, ServiceNow, SEC Thailand) are hand-crafted SVGs.
 - CV download files (`public/cv-en.pdf`, `public/cv-th.pdf`) are copied from `/project/Profile/` — update them there first, then copy to `public/`.
