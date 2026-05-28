@@ -7,7 +7,7 @@ export function Projects({ lang }: { lang: Lang }) {
       {profile.projects.map((p, i) => (
         <div
           key={i}
-          className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6"
+          className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6 card-hover"
         >
           <div className="flex flex-wrap items-baseline justify-between gap-3 mb-4">
             <h3 className="text-base font-semibold">{pick(p.role, lang)}</h3>
