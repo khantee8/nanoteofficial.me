@@ -27,7 +27,7 @@ export function Certifications({ lang }: { lang: Lang }) {
               key={c}
               data-reveal
               style={{ "--reveal-d": i * 60 } as React.CSSProperties}
-              className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 flex items-center gap-3 relative overflow-hidden group card-hover"
+              className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 flex items-center gap-3 relative overflow-hidden group transition-all duration-200 hover:scale-[1.03] hover:border-[var(--accent)] hover:shadow-[0_0_16px_-4px_var(--accent)]"
             >
               <div
                 aria-hidden
