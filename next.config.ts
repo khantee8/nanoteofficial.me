@@ -18,6 +18,7 @@ const securityHeaders = [
       "img-src 'self' data:",
       "font-src 'self' https://fonts.gstatic.com",
       "connect-src 'self' https://api.resend.com",
+      "frame-src https://company.nanoteofficial.me",
       "frame-ancestors 'none'",
     ].join("; "),
   },
