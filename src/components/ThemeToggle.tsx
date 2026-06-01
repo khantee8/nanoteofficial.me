@@ -33,7 +33,9 @@ export function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <div className="w-8 h-8 rounded-full border border-[var(--border)] bg-[var(--background)]" />
+      <div className="inline-flex h-11 w-11 items-center justify-center">
+        <div className="w-8 h-8 rounded-full border border-[var(--border)] bg-[var(--background)]" />
+      </div>
     );
   }
 
@@ -42,8 +44,9 @@ export function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-      className="inline-flex items-center justify-center w-8 h-8 rounded-full border border-[var(--border)] bg-[var(--background)] text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
+      className="group inline-flex h-11 w-11 items-center justify-center rounded-full text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
     >
+      <span className="inline-flex items-center justify-center w-8 h-8 rounded-full border border-[var(--border)] bg-[var(--background)] transition-colors group-hover:border-[var(--brand-accent)]">
       {theme === "dark" ? (
         <svg
           width="16"
@@ -79,6 +82,7 @@ export function ThemeToggle() {
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
         </svg>
       )}
+      </span>
     </button>
   );
 }
