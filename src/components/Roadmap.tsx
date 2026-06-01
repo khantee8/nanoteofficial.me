@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { roadmap, pick, type RoadmapItem } from "@/lib/profile";
 import { t, type Lang } from "@/lib/i18n";
+import { ArrowRight } from "@/components/icons";
 
 const statusStyles: Record<RoadmapItem["status"], string> = {
   Planned:
@@ -74,12 +75,7 @@ export function Roadmap({ lang }: { lang: Lang }) {
             style={{ color: "var(--feature-color-strong)" }}
           >
             {t("cta.preview", lang)}
-            <span
-              aria-hidden
-              className="transition-transform group-hover:translate-x-0.5"
-            >
-              →
-            </span>
+            <ArrowRight className="transition-transform group-hover:translate-x-0.5" />
           </div>
         </Link>
       ))}

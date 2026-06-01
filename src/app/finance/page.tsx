@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { roadmap, pick } from "@/lib/profile";
 import { getLang, t } from "@/lib/i18n";
 import { SubdomainHero, FeatureGrid } from "@/components/SubdomainHero";
+import { ArrowRight } from "@/components/icons";
 
 const item = roadmap.find((r) => r.key === "finance")!;
 
@@ -49,11 +50,11 @@ export default async function FinancePage() {
             href={`https://${item.subdomain}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-6 inline-flex items-center gap-2 rounded-lg px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+            className="group mt-6 inline-flex items-center gap-2 rounded-lg px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
             style={{ background: "var(--feature-color)" }}
           >
             {t("subdomain.launchApp", lang)}
-            <span aria-hidden>→</span>
+            <ArrowRight className="transition-transform group-hover:translate-x-0.5" />
           </a>
         </div>
       </section>

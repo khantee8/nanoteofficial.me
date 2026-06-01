@@ -32,7 +32,7 @@ export function LangToggle({ current }: { current: Lang }) {
             onClick={() => choose(l)}
             disabled={pending}
             aria-pressed={active}
-            className={`rounded-full px-2.5 py-1 transition-colors ${
+            className={`rounded-full px-3 py-1.5 transition-colors ${
               active
                 ? "bg-[var(--foreground)] text-[var(--background)]"
                 : "text-[var(--muted)] hover:text-[var(--foreground)]"

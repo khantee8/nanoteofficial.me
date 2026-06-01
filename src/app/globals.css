@@ -232,9 +232,13 @@ input:focus-visible {
   transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
 }
 .card-hover:hover {
-  transform: translateY(-2px);
   box-shadow: 0 6px 24px color-mix(in oklab, var(--feature-color, var(--accent)) 12%, transparent);
   border-color: color-mix(in oklab, var(--feature-color, var(--accent)) 35%, var(--border));
+}
+@media (prefers-reduced-motion: no-preference) {
+  .card-hover:hover {
+    transform: translateY(-2px);
+  }
 }
 
 @keyframes reveal-fade-up {

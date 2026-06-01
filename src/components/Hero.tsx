@@ -2,10 +2,12 @@ import Link from "next/link";
 import { profile, pick } from "@/lib/profile";
 import { t, type Lang } from "@/lib/i18n";
 import { Avatar } from "@/components/Avatar";
+import { ArrowRight } from "@/components/icons";
 
 export function Hero({ lang }: { lang: Lang }) {
   return (
     <section className="relative overflow-hidden">
+      <div aria-hidden className="absolute inset-0 feature-glow" />
       <div aria-hidden className="absolute inset-0 bg-grid opacity-[0.35]" />
       <div className="relative mx-auto max-w-6xl px-6 pt-20 pb-20 md:pt-28 md:pb-28">
         <div className="flex flex-col-reverse md:flex-row md:items-start md:gap-12 lg:gap-16">
@@ -43,10 +45,10 @@ export function Hero({ lang }: { lang: Lang }) {
             >
               <Link
                 href="/#roadmap"
-                className="inline-flex items-center gap-2 rounded-full bg-[var(--brand-accent)] text-white px-5 py-2.5 text-sm font-semibold shadow-[0_2px_10px_color-mix(in_oklab,var(--brand-accent)_30%,transparent)] hover:brightness-110 transition-all"
+                className="group inline-flex items-center gap-2 rounded-full bg-[var(--brand-accent)] text-white px-5 py-2.5 text-sm font-semibold shadow-[0_2px_10px_color-mix(in_oklab,var(--brand-accent)_30%,transparent)] hover:brightness-110 transition-all"
               >
                 {t("cta.roadmap", lang)}
-                <span aria-hidden>→</span>
+                <ArrowRight className="transition-transform group-hover:translate-x-0.5" />
               </Link>
               <a
                 href={`mailto:${profile.email}`}

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { pick, type RoadmapItem } from "@/lib/profile";
 import { t, type Lang } from "@/lib/i18n";
+import { ArrowLeft } from "@/components/icons";
 
 export function SubdomainHero({
   item,
@@ -16,9 +17,10 @@ export function SubdomainHero({
       <div className="relative mx-auto max-w-5xl px-6 pt-20 pb-16 md:pt-28">
         <Link
           href="/"
-          className="inline-flex items-center gap-1.5 text-sm text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
+          className="group inline-flex items-center gap-1.5 text-sm text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
         >
-          <span aria-hidden>←</span> {t("cta.back", lang)}
+          <ArrowLeft className="transition-transform group-hover:-translate-x-0.5" />{" "}
+          {t("cta.back", lang)}
         </Link>
         <p
           className="mt-6 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.18em]"

@@ -133,8 +133,9 @@ export function HeaderNavTrigger() {
       aria-expanded={open}
       aria-controls="mobile-nav-sheet"
       onClick={() => setOpen(true)}
-      className="lg:hidden inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--foreground)] hover:border-[var(--brand-accent)] transition-colors"
+      className="group lg:hidden inline-flex h-11 w-11 items-center justify-center text-[var(--foreground)]"
     >
+      <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--surface)] transition-colors group-hover:border-[var(--brand-accent)]">
       <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden>
         <path
           d="M2 4h12M2 8h12M2 12h12"
@@ -143,6 +144,7 @@ export function HeaderNavTrigger() {
           strokeLinecap="round"
         />
       </svg>
+      </span>
     </button>
   );
 }
@@ -179,8 +181,9 @@ function MobileSheet() {
             type="button"
             aria-label={closeLabel}
             onClick={() => setOpen(false)}
-            className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[var(--border)] hover:border-[var(--brand-accent)] transition-colors"
+            className="group inline-flex h-11 w-11 items-center justify-center -mr-1.5"
           >
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[var(--border)] transition-colors group-hover:border-[var(--brand-accent)]">
             <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden>
               <path
                 d="M3 3l8 8M11 3l-8 8"
@@ -189,6 +192,7 @@ function MobileSheet() {
                 strokeLinecap="round"
               />
             </svg>
+            </span>
           </button>
         </div>
         <nav className="flex-1 overflow-y-auto px-5 py-6">
