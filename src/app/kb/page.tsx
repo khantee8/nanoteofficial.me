@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { roadmap, pick } from "@/lib/profile";
 import { getLang, t } from "@/lib/i18n";
 import { SubdomainHero, FeatureGrid } from "@/components/SubdomainHero";
+import { ArrowRight } from "@/components/icons";
 
 const item = roadmap.find((r) => r.key === "kb")!;
 
@@ -19,52 +20,40 @@ export default async function KbPage() {
   return (
     <div data-feature="kb">
       <SubdomainHero item={item} lang={lang} />
-      <section className="mx-auto max-w-md px-6 pb-12">
+      {/* Live launch CTA */}
+      <section className="mx-auto max-w-5xl px-6 pb-10">
         <div
-          className="relative rounded-2xl border bg-[var(--surface)] p-7 overflow-hidden"
-          style={{ borderColor: "color-mix(in oklab, var(--feature-color) 25%, var(--border))" }}
+          className="rounded-2xl border p-8 md:p-10 text-center"
+          style={{
+            borderColor: "color-mix(in oklab, var(--feature-color) 40%, var(--border))",
+            background: "var(--feature-tint)",
+          }}
         >
-          <div
-            aria-hidden
-            className="absolute inset-x-0 top-0 h-0.5"
-            style={{ background: "var(--feature-color)" }}
-          />
           <p
-            className="font-mono text-xs uppercase tracking-[0.18em]"
+            className="font-mono text-xs uppercase tracking-[0.18em] inline-flex items-center gap-2"
             style={{ color: "var(--feature-color-strong)" }}
           >
-            {t("kb.private", lang)}
+            <span
+              aria-hidden
+              className="h-2 w-2 rounded-full animate-pulse"
+              style={{ background: "var(--feature-color)" }}
+            />
+            {t("subdomain.nowLive", lang)}
           </p>
-          <h2 className="mt-2 text-2xl font-semibold tracking-tight">{t("kb.signin", lang)}</h2>
-          <p className="mt-2 text-sm text-[var(--muted)]">{t("kb.signinHint", lang)}</p>
-          <form className="mt-5 space-y-3" aria-label={t("kb.signin", lang)}>
-            <label className="block text-sm">
-              <span className="text-[var(--muted)]">{t("kb.email", lang)}</span>
-              <input
-                type="email"
-                disabled
-                placeholder="you@example.com"
-                className="mt-1 w-full rounded-lg border border-[var(--border)] bg-[var(--surface-2)] px-3 py-2 text-sm text-[var(--muted)] placeholder:text-[var(--muted-soft)] cursor-not-allowed"
-              />
-            </label>
-            <label className="block text-sm">
-              <span className="text-[var(--muted)]">{t("kb.password", lang)}</span>
-              <input
-                type="password"
-                disabled
-                placeholder="••••••••"
-                className="mt-1 w-full rounded-lg border border-[var(--border)] bg-[var(--surface-2)] px-3 py-2 text-sm text-[var(--muted)] placeholder:text-[var(--muted-soft)] cursor-not-allowed"
-              />
-            </label>
-            <button
-              type="button"
-              disabled
-              aria-disabled="true"
-              className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface-2)] text-[var(--muted)] px-4 py-2 text-sm font-medium cursor-not-allowed"
-            >
-              {t("kb.disabled", lang)}
-            </button>
-          </form>
+          <h3 className="mt-3 text-2xl font-semibold tracking-tight">{item.subdomain}</h3>
+          <p className="mt-2 max-w-xl mx-auto text-[var(--muted)] text-sm leading-relaxed">
+            {t("kb.liveDescription", lang)}
+          </p>
+          <a
+            href={`https://${item.subdomain}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group mt-6 inline-flex items-center gap-2 rounded-lg px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+            style={{ background: "var(--feature-color)" }}
+          >
+            {t("kb.launchApp", lang)}
+            <ArrowRight className="transition-transform group-hover:translate-x-0.5" />
+          </a>
         </div>
       </section>
       <FeatureGrid features={item.features} lang={lang} />

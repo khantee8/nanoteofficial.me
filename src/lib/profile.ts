@@ -413,7 +413,7 @@ export const roadmap: RoadmapItem[] = [
       },
       { en: "Search across the entire archive", th: "ค้นหาภายในคลังทั้งหมด" },
     ],
-    status: "Planned",
+    status: "Live",
     accent: "from-amber-500/20 to-amber-500/0 border-amber-500/30",
     href: "/kb",
   },

@@ -66,12 +66,6 @@ type UiKey =
   | "nav.menu"
   | "nav.close"
   | "cta.backToTop"
-  | "kb.private"
-  | "kb.signin"
-  | "kb.signinHint"
-  | "kb.email"
-  | "kb.password"
-  | "kb.disabled"
   | "subdomain.plannedFeatures"
   | "subdomain.preview"
   | "subdomain.comingTo"
@@ -91,6 +85,8 @@ type UiKey =
   | "subdomain.launchApp"
   | "subdomain.nowLive"
   | "subdomain.liveDescription"
+  | "kb.launchApp"
+  | "kb.liveDescription"
   | "subdomain.prototypeDescription"
   | "subdomain.inPrototype"
   | "contact.form.title"
@@ -175,18 +171,6 @@ const dict: Record<UiKey, Record<Lang, string>> = {
   "nav.menu": { en: "Menu", th: "เมนู" },
   "nav.close": { en: "Close menu", th: "ปิดเมนู" },
   "cta.backToTop": { en: "Back to top", th: "กลับขึ้นด้านบน" },
-  "kb.private": { en: "Private access", th: "การเข้าถึงเฉพาะเจ้าของ" },
-  "kb.signin": { en: "Sign in", th: "เข้าสู่ระบบ" },
-  "kb.signinHint": {
-    en: "This knowledge base is private. Auth is not yet wired up — this is a visual placeholder for the planned login form.",
-    th: "ฐานความรู้นี้เป็นแบบส่วนตัว ระบบยืนยันตัวตนยังไม่เปิดใช้งาน หน้านี้เป็นเพียงตัวอย่างของแบบฟอร์มเข้าสู่ระบบ",
-  },
-  "kb.email": { en: "Email", th: "อีเมล" },
-  "kb.password": { en: "Password", th: "รหัสผ่าน" },
-  "kb.disabled": {
-    en: "Sign in (disabled in preview)",
-    th: "เข้าสู่ระบบ (ปิดใช้ในโหมดพรีวิว)",
-  },
   "subdomain.plannedFeatures": { en: "Planned features", th: "ฟีเจอร์ที่วางแผนไว้" },
   "subdomain.preview": { en: "Preview", th: "ตัวอย่าง" },
   "subdomain.comingTo": { en: "Coming to", th: "กำลังจะมาที่" },
@@ -214,6 +198,11 @@ const dict: Record<UiKey, Record<Lang, string>> = {
   "subdomain.liveDescription": {
     en: "The full platform is deployed and ready. Advisor and client portals, portfolio analytics, Monte Carlo simulations, and the AI assistant are all live.",
     th: "แพลตฟอร์มเต็มรูปแบบถูกดีพลอยและพร้อมใช้งานแล้ว ทั้งพอร์ทัลที่ปรึกษา พอร์ทัลลูกค้า การวิเคราะห์พอร์ต การจำลอง Monte Carlo และผู้ช่วย AI",
+  },
+  "kb.launchApp": { en: "Open Knowledge Base", th: "เปิดฐานความรู้" },
+  "kb.liveDescription": {
+    en: "The knowledge base is deployed and live behind a private login — browse, search, tag, and organize the archive, with an executive dashboard up front.",
+    th: "ฐานความรู้ถูกดีพลอยและใช้งานจริงแล้วหลังระบบเข้าสู่ระบบส่วนตัว — เรียกดู ค้นหา ติดแท็ก และจัดระเบียบคลังความรู้ พร้อมแดชบอร์ดผู้บริหารด้านหน้า",
   },
   "subdomain.prototypeDescription": {
     en: "The platform is in active prototype phase — core features are being validated with early users. Portfolio analytics, risk evaluation, and the dashboard are under development.",
