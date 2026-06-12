@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 type Theme = "light" | "dark";
 
@@ -15,23 +15,31 @@ function resolve(): Theme {
     : "light";
 }
 
-export function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>("light");
-  const [mounted, setMounted] = useState(false);
+function subscribe(onChange: () => void) {
+  window.addEventListener("themechange", onChange);
+  window.addEventListener("storage", onChange);
+  return () => {
+    window.removeEventListener("themechange", onChange);
+    window.removeEventListener("storage", onChange);
+  };
+}
 
-  useEffect(() => {
-    setTheme(resolve());
-    setMounted(true);
-  }, []);
+export function ThemeToggle() {
+  // null during SSR/hydration → placeholder, then the real theme after mount
+  const theme = useSyncExternalStore<Theme | null>(
+    subscribe,
+    resolve,
+    () => null,
+  );
 
   const toggle = () => {
     const next: Theme = theme === "dark" ? "light" : "dark";
-    setTheme(next);
-    document.documentElement.classList.toggle("dark", next === "dark");
     localStorage.setItem("theme", next);
+    document.documentElement.classList.toggle("dark", next === "dark");
+    window.dispatchEvent(new Event("themechange"));
   };
 
-  if (!mounted) {
+  if (theme === null) {
     return (
       <div className="inline-flex h-11 w-11 items-center justify-center">
         <div className="w-8 h-8 rounded-full border border-[var(--border)] bg-[var(--background)]" />
