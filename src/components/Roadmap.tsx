@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { roadmap, pick, type RoadmapItem } from "@/lib/profile";
 import { t, type Lang } from "@/lib/i18n";
-import { ArrowRight } from "@/components/icons";
+import { ArrowRight, Check } from "@/components/icons";
 
 const statusStyles: Record<RoadmapItem["status"], string> = {
   Planned:
@@ -59,13 +59,11 @@ export function Roadmap({ lang }: { lang: Lang }) {
           <ul className="relative mt-5 grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-sm text-[var(--muted)]">
             {item.features.map((f, i) => (
               <li key={i} className="flex gap-2">
-                <span
-                  aria-hidden
-                  className="font-bold"
+                <Check
+                  className="mt-0.5 shrink-0"
+                  size={14}
                   style={{ color: "var(--feature-color)" }}
-                >
-                  •
-                </span>
+                />
                 <span>{pick(f, lang)}</span>
               </li>
             ))}

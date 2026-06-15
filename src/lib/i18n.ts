@@ -99,7 +99,7 @@ type UiKey =
 const dict: Record<UiKey, Record<Lang, string>> = {
   "nav.about": { en: "About", th: "เกี่ยวกับ" },
   "nav.experience": { en: "Experience", th: "ประสบการณ์" },
-  "nav.roadmap": { en: "Roadmap", th: "โรดแมป" },
+  "nav.roadmap": { en: "Builds", th: "ผลงาน" },
   "nav.contact": { en: "Contact", th: "ติดต่อ" },
   "nav.education": { en: "Education", th: "การศึกษา" },
   "nav.certs": { en: "Certifications", th: "ใบรับรอง" },
@@ -131,8 +131,8 @@ const dict: Record<UiKey, Record<Lang, string>> = {
     en: "I bridge technology strategy with hands-on delivery — aligning cybersecurity, enterprise transformation, and business objectives to create resilient organizations.",
     th: "ผมเชื่อมกลยุทธ์เทคโนโลยีเข้ากับการส่งมอบงานจริง — ประสานความมั่นคงปลอดภัยไซเบอร์ การเปลี่ยนผ่านองค์กร และเป้าหมายธุรกิจ เพื่อสร้างองค์กรที่แข็งแกร่ง",
   },
-  "section.roadmap.eyebrow": { en: "Roadmap", th: "โรดแมป" },
-  "section.roadmap.title": { en: "What I'm building.", th: "สิ่งที่กำลังสร้าง" },
+  "section.roadmap.eyebrow": { en: "Builds", th: "ผลงาน" },
+  "section.roadmap.title": { en: "Products I build.", th: "ผลิตภัณฑ์ที่ผมสร้าง" },
   "section.roadmap.description": {
     en: "Four projects, each with its own subdomain. The first two are the work I sell. The third I keep for myself. The fourth is for the part of me the others don't reach.",
     th: "สี่โปรเจกต์ แต่ละตัวมีซับโดเมนของตัวเอง สองตัวแรกเป็นงานที่ใช้ในวิชาชีพ ตัวที่สามไว้ใช้ส่วนตัว และตัวสุดท้ายเป็นพื้นที่สำหรับด้านที่อีกสามตัวเอื้อมไม่ถึง",

@@ -5,7 +5,11 @@
  * fonts and platforms. Always decorative here, so `aria-hidden` is fixed on.
  */
 
-type IconProps = { className?: string; size?: number };
+type IconProps = {
+  className?: string;
+  size?: number;
+  style?: React.CSSProperties;
+};
 
 export function ArrowRight({ className, size = 16 }: IconProps) {
   return (
@@ -22,6 +26,26 @@ export function ArrowRight({ className, size = 16 }: IconProps) {
       className={className}
     >
       <path d="M5 12h14M13 6l6 6-6 6" />
+    </svg>
+  );
+}
+
+export function Check({ className, size = 16, style }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+      className={className}
+      style={style}
+    >
+      <path d="M20 6 9 17l-5-5" />
     </svg>
   );
 }

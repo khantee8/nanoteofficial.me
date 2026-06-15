@@ -1,5 +1,6 @@
 import { profile, pick } from "@/lib/profile";
 import type { Lang } from "@/lib/i18n";
+import { Check } from "@/components/icons";
 
 export function Projects({ lang }: { lang: Lang }) {
   return (
@@ -21,7 +22,7 @@ export function Projects({ lang }: { lang: Lang }) {
                 key={j}
                 className="flex gap-2 text-sm text-[var(--muted)] leading-snug"
               >
-                <span aria-hidden className="text-[var(--accent)] mt-0.5">•</span>
+                <Check className="mt-0.5 shrink-0 text-[var(--accent)]" size={14} />
                 <span>{pick(c, lang)}</span>
               </li>
             ))}

@@ -21,6 +21,7 @@ export default async function HomePage() {
 
       <Section
         id="about"
+        band
         eyebrow={t("section.about.eyebrow", lang)}
         title={t("section.about.title", lang)}
         description={t("section.about.description", lang)}
@@ -44,7 +45,17 @@ export default async function HomePage() {
       </Section>
 
       <Section
+        id="roadmap"
+        eyebrow={t("section.roadmap.eyebrow", lang)}
+        title={t("section.roadmap.title", lang)}
+        description={t("section.roadmap.description", lang)}
+      >
+        <Roadmap lang={lang} />
+      </Section>
+
+      <Section
         id="experience"
+        band
         eyebrow={t("section.experience.eyebrow", lang)}
         title={t("section.experience.title", lang)}
       >
@@ -61,6 +72,7 @@ export default async function HomePage() {
 
       <Section
         id="education"
+        band
         eyebrow={t("section.education.eyebrow", lang)}
         title={t("section.education.title", lang)}
       >
@@ -77,6 +89,7 @@ export default async function HomePage() {
 
       <Section
         id="skills"
+        band
         eyebrow={t("section.skills.eyebrow", lang)}
         title={t("section.skills.title", lang)}
       >
@@ -92,16 +105,8 @@ export default async function HomePage() {
       </Section>
 
       <Section
-        id="roadmap"
-        eyebrow={t("section.roadmap.eyebrow", lang)}
-        title={t("section.roadmap.title", lang)}
-        description={t("section.roadmap.description", lang)}
-      >
-        <Roadmap lang={lang} />
-      </Section>
-
-      <Section
         id="contact"
+        band
         eyebrow={t("section.contact.eyebrow", lang)}
         title={t("section.contact.title", lang)}
       >
