@@ -25,6 +25,7 @@ type UiKey =
   | "section.company.description"
   | "section.company.cta"
   | "cta.hire"
+  | "cta.work"
   | "cta.roadmap"
   | "cta.contact"
   | "cta.email"
@@ -112,6 +113,7 @@ const dict: Record<UiKey, Record<Lang, string>> = {
   },
   "section.company.cta": { en: "Visit NaNote Corp →", th: "เยี่ยมชม NaNote Corp →" },
   "cta.hire": { en: "Say hello", th: "ทักทาย" },
+  "cta.work": { en: "View my work", th: "ดูผลงาน" },
   "cta.roadmap": { en: "See the roadmap", th: "ดูโรดแมป" },
   "cta.contact": { en: "Get in touch", th: "ติดต่อผม" },
   "cta.email": { en: "Email", th: "อีเมล" },
