@@ -2,6 +2,7 @@
 import { useState } from "react";
 import type { Task } from "@/lib/db/schema";
 import { btnSecondary } from "./ui";
+import { dueState } from "@/lib/plan/dates";
 
 function monthMatrix(year: number, month: number): (Date | null)[] {
   const first = new Date(year, month, 1);
@@ -52,16 +53,22 @@ export function CalendarView({ tasks }: { tasks: Task[] }) {
                   {c.getDate()}
                 </div>
                 <div className="space-y-0.5">
-                  {(byDay.get(key) ?? []).map((t) => (
-                    <div key={t.id} title={t.title}
-                      className="truncate rounded px-1.5 py-0.5 text-[10px] font-medium"
-                      style={{
-                        background: "color-mix(in srgb, var(--feature-color) 14%, transparent)",
-                        color: "var(--feature-color)",
-                      }}>
-                      {t.title}
-                    </div>
-                  ))}
+                  {(byDay.get(key) ?? []).map((t) => {
+                    const overdue = dueState(t) === "overdue";
+                    return (
+                      <div key={t.id} title={t.title}
+                        className="truncate rounded px-1.5 py-0.5 text-[10px] font-medium"
+                        style={overdue ? {
+                          background: "color-mix(in srgb, #f43f5e 16%, transparent)",
+                          color: "#e11d48",
+                        } : {
+                          background: "color-mix(in srgb, var(--feature-color) 14%, transparent)",
+                          color: "var(--feature-color)",
+                        }}>
+                        {t.title}
+                      </div>
+                    );
+                  })}
                 </div>
               </>}
             </div>

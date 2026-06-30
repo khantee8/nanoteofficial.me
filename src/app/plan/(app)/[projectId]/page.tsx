@@ -28,6 +28,8 @@ export default async function ProjectPage({
   const [tasks, counts, users] = await Promise.all([
     listTasks(projectId), statusCounts(projectId), listUsers(),
   ]);
+  // Signature changes on any add/edit/delete/move so client views reset to fresh server data.
+  const tasksKey = `${tasks.length}:${tasks.reduce((m, t) => Math.max(m, new Date(t.updatedAt).getTime()), 0)}`;
 
   return (
     <section className="space-y-6">
@@ -60,10 +62,10 @@ export default async function ProjectPage({
         )}
       </div>
 
-      {view === "kanban" ? <KanbanBoard projectId={projectId} tasks={tasks} />
+      {view === "kanban" ? <KanbanBoard key={tasksKey} projectId={projectId} tasks={tasks} users={users} />
         : view === "calendar" ? <CalendarView tasks={tasks} />
         : view === "burndown" ? <BurndownChart data={computeBurndown(tasks, project)} />
-        : <TableView projectId={projectId} tasks={tasks} users={users} />}
+        : <TableView key={tasksKey} tasks={tasks} users={users} />}
     </section>
   );
 }
