@@ -26,6 +26,11 @@ export function BurndownChart({ data }: { data: Burndown }) {
   const first = data.points[0].date;
   const last = data.points[n - 1].date;
 
+  const todayIso = new Date().toISOString().slice(0, 10);
+  let todayIdx = -1;
+  for (let i = 0; i < n; i++) if (data.points[i].date <= todayIso) todayIdx = i;
+  const grid = [0.25, 0.5, 0.75, 1];
+
   return (
     <figure className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5 shadow-sm">
       <figcaption className="mb-3 flex items-center justify-between text-sm">
@@ -43,9 +48,20 @@ export function BurndownChart({ data }: { data: Burndown }) {
       </figcaption>
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img"
         aria-label={`Burndown chart, ${maxY} ${unitLabel} at start trending to zero`}>
+        {/* gridlines */}
+        {grid.map((g) => (
+          <line key={g} x1={PAD.l} x2={W - PAD.r} y1={y(maxY * g)} y2={y(maxY * g)} className="stroke-current opacity-[0.07]" />
+        ))}
         {/* axes */}
         <line x1={PAD.l} y1={PAD.t} x2={PAD.l} y2={H - PAD.b} className="stroke-current opacity-20" />
         <line x1={PAD.l} y1={H - PAD.b} x2={W - PAD.r} y2={H - PAD.b} className="stroke-current opacity-20" />
+        {/* today marker */}
+        {todayIdx > 0 && todayIdx < n - 1 && (
+          <>
+            <line x1={x(todayIdx)} x2={x(todayIdx)} y1={PAD.t} y2={H - PAD.b} className="stroke-current opacity-25" strokeDasharray="2 3" />
+            <text x={x(todayIdx)} y={PAD.t - 4} textAnchor="middle" className="fill-current text-[9px] opacity-50">today</text>
+          </>
+        )}
         {/* y labels */}
         <text x={PAD.l - 6} y={PAD.t + 4} textAnchor="end" className="fill-current text-[10px] opacity-50">{round(maxY)}</text>
         <text x={PAD.l - 6} y={H - PAD.b} textAnchor="end" className="fill-current text-[10px] opacity-50">0</text>
@@ -57,6 +73,10 @@ export function BurndownChart({ data }: { data: Burndown }) {
         {/* actual remaining */}
         <polyline points={line("remaining")} fill="none" strokeWidth={2}
           style={{ stroke: "var(--feature-color)" }} strokeLinejoin="round" strokeLinecap="round" />
+        {/* point markers (skip when dense) */}
+        {n <= 24 && data.points.map((p, i) => (
+          <circle key={i} cx={x(i)} cy={y(p.remaining)} r={2.5} style={{ fill: "var(--feature-color)" }} />
+        ))}
       </svg>
     </figure>
   );

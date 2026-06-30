@@ -3,6 +3,7 @@ import { useState } from "react";
 import { PROJECT_TYPES } from "@/lib/plan/types";
 import type { Project } from "@/lib/db/schema";
 import { btnPrimary, btnGhost, inputCls, PlusIcon } from "./ui";
+import { useToast } from "./Toaster";
 
 export function ProjectForm({
   action, project, defaultOpen = false, label = "New project",
@@ -13,14 +14,28 @@ export function ProjectForm({
   label?: string;
 }) {
   const [open, setOpen] = useState(defaultOpen);
+  const [pending, setPending] = useState(false);
+  const toast = useToast();
   if (!open) return (
     <button onClick={() => setOpen(true)}
       className="flex min-h-32 items-center justify-center gap-1.5 rounded-xl border border-dashed border-[var(--border)] text-sm font-medium text-[var(--muted)] transition hover:border-[var(--feature-color)] hover:bg-[var(--surface)] hover:text-[var(--feature-color)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--feature-color)]">
       <PlusIcon /> {label}
     </button>
   );
+  const onSubmit = async (fd: FormData) => {
+    setPending(true);
+    try {
+      await action(fd);
+      toast(project ? "Project updated" : "Project created", { tone: "success" });
+      setOpen(false);
+    } catch (e) {
+      toast(e instanceof Error ? e.message : "Couldn’t save project", { tone: "error" });
+    } finally {
+      setPending(false);
+    }
+  };
   return (
-    <form action={async (fd) => { await action(fd); setOpen(false); }}
+    <form action={onSubmit}
       className="flex flex-col gap-3 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm">
       <input name="name" required defaultValue={project?.name ?? ""} placeholder="Project name" className={inputCls} autoFocus />
       <div className="grid grid-cols-2 gap-3">
@@ -40,7 +55,7 @@ export function ProjectForm({
         <input name="color" type="color" defaultValue={project?.color ?? "#3B4FBF"} className="h-8 w-12 cursor-pointer rounded border border-[var(--border)] bg-transparent" />
       </label>
       <div className="flex gap-2">
-        <button type="submit" className={btnPrimary}>Save</button>
+        <button type="submit" className={btnPrimary} disabled={pending}>{pending ? "Saving…" : "Save"}</button>
         <button type="button" onClick={() => setOpen(false)} className={btnGhost}>Cancel</button>
       </div>
     </form>
