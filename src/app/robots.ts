@@ -3,7 +3,7 @@ import type { MetadataRoute } from "next";
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
-      { userAgent: "*", allow: "/", disallow: ["/kb", "/kb/"] },
+      { userAgent: "*", allow: "/", disallow: ["/kb", "/kb/", "/plan", "/plan/"] },
     ],
     sitemap: "https://nanoteofficial.me/sitemap.xml",
     host: "https://nanoteofficial.me",
