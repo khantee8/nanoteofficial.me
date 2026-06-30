@@ -6,12 +6,14 @@ import {
   type DragEndEvent, type DragStartEvent,
 } from "@dnd-kit/core";
 import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { TASK_STATUSES, STATUS_LABELS } from "@/lib/plan/types";
+import { TASK_STATUSES } from "@/lib/plan/types";
 import type { PlanUser } from "@/lib/plan/types";
 import { moveTask, createTask, deleteTask } from "@/lib/plan/actions";
+import { statusKey } from "@/lib/plan/i18n";
 import { KanbanCard, CardVisual } from "./KanbanCard";
 import { TaskDrawer } from "./TaskDrawer";
 import { useToast } from "./Toaster";
+import { usePlanT } from "./LangContext";
 import { PlusIcon } from "./ui";
 import type { Task } from "@/lib/db/schema";
 
@@ -34,25 +36,26 @@ function DroppableColumn({ id, children }: { id: string; children: React.ReactNo
 function QuickAdd({ projectId, status, onError }: { projectId: string; status: Task["status"]; onError: () => void }) {
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
+  const { t } = usePlanT();
   if (!open) return (
     <button onClick={() => setOpen(true)}
       className="mt-1 inline-flex items-center gap-1 px-1 text-xs text-[var(--muted-soft)] transition hover:text-[var(--feature-color)]">
-      <PlusIcon className="h-3.5 w-3.5" /> Add
+      <PlusIcon className="h-3.5 w-3.5" /> {t("kanban.add")}
     </button>
   );
   return (
     <form
       action={async () => {
-        const t = title.trim();
-        if (!t) { setOpen(false); return; }
-        const fd = new FormData(); fd.set("title", t); fd.set("status", status);
+        const v = title.trim();
+        if (!v) { setOpen(false); return; }
+        const fd = new FormData(); fd.set("title", v); fd.set("status", status);
         setTitle(""); setOpen(false);
         try { await createTask(projectId, fd); } catch { onError(); }
       }}
       className="mt-1">
       <input autoFocus value={title} onChange={(e) => setTitle(e.target.value)}
         onBlur={(e) => { if (!e.currentTarget.form) return; e.currentTarget.form.requestSubmit(); }}
-        placeholder="Task title…"
+        placeholder={t("kanban.quick")}
         className="w-full rounded-md border border-[var(--border)] bg-[var(--background)] px-2 py-1.5 text-sm outline-none focus:border-[var(--feature-color)]" />
     </form>
   );
@@ -64,6 +67,7 @@ export function KanbanBoard({ projectId, tasks, users = [] }: { projectId: strin
   const [selected, setSelected] = useState<Task | null>(null);
   const pending = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
   const toast = useToast();
+  const { t } = usePlanT();
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
@@ -87,20 +91,20 @@ export function KanbanBoard({ projectId, tasks, users = [] }: { projectId: strin
     const order = byStatus(target).filter((t) => t.id !== id).length;
     const snapshot = items;
     setItems((p) => p.map((t) => (t.id === id ? { ...t, status: target, order } : t)));
-    moveTask(id, target, order).catch(() => { setItems(snapshot); toast("Couldn’t move task", { tone: "error" }); });
+    moveTask(id, target, order).catch(() => { setItems(snapshot); toast(t("toast.taskMoveErr"), { tone: "error" }); });
   }
 
   const onDelete = (task: Task) => {
     setItems((l) => l.filter((t) => t.id !== task.id));
     const timer = setTimeout(async () => {
       pending.current.delete(task.id);
-      try { await deleteTask(task.id); } catch { toast("Couldn’t delete task", { tone: "error" }); setItems((l) => [...l, task]); }
+      try { await deleteTask(task.id); } catch { toast(t("toast.taskDeleteErr"), { tone: "error" }); setItems((l) => [...l, task]); }
     }, 6000);
     pending.current.set(task.id, timer);
-    toast("Task deleted", {
+    toast(t("toast.taskDeleted"), {
       tone: "info",
       action: {
-        label: "Undo",
+        label: t("toast.undo"),
         onClick: () => {
           const t = pending.current.get(task.id);
           if (!t) return; // already committed
@@ -120,7 +124,7 @@ export function KanbanBoard({ projectId, tasks, users = [] }: { projectId: strin
             <div key={s} className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-2.5">
               <h3 className="mb-2 flex items-center gap-2 px-1 text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">
                 <span className={`h-1.5 w-1.5 rounded-full ${COL_DOT[s]}`} />
-                {STATUS_LABELS[s]}
+                {t(statusKey(s))}
                 <span className="ml-auto rounded-full bg-[var(--surface-2)] px-1.5 text-[10px] font-medium tabular-nums text-[var(--muted-soft)]">
                   {byStatus(s).length}
                 </span>
@@ -130,7 +134,7 @@ export function KanbanBoard({ projectId, tasks, users = [] }: { projectId: strin
                   {byStatus(s).map((t) => <KanbanCard key={t.id} task={t} onOpen={() => setSelected(t)} />)}
                 </DroppableColumn>
               </SortableContext>
-              <QuickAdd projectId={projectId} status={s} onError={() => toast("Couldn’t add task", { tone: "error" })} />
+              <QuickAdd projectId={projectId} status={s} onError={() => toast(t("toast.taskAddErr"), { tone: "error" })} />
             </div>
           ))}
         </div>

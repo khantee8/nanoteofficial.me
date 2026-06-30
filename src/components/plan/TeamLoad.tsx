@@ -1,14 +1,11 @@
 import { DEFAULT_CAPACITY_HOURS, userLabel } from "@/lib/plan/types";
 import type { TeamLoadRow } from "@/lib/plan/types";
+import type { Lang } from "@/lib/i18n";
+import { pt } from "@/lib/plan/i18n";
 
-export function TeamLoad({ rows }: { rows: TeamLoadRow[] }) {
+export function TeamLoad({ rows, lang }: { rows: TeamLoadRow[]; lang: Lang }) {
   if (rows.length === 0) {
-    return (
-      <p className="text-sm text-[var(--muted-soft)]">
-        No open tasks across active projects. Assign tasks (with hour estimates)
-        to see capacity vs. allocation here.
-      </p>
-    );
+    return <p className="text-sm text-[var(--muted-soft)]">{pt(lang, "tl.empty")}</p>;
   }
 
   const cap = DEFAULT_CAPACITY_HOURS;
@@ -16,21 +13,19 @@ export function TeamLoad({ rows }: { rows: TeamLoadRow[] }) {
 
   return (
     <div className="space-y-4">
-      <p className="text-xs text-[var(--muted-soft)]">
-        Open (non-done) work across active projects. Bars compare allocated hours
-        to an assumed {cap}h capacity per person.
-      </p>
+      <p className="text-xs text-[var(--muted-soft)]">{pt(lang, "tl.desc", { cap })}</p>
       {rows.map((r) => {
-        const label = r.assigneeId ? userLabel(r) : "Unassigned";
+        const label = r.assigneeId ? userLabel(r) : pt(lang, "tl.unassigned");
         const pct = Math.min(100, (r.openHours / maxHours) * 100);
         const over = r.openHours > cap && r.assigneeId != null;
+        const taskWord = lang === "en" && r.openCount === 1 ? "task" : pt(lang, "tl.tasks");
         return (
           <div key={r.assigneeId ?? "unassigned"} className="text-sm">
             <div className="mb-1.5 flex items-center justify-between">
               <span className={r.assigneeId ? "font-medium" : "italic text-[var(--muted-soft)]"}>{label}</span>
               <span className="text-xs text-[var(--muted-soft)]">
-                <span className="tabular-nums">{r.openHours > 0 ? `${round(r.openHours)}h` : "—"}</span> · {r.openCount} task{r.openCount === 1 ? "" : "s"}
-                {over && <span className="ml-1.5 font-medium text-rose-500">over capacity</span>}
+                <span className="tabular-nums">{r.openHours > 0 ? `${round(r.openHours)}h` : "—"}</span> · {r.openCount} {taskWord}
+                {over && <span className="ml-1.5 font-medium text-rose-500">{pt(lang, "tl.over")}</span>}
               </span>
             </div>
             <div className="h-2 w-full overflow-hidden rounded-full bg-[var(--surface-2)]">

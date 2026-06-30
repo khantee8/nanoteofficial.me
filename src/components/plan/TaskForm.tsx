@@ -1,19 +1,20 @@
 "use client";
 import { useState } from "react";
-import { TASK_STATUSES, STATUS_LABELS, userLabel } from "@/lib/plan/types";
+import { TASK_STATUSES, userLabel } from "@/lib/plan/types";
+import { statusKey } from "@/lib/plan/i18n";
 import type { PlanUser } from "@/lib/plan/types";
 import type { Task } from "@/lib/db/schema";
 import { btnPrimary, btnGhost, inputCls, PlusIcon } from "./ui";
 import { useToast } from "./Toaster";
+import { usePlanT } from "./LangContext";
 
 export function TaskForm({
-  projectId, task, action, users = [], label = "Add task", defaultOpen = false, bare = false,
+  projectId, task, action, users = [], defaultOpen = false, bare = false,
 }: {
   projectId: string;
   task?: Task;
   action: (fd: FormData) => Promise<void>;
   users?: PlanUser[];
-  label?: string;
   defaultOpen?: boolean;
   /** Render the form fields directly (no toggle button / card chrome) — for the drawer. */
   bare?: boolean;
@@ -21,11 +22,12 @@ export function TaskForm({
   const [open, setOpen] = useState(defaultOpen);
   const [pending, setPending] = useState(false);
   const toast = useToast();
+  const { t } = usePlanT();
 
   if (!bare && !open) return (
     <button onClick={() => setOpen(true)}
       className="inline-flex items-center gap-1.5 rounded-md border border-dashed border-[var(--border)] px-3 py-1.5 text-sm font-medium text-[var(--muted)] transition hover:border-[var(--feature-color)] hover:text-[var(--feature-color)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--feature-color)]">
-      <PlusIcon /> {label}
+      <PlusIcon /> {t("task.add")}
     </button>
   );
 
@@ -33,10 +35,10 @@ export function TaskForm({
     setPending(true);
     try {
       await action(fd);
-      toast(task ? "Task updated" : "Task created", { tone: "success" });
+      toast(t(task ? "toast.taskUpdated" : "toast.taskCreated"), { tone: "success" });
       if (!bare) setOpen(false);
     } catch (e) {
-      toast(e instanceof Error ? e.message : "Couldn’t save task", { tone: "error" });
+      toast(e instanceof Error ? e.message : t("toast.taskSaveErr"), { tone: "error" });
     } finally {
       setPending(false);
     }
@@ -46,41 +48,41 @@ export function TaskForm({
     <form action={onSubmit}
       className={bare ? "flex flex-col gap-3" : "flex flex-col gap-3 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm"}>
       <input type="hidden" name="projectId" value={projectId} />
-      <input name="title" required defaultValue={task?.title ?? ""} placeholder="Task title" className={inputCls} autoFocus />
-      <textarea name="description" defaultValue={task?.description ?? ""} placeholder="Description (optional)" rows={3} className={`${inputCls} resize-y`} />
+      <input name="title" required defaultValue={task?.title ?? ""} placeholder={t("task.title")} className={inputCls} autoFocus />
+      <textarea name="description" defaultValue={task?.description ?? ""} placeholder={t("task.description")} rows={3} className={`${inputCls} resize-y`} />
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <label className="flex flex-col gap-1 text-xs text-[var(--muted)]">
-          Status
+          {t("task.status")}
           <select name="status" defaultValue={task?.status ?? "backlog"} className={inputCls}>
-            {TASK_STATUSES.map((s) => <option key={s} value={s}>{STATUS_LABELS[s]}</option>)}
+            {TASK_STATUSES.map((s) => <option key={s} value={s}>{t(statusKey(s))}</option>)}
           </select>
         </label>
         {users.length > 0 && (
           <label className="flex flex-col gap-1 text-xs text-[var(--muted)]">
-            Assignee
+            {t("task.assignee")}
             <select name="assigneeId" defaultValue={task?.assigneeId ?? ""} className={inputCls}>
-              <option value="">— Unassigned —</option>
+              <option value="">{t("task.unassigned")}</option>
               {users.map((u) => <option key={u.id} value={u.id}>{userLabel(u)}</option>)}
             </select>
           </label>
         )}
         <label className="flex flex-col gap-1 text-xs text-[var(--muted)]">
-          Due date
+          {t("task.due")}
           <input name="dueDate" type="date" defaultValue={task?.dueDate ?? ""} className={inputCls} />
         </label>
         <label className="flex flex-col gap-1 text-xs text-[var(--muted)]">
-          Estimate (h)
+          {t("task.estimate")}
           <input name="estimateHours" type="number" step="0.5" defaultValue={task?.estimateHours ?? ""} placeholder="0" className={inputCls} />
         </label>
         <label className="flex flex-col gap-1 text-xs text-[var(--muted)]">
-          Cost
+          {t("task.cost")}
           <input name="cost" type="number" step="0.01" defaultValue={task?.cost ?? ""} placeholder="0.00" className={inputCls} />
         </label>
       </div>
-      <input name="tags" defaultValue={(task?.tags ?? []).join(", ")} placeholder="tags, comma separated" className={inputCls} />
+      <input name="tags" defaultValue={(task?.tags ?? []).join(", ")} placeholder={t("task.tags")} className={inputCls} />
       <div className="flex gap-2">
-        <button type="submit" className={btnPrimary} disabled={pending}>{pending ? "Saving…" : "Save"}</button>
-        {!bare && <button type="button" onClick={() => setOpen(false)} className={btnGhost}>Cancel</button>}
+        <button type="submit" className={btnPrimary} disabled={pending}>{pending ? t("common.saving") : t("common.save")}</button>
+        {!bare && <button type="button" onClick={() => setOpen(false)} className={btnGhost}>{t("common.cancel")}</button>}
       </div>
     </form>
   );

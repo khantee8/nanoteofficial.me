@@ -1,0 +1,143 @@
+import type { Lang } from "@/lib/i18n";
+
+/**
+ * /plan-scoped dictionary. Kept separate from the site-wide `@/lib/i18n` (which
+ * imports `next/headers` and is therefore server-only) so these strings can be
+ * used from client components too. `pt(lang, key)` is a pure function.
+ */
+const dict = {
+  "nav.projects": { en: "Projects", th: "โปรเจกต์" },
+  "action.signOut": { en: "Sign out", th: "ออกจากระบบ" },
+
+  "overview.teamLoad": { en: "Team load", th: "ภาระงานของทีม" },
+  "project.new": { en: "New project", th: "โปรเจกต์ใหม่" },
+
+  "project.back": { en: "Projects", th: "โปรเจกต์" },
+  "project.target": { en: "Target", th: "กำหนดส่ง" },
+  "project.edit": { en: "Edit", th: "แก้ไข" },
+  "project.archive": { en: "Archive", th: "เก็บเข้าคลัง" },
+  "project.archiveConfirm": { en: "Archive this project?", th: "เก็บโปรเจกต์นี้เข้าคลังหรือไม่?" },
+
+  "view.table": { en: "Table", th: "ตาราง" },
+  "view.kanban": { en: "Kanban", th: "คัมบัง" },
+  "view.calendar": { en: "Calendar", th: "ปฏิทิน" },
+  "view.burndown": { en: "Burndown", th: "เบิร์นดาวน์" },
+
+  "status.backlog": { en: "Backlog", th: "รอดำเนินการ" },
+  "status.todo": { en: "To do", th: "ที่ต้องทำ" },
+  "status.in_progress": { en: "In progress", th: "กำลังทำ" },
+  "status.done": { en: "Done", th: "เสร็จแล้ว" },
+
+  "type.it": { en: "IT", th: "ไอที" },
+  "type.travel": { en: "Travel", th: "ท่องเที่ยว" },
+  "type.interview": { en: "Interview", th: "สัมภาษณ์งาน" },
+  "type.general": { en: "General", th: "ทั่วไป" },
+
+  "stat.done": { en: "done", th: "เสร็จ" },
+
+  "task.add": { en: "Add task", th: "เพิ่มงาน" },
+  "task.title": { en: "Task title", th: "ชื่องาน" },
+  "task.description": { en: "Description (optional)", th: "รายละเอียด (ไม่บังคับ)" },
+  "task.status": { en: "Status", th: "สถานะ" },
+  "task.assignee": { en: "Assignee", th: "ผู้รับผิดชอบ" },
+  "task.unassigned": { en: "— Unassigned —", th: "— ยังไม่มอบหมาย —" },
+  "task.due": { en: "Due date", th: "กำหนดส่ง" },
+  "task.estimate": { en: "Estimate (h)", th: "ประมาณการ (ชม.)" },
+  "task.cost": { en: "Cost", th: "ต้นทุน" },
+  "task.tags": { en: "tags, comma separated", th: "แท็ก คั่นด้วยเครื่องหมายจุลภาค" },
+  "task.editTitle": { en: "Edit task", th: "แก้ไขงาน" },
+  "task.deleteBtn": { en: "Delete task", th: "ลบงาน" },
+
+  "common.save": { en: "Save", th: "บันทึก" },
+  "common.saving": { en: "Saving…", th: "กำลังบันทึก…" },
+  "common.cancel": { en: "Cancel", th: "ยกเลิก" },
+  "common.delete": { en: "Delete", th: "ลบ" },
+  "common.close": { en: "Close", th: "ปิด" },
+
+  "pf.name": { en: "Project name", th: "ชื่อโปรเจกต์" },
+  "pf.type": { en: "Type", th: "ประเภท" },
+  "pf.target": { en: "Target date", th: "กำหนดส่ง" },
+  "pf.color": { en: "Color", th: "สี" },
+
+  "table.search": { en: "Search tasks…", th: "ค้นหางาน…" },
+  "table.allStatuses": { en: "All statuses", th: "ทุกสถานะ" },
+  "table.of": { en: "of", th: "จาก" },
+  "table.emptyNone": { en: "No tasks yet. Use “Add task” above to create your first one.", th: "ยังไม่มีงาน กด“เพิ่มงาน”ด้านบนเพื่อสร้างงานแรกของคุณ" },
+  "table.emptyFilter": { en: "No tasks match your filters.", th: "ไม่มีงานที่ตรงกับตัวกรอง" },
+  "col.title": { en: "Title", th: "ชื่อ" },
+  "col.status": { en: "Status", th: "สถานะ" },
+  "col.assignee": { en: "Assignee", th: "ผู้รับผิดชอบ" },
+  "col.due": { en: "Due", th: "กำหนดส่ง" },
+  "col.estimate": { en: "Est (h)", th: "ประมาณ (ชม.)" },
+  "col.cost": { en: "Cost", th: "ต้นทุน" },
+
+  "kanban.add": { en: "Add", th: "เพิ่ม" },
+  "kanban.quick": { en: "Task title…", th: "ชื่องาน…" },
+
+  "bd.burndown": { en: "Burndown", th: "เบิร์นดาวน์" },
+  "bd.hours": { en: "hours", th: "ชั่วโมง" },
+  "bd.tasks": { en: "tasks", th: "งาน" },
+  "bd.remaining": { en: "remaining", th: "คงเหลือ" },
+  "bd.ideal": { en: "ideal", th: "เป้าหมาย" },
+  "bd.today": { en: "today", th: "วันนี้" },
+  "bd.empty": {
+    en: "Not enough task history yet to chart a burndown. Add tasks (with estimates for an hours-based chart) and complete a few to see the trend.",
+    th: "ข้อมูลงานยังไม่พอที่จะสร้างกราฟเบิร์นดาวน์ เพิ่มงาน (พร้อมประมาณการชั่วโมงสำหรับกราฟแบบชั่วโมง) และทำให้เสร็จสักสองสามงานเพื่อดูแนวโน้ม",
+  },
+
+  "tl.desc": {
+    en: "Open (non-done) work across active projects. Bars compare allocated hours to an assumed {cap}h capacity per person.",
+    th: "งานที่ยังไม่เสร็จในโปรเจกต์ที่ใช้งานอยู่ แถบเปรียบเทียบชั่วโมงที่จัดสรรกับกำลังคนที่สมมติไว้ {cap} ชม. ต่อคน",
+  },
+  "tl.unassigned": { en: "Unassigned", th: "ยังไม่มอบหมาย" },
+  "tl.over": { en: "over capacity", th: "เกินกำลัง" },
+  "tl.tasks": { en: "tasks", th: "งาน" },
+  "tl.empty": {
+    en: "No open tasks across active projects. Assign tasks (with hour estimates) to see capacity vs. allocation here.",
+    th: "ไม่มีงานค้างในโปรเจกต์ที่ใช้งานอยู่ มอบหมายงาน (พร้อมประมาณการชั่วโมง) เพื่อดูกำลังคนเทียบกับการจัดสรรที่นี่",
+  },
+
+  "signin.title": { en: "Sign in", th: "เข้าสู่ระบบ" },
+  "signin.desc": {
+    en: "Invite-only workspace. Enter your email and we’ll send a magic link.",
+    th: "พื้นที่ทำงานสำหรับผู้ได้รับเชิญเท่านั้น กรอกอีเมลของคุณแล้วเราจะส่งลิงก์สำหรับเข้าสู่ระบบ",
+  },
+  "signin.send": { en: "Send magic link", th: "ส่งลิงก์เข้าสู่ระบบ" },
+  "signin.sending": { en: "Sending…", th: "กำลังส่ง…" },
+  "signin.sentTitle": { en: "Check your inbox", th: "ตรวจสอบอีเมลของคุณ" },
+  "signin.sentDesc": {
+    en: "We sent you a sign-in link. It may take a moment to arrive.",
+    th: "เราได้ส่งลิงก์สำหรับเข้าสู่ระบบให้คุณแล้ว อาจใช้เวลาสักครู่กว่าจะถึง",
+  },
+
+  "cmd.placeholder": { en: "Jump to a project…", th: "ไปยังโปรเจกต์…" },
+  "cmd.overview": { en: "Projects overview", th: "ภาพรวมโปรเจกต์" },
+  "cmd.overviewSub": { en: "Go to /plan", th: "ไปที่ /plan" },
+  "cmd.noMatch": { en: "No matches", th: "ไม่พบรายการ" },
+  "cmd.hint": { en: "↑↓ navigate · ↵ open · esc close", th: "↑↓ เลื่อน · ↵ เปิด · esc ปิด" },
+
+  "toast.taskCreated": { en: "Task created", th: "สร้างงานแล้ว" },
+  "toast.taskUpdated": { en: "Task updated", th: "อัปเดตงานแล้ว" },
+  "toast.taskSaveErr": { en: "Couldn’t save task", th: "บันทึกงานไม่สำเร็จ" },
+  "toast.taskDeleted": { en: "Task deleted", th: "ลบงานแล้ว" },
+  "toast.taskDeleteErr": { en: "Couldn’t delete task", th: "ลบงานไม่สำเร็จ" },
+  "toast.taskMoveErr": { en: "Couldn’t move task", th: "ย้ายงานไม่สำเร็จ" },
+  "toast.taskAddErr": { en: "Couldn’t add task", th: "เพิ่มงานไม่สำเร็จ" },
+  "toast.undo": { en: "Undo", th: "เลิกทำ" },
+  "toast.projectCreated": { en: "Project created", th: "สร้างโปรเจกต์แล้ว" },
+  "toast.projectUpdated": { en: "Project updated", th: "อัปเดตโปรเจกต์แล้ว" },
+  "toast.projectSaveErr": { en: "Couldn’t save project", th: "บันทึกโปรเจกต์ไม่สำเร็จ" },
+  "toast.projectArchived": { en: "Project archived", th: "เก็บโปรเจกต์เข้าคลังแล้ว" },
+  "toast.projectArchiveErr": { en: "Couldn’t archive project", th: "เก็บโปรเจกต์เข้าคลังไม่สำเร็จ" },
+} as const;
+
+export type PlanKey = keyof typeof dict;
+
+export function pt(lang: Lang, key: PlanKey, vars?: Record<string, string | number>): string {
+  let s: string = dict[key][lang];
+  if (vars) for (const [k, v] of Object.entries(vars)) s = s.replace(`{${k}}`, String(v));
+  return s;
+}
+
+export const statusKey = (s: string) => `status.${s}` as PlanKey;
+export const typeKey = (s: string) => `type.${s}` as PlanKey;

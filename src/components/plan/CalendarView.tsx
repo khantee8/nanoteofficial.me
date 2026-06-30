@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import type { Task } from "@/lib/db/schema";
+import type { Lang } from "@/lib/i18n";
 import { btnSecondary } from "./ui";
 import { dueState } from "@/lib/plan/dates";
 
@@ -15,9 +16,10 @@ function monthMatrix(year: number, month: number): (Date | null)[] {
   return cells;
 }
 const iso = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-const WD = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-export function CalendarView({ tasks }: { tasks: Task[] }) {
+export function CalendarView({ tasks, lang }: { tasks: Task[]; lang: Lang }) {
+  const locale = lang === "th" ? "th-TH" : "en-US";
+  const wd = Array.from({ length: 7 }, (_, i) => new Intl.DateTimeFormat(locale, { weekday: "short" }).format(new Date(2023, 0, 1 + i)));
   const now = new Date();
   const todayKey = iso(now);
   const [ym, setYm] = useState({ y: now.getFullYear(), m: now.getMonth() });
@@ -35,11 +37,11 @@ export function CalendarView({ tasks }: { tasks: Task[] }) {
     <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm">
       <div className="mb-4 flex items-center justify-between">
         <button onClick={() => shift(-1)} className={btnSecondary} aria-label="Previous month">←</button>
-        <span className="font-medium tracking-tight">{new Date(ym.y, ym.m).toLocaleString("en", { month: "long", year: "numeric" })}</span>
+        <span className="font-medium tracking-tight">{new Date(ym.y, ym.m).toLocaleString(locale, { month: "long", year: "numeric" })}</span>
         <button onClick={() => shift(1)} className={btnSecondary} aria-label="Next month">→</button>
       </div>
       <div className="grid grid-cols-7 gap-1 text-xs">
-        {WD.map((d) => <div key={d} className="pb-1 text-center font-medium text-[var(--muted-soft)]">{d}</div>)}
+        {wd.map((d) => <div key={d} className="pb-1 text-center font-medium text-[var(--muted-soft)]">{d}</div>)}
         {cells.map((c, i) => {
           const key = c ? iso(c) : "";
           const isToday = key === todayKey;

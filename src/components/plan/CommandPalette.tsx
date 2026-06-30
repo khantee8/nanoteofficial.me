@@ -1,11 +1,14 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { usePlanT } from "./LangContext";
+import { typeKey } from "@/lib/plan/i18n";
 
 type Item = { id: string; label: string; sub?: string; href: string };
 
 export function CommandPalette({ projects }: { projects: { id: string; name: string; type: string }[] }) {
   const router = useRouter();
+  const { t } = usePlanT();
   const [open, setOpen] = useState(false);
   const [q, setQ] = useState("");
   const [active, setActive] = useState(0);
@@ -13,12 +16,12 @@ export function CommandPalette({ projects }: { projects: { id: string; name: str
 
   const items = useMemo<Item[]>(() => {
     const base: Item[] = [
-      { id: "overview", label: "Projects overview", sub: "Go to /plan", href: "/plan" },
-      ...projects.map((p) => ({ id: p.id, label: p.name, sub: p.type, href: `/plan/${p.id}` })),
+      { id: "overview", label: t("cmd.overview"), sub: t("cmd.overviewSub"), href: "/plan" },
+      ...projects.map((p) => ({ id: p.id, label: p.name, sub: t(typeKey(p.type)), href: `/plan/${p.id}` })),
     ];
     const needle = q.trim().toLowerCase();
     return needle ? base.filter((i) => i.label.toLowerCase().includes(needle) || i.sub?.toLowerCase().includes(needle)) : base;
-  }, [projects, q]);
+  }, [projects, q, t]);
 
   const close = () => { setOpen(false); setQ(""); setActive(0); };
 
@@ -55,11 +58,11 @@ export function CommandPalette({ projects }: { projects: { id: string; name: str
             else if (e.key === "Enter") { e.preventDefault(); go(items[safeActive]); }
             else if (e.key === "Escape") close();
           }}
-          placeholder="Jump to a project…"
+          placeholder={t("cmd.placeholder")}
           className="w-full border-b border-[var(--border)] bg-transparent px-4 py-3 text-sm outline-none placeholder:text-[var(--muted-soft)]"
         />
         <ul className="max-h-72 overflow-y-auto p-1">
-          {items.length === 0 && <li className="px-3 py-6 text-center text-sm text-[var(--muted-soft)]">No matches</li>}
+          {items.length === 0 && <li className="px-3 py-6 text-center text-sm text-[var(--muted-soft)]">{t("cmd.noMatch")}</li>}
           {items.map((item, i) => (
             <li key={item.id}>
               <button
@@ -75,7 +78,7 @@ export function CommandPalette({ projects }: { projects: { id: string; name: str
           ))}
         </ul>
         <div className="border-t border-[var(--border)] px-3 py-2 text-[11px] text-[var(--muted-soft)]">
-          ↑↓ navigate · ↵ open · esc close
+          {t("cmd.hint")}
         </div>
       </div>
     </div>

@@ -1,4 +1,3 @@
-import { STATUS_LABELS } from "@/lib/plan/types";
 import type { Task } from "@/lib/db/schema";
 
 /* Shared class tokens — keep every /plan control visually consistent. */
@@ -28,22 +27,22 @@ const STATUS_DOT: Record<Task["status"], string> = {
   done: "bg-emerald-500",
 };
 
-export function StatusBadge({ status }: { status: Task["status"] }) {
+export function StatusBadge({ status, label }: { status: Task["status"]; label: string }) {
   return (
     <span className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_TONE[status]}`}>
       <span className={`h-1.5 w-1.5 rounded-full ${STATUS_DOT[status]}`} />
-      {STATUS_LABELS[status]}
+      {label}
     </span>
   );
 }
 
-export function TypeBadge({ type, color }: { type: string; color?: string }) {
+export function TypeBadge({ label, color }: { label: string; color?: string }) {
   return (
     <span
       className="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--background)] px-2 py-0.5 text-[11px] font-medium uppercase tracking-wide text-[var(--muted)]"
     >
       {color && <span className="h-2 w-2 rounded-full" style={{ background: color }} />}
-      {type}
+      {label}
     </span>
   );
 }
