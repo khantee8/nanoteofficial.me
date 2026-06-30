@@ -8,7 +8,7 @@ const plotH = H - PAD.t - PAD.b;
 export function BurndownChart({ data }: { data: Burndown }) {
   if (data.points.length < 2 || data.total <= 0) {
     return (
-      <div className="rounded-md border border-black/10 p-6 text-sm opacity-60 dark:border-white/10">
+      <div className="rounded-xl border border-dashed border-[var(--border)] p-10 text-center text-sm text-[var(--muted-soft)]">
         Not enough task history yet to chart a burndown. Add tasks (with estimates
         for an hours-based chart) and complete a few to see the trend.
       </div>
@@ -27,10 +27,10 @@ export function BurndownChart({ data }: { data: Burndown }) {
   const last = data.points[n - 1].date;
 
   return (
-    <figure className="rounded-md border border-black/10 p-4 dark:border-white/10">
-      <figcaption className="mb-2 flex items-center justify-between text-sm">
-        <span className="font-medium">Burndown ({unitLabel})</span>
-        <span className="flex gap-3 text-xs opacity-70">
+    <figure className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5 shadow-sm">
+      <figcaption className="mb-3 flex items-center justify-between text-sm">
+        <span className="font-medium tracking-tight">Burndown ({unitLabel})</span>
+        <span className="flex gap-3 text-xs text-[var(--muted-soft)]">
           <span className="flex items-center gap-1">
             <span className="inline-block h-0.5 w-4" style={{ background: "var(--feature-color)" }} />
             remaining
