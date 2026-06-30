@@ -113,14 +113,26 @@ introduces the site's first **authentication**, **database**, and rich
   hand-rolled-SVG ethos); tasks render on their `dueDate`; click → task detail.
 - **Status overview:** count-by-status summary band on the project page.
 
-## Phase 2 (designed for, not built)
+## Phase 2 — burndown + team load (BUILT 2026-06-30)
 
-- **Burndown chart:** hand-rolled SVG, fed by `task_snapshots` (a scheduled/manual
-  snapshot writes daily remaining work).
-- **Team load:** effort (`estimateHours`) grouped by `assigneeId` across active
-  projects; capacity vs. allocation view. May extend assignees to named non-login
-  members.
-- **Roles:** owner / editor / viewer if collaboration grows.
+- **Burndown chart:** hand-rolled SVG (`BurndownChart`), fed by an **on-the-fly**
+  computation (`lib/plan/burndown.ts`) — **no `task_snapshots` table or cron**.
+  Remaining work per day is derived from current task rows: a task is "remaining"
+  while it exists (`createdAt`) and isn't done (status `done` counts as completed
+  from its `updatedAt`). Weight = `estimateHours` when any estimates exist, else
+  task count. Surfaced as a 4th view tab on the project page. Trade-off: reopened/
+  re-edited tasks distort effective done dates — a trend, not an audit trail.
+- **Team load:** `teamLoad()` sums open (non-done) `estimateHours` grouped by
+  `assigneeId` across non-archived projects; `TeamLoad` panel on the master
+  overview shows allocation vs. an assumed `DEFAULT_CAPACITY_HOURS` (40h). A
+  `TaskForm` assignee picker (populated by `listUsers()`) was added so tasks can
+  actually be assigned. Named non-login members remain a future extension.
+
+## Phase 3 (designed for, not built)
+
+- **Roles:** owner / editor / viewer if collaboration grows (see Authorization note).
+- **True snapshot burndown:** add `task_snapshots` + a Vercel Cron writer if the
+  on-the-fly approximation proves insufficient.
 
 > **Authorization note (MVP):** the MVP is a single shared workspace with flat
 > permissions — every allowlisted, authenticated user may edit every project/task,

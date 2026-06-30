@@ -1,9 +1,9 @@
 import "server-only";
-import { asc, eq, sql } from "drizzle-orm";
+import { and, asc, eq, ne, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
-import { projects, tasks } from "@/lib/db/schema";
+import { projects, tasks, users } from "@/lib/db/schema";
 import type { Project, Task } from "@/lib/db/schema";
-import type { ProjectWithProgress, StatusCount } from "./types";
+import type { PlanUser, ProjectWithProgress, StatusCount, TeamLoadRow } from "./types";
 
 export async function listProjects(): Promise<ProjectWithProgress[]> {
   const rows = await db
@@ -44,4 +44,30 @@ export async function statusCounts(projectId: string): Promise<StatusCount> {
   const out: StatusCount = { backlog: 0, todo: 0, in_progress: 0, done: 0 };
   for (const r of rows) out[r.status] = r.n;
   return out;
+}
+
+export async function listUsers(): Promise<PlanUser[]> {
+  return db
+    .select({ id: users.id, name: users.name, email: users.email })
+    .from(users)
+    .orderBy(asc(users.name), asc(users.email));
+}
+
+/** Open (non-done) workload per assignee across all non-archived projects. */
+export async function teamLoad(): Promise<TeamLoadRow[]> {
+  const rows = await db
+    .select({
+      assigneeId: tasks.assigneeId,
+      name: users.name,
+      email: users.email,
+      openCount: sql<number>`count(*)::int`,
+      openHours: sql<number>`coalesce(sum(${tasks.estimateHours}), 0)::float`,
+    })
+    .from(tasks)
+    .innerJoin(projects, eq(tasks.projectId, projects.id))
+    .leftJoin(users, eq(tasks.assigneeId, users.id))
+    .where(and(eq(projects.archived, false), ne(tasks.status, "done")))
+    .groupBy(tasks.assigneeId, users.name, users.email)
+    .orderBy(sql`sum(${tasks.estimateHours}) desc nulls last`);
+  return rows;
 }

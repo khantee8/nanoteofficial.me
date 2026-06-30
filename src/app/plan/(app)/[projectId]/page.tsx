@@ -1,11 +1,13 @@
 import { notFound } from "next/navigation";
-import { getProject, listTasks, statusCounts } from "@/lib/plan/queries";
+import { getProject, listTasks, listUsers, statusCounts } from "@/lib/plan/queries";
 import { createTask } from "@/lib/plan/actions";
+import { computeBurndown } from "@/lib/plan/burndown";
 import { ViewTabs } from "@/components/plan/ViewTabs";
 import { StatusOverview } from "@/components/plan/StatusOverview";
 import { TableView } from "@/components/plan/TableView";
 import { KanbanBoard } from "@/components/plan/KanbanBoard";
 import { CalendarView } from "@/components/plan/CalendarView";
+import { BurndownChart } from "@/components/plan/BurndownChart";
 import { TaskForm } from "@/components/plan/TaskForm";
 import { ProjectActions } from "@/components/plan/ProjectActions";
 
@@ -21,7 +23,9 @@ export default async function ProjectPage({
   const { view = "table" } = await searchParams;
   const project = await getProject(projectId);
   if (!project) notFound();
-  const [tasks, counts] = await Promise.all([listTasks(projectId), statusCounts(projectId)]);
+  const [tasks, counts, users] = await Promise.all([
+    listTasks(projectId), statusCounts(projectId), listUsers(),
+  ]);
 
   return (
     <section>
@@ -31,10 +35,13 @@ export default async function ProjectPage({
       </div>
       <StatusOverview counts={counts} />
       <ViewTabs />
-      <div className="mb-4"><TaskForm projectId={projectId} action={createTask.bind(null, projectId)} /></div>
+      {view !== "burndown" && (
+        <div className="mb-4"><TaskForm projectId={projectId} users={users} action={createTask.bind(null, projectId)} /></div>
+      )}
       {view === "kanban" ? <KanbanBoard projectId={projectId} tasks={tasks} />
         : view === "calendar" ? <CalendarView tasks={tasks} />
-        : <TableView projectId={projectId} tasks={tasks} />}
+        : view === "burndown" ? <BurndownChart data={computeBurndown(tasks, project)} />
+        : <TableView projectId={projectId} tasks={tasks} users={users} />}
     </section>
   );
 }

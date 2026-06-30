@@ -1,14 +1,16 @@
 "use client";
 import { useState } from "react";
-import { TASK_STATUSES, STATUS_LABELS } from "@/lib/plan/types";
+import { TASK_STATUSES, STATUS_LABELS, userLabel } from "@/lib/plan/types";
+import type { PlanUser } from "@/lib/plan/types";
 import type { Task } from "@/lib/db/schema";
 
 export function TaskForm({
-  projectId, task, action, label = "+ Add task", defaultOpen = false,
+  projectId, task, action, users = [], label = "+ Add task", defaultOpen = false,
 }: {
   projectId: string;
   task?: Task;
   action: (fd: FormData) => Promise<void>;
+  users?: PlanUser[];
   label?: string;
   defaultOpen?: boolean;
 }) {
@@ -22,6 +24,12 @@ export function TaskForm({
       <select name="status" defaultValue={task?.status ?? "backlog"} className="bg-transparent py-1">
         {TASK_STATUSES.map((s) => <option key={s} value={s}>{STATUS_LABELS[s]}</option>)}
       </select>
+      {users.length > 0 && (
+        <select name="assigneeId" defaultValue={task?.assigneeId ?? ""} className="bg-transparent py-1">
+          <option value="">— Unassigned —</option>
+          {users.map((u) => <option key={u.id} value={u.id}>{userLabel(u)}</option>)}
+        </select>
+      )}
       <input name="dueDate" type="date" defaultValue={task?.dueDate ?? ""} className="bg-transparent py-1" />
       <input name="estimateHours" type="number" step="0.5" defaultValue={task?.estimateHours ?? ""} placeholder="Estimate (h)" className="bg-transparent py-1" />
       <input name="cost" type="number" step="0.01" defaultValue={task?.cost ?? ""} placeholder="Cost" className="bg-transparent py-1" />
