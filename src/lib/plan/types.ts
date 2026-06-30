@@ -8,3 +8,20 @@ export const STATUS_LABELS: Record<Task["status"], string> = {
 
 export type ProjectWithProgress = Project & { total: number; done: number; progress: number };
 export type StatusCount = Record<Task["status"], number>;
+
+export type PlanUser = { id: string; name: string | null; email: string | null };
+
+/** Assumed weekly capacity per person (hours) — no per-user capacity stored in MVP. */
+export const DEFAULT_CAPACITY_HOURS = 40;
+
+export type TeamLoadRow = {
+  assigneeId: string | null;
+  name: string | null;
+  email: string | null;
+  openCount: number;
+  openHours: number;
+};
+
+export function userLabel(u: { name: string | null; email: string | null }): string {
+  return u.name?.trim() || u.email?.trim() || "Unknown";
+}

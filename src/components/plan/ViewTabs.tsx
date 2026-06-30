@@ -1,7 +1,7 @@
 "use client";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
-const VIEWS = ["table", "kanban", "calendar"] as const;
+const VIEWS = ["table", "kanban", "calendar", "burndown"] as const;
 export function ViewTabs() {
   const router = useRouter(); const path = usePathname();
   const params = useSearchParams(); const active = params.get("view") ?? "table";
