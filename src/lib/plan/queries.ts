@@ -31,7 +31,10 @@ export async function getProject(id: string): Promise<Project | null> {
 export async function listTasks(projectId: string): Promise<Task[]> {
   return db.select().from(tasks)
     .where(eq(tasks.projectId, projectId))
-    .orderBy(asc(tasks.status), asc(tasks.order));
+    .orderBy(
+      sql`case ${tasks.status} when 'backlog' then 0 when 'todo' then 1 when 'in_progress' then 2 when 'done' then 3 end`,
+      asc(tasks.order),
+    );
 }
 
 export async function statusCounts(projectId: string): Promise<StatusCount> {

@@ -35,7 +35,7 @@ export function KanbanBoard({ projectId, tasks }: { projectId: string; tasks: Ta
     <DndContext collisionDetection={closestCorners} onDragEnd={onDragEnd}>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-4">
         {TASK_STATUSES.map((s) => (
-          <div key={s} id={`col:${s}`} className="rounded-lg bg-black/5 p-2 dark:bg-white/5">
+          <div key={s} className="rounded-lg bg-black/5 p-2 dark:bg-white/5">
             <h3 className="mb-2 text-xs font-semibold uppercase opacity-60">{STATUS_LABELS[s]}</h3>
             <SortableContext items={byStatus(s).map((t) => t.id)} strategy={verticalListSortingStrategy}>
               <DroppableColumn id={`col:${s}`}>

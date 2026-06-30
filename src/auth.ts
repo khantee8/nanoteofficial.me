@@ -15,7 +15,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     verificationTokensTable: verificationTokens,
   }),
   providers: [
-    Resend({ from: "noreply@nanoteofficial.me" }),
+    Resend({ apiKey: process.env.RESEND_API_KEY, from: "noreply@nanoteofficial.me" }),
   ],
   session: { strategy: "database" },
   pages: { signIn: "/plan/signin" },
