@@ -1,16 +1,17 @@
 import type { Burndown } from "@/lib/plan/burndown";
+import type { Lang } from "@/lib/i18n";
+import { pt } from "@/lib/plan/i18n";
 
 const W = 720, H = 280;
 const PAD = { l: 44, r: 16, t: 16, b: 30 };
 const plotW = W - PAD.l - PAD.r;
 const plotH = H - PAD.t - PAD.b;
 
-export function BurndownChart({ data }: { data: Burndown }) {
+export function BurndownChart({ data, lang }: { data: Burndown; lang: Lang }) {
   if (data.points.length < 2 || data.total <= 0) {
     return (
       <div className="rounded-xl border border-dashed border-[var(--border)] p-10 text-center text-sm text-[var(--muted-soft)]">
-        Not enough task history yet to chart a burndown. Add tasks (with estimates
-        for an hours-based chart) and complete a few to see the trend.
+        {pt(lang, "bd.empty")}
       </div>
     );
   }
@@ -22,7 +23,7 @@ export function BurndownChart({ data }: { data: Burndown }) {
   const line = (key: "remaining" | "ideal") =>
     data.points.map((p, i) => `${x(i).toFixed(1)},${y(p[key]).toFixed(1)}`).join(" ");
 
-  const unitLabel = data.unit === "hours" ? "hours" : "tasks";
+  const unitLabel = pt(lang, data.unit === "hours" ? "bd.hours" : "bd.tasks");
   const first = data.points[0].date;
   const last = data.points[n - 1].date;
 
@@ -34,15 +35,15 @@ export function BurndownChart({ data }: { data: Burndown }) {
   return (
     <figure className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5 shadow-sm">
       <figcaption className="mb-3 flex items-center justify-between text-sm">
-        <span className="font-medium tracking-tight">Burndown ({unitLabel})</span>
+        <span className="font-medium tracking-tight">{pt(lang, "bd.burndown")} ({unitLabel})</span>
         <span className="flex gap-3 text-xs text-[var(--muted-soft)]">
           <span className="flex items-center gap-1">
             <span className="inline-block h-0.5 w-4" style={{ background: "var(--feature-color)" }} />
-            remaining
+            {pt(lang, "bd.remaining")}
           </span>
           <span className="flex items-center gap-1">
             <span className="inline-block h-0.5 w-4 border-t border-dashed border-current" />
-            ideal
+            {pt(lang, "bd.ideal")}
           </span>
         </span>
       </figcaption>
@@ -59,7 +60,7 @@ export function BurndownChart({ data }: { data: Burndown }) {
         {todayIdx > 0 && todayIdx < n - 1 && (
           <>
             <line x1={x(todayIdx)} x2={x(todayIdx)} y1={PAD.t} y2={H - PAD.b} className="stroke-current opacity-25" strokeDasharray="2 3" />
-            <text x={x(todayIdx)} y={PAD.t - 4} textAnchor="middle" className="fill-current text-[9px] opacity-50">today</text>
+            <text x={x(todayIdx)} y={PAD.t - 4} textAnchor="middle" className="fill-current text-[9px] opacity-50">{pt(lang, "bd.today")}</text>
           </>
         )}
         {/* y labels */}

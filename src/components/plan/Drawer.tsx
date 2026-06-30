@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, type ReactNode } from "react";
+import { usePlanT } from "./LangContext";
 
 export function Drawer({
   open, onClose, title, children,
@@ -9,6 +10,7 @@ export function Drawer({
   title: ReactNode;
   children: ReactNode;
 }) {
+  const { t } = usePlanT();
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
@@ -27,7 +29,7 @@ export function Drawer({
           <h2 className="font-medium tracking-tight">{title}</h2>
           <button onClick={onClose}
             className="rounded-md px-2 py-1 text-sm text-[var(--muted)] transition hover:bg-[var(--surface-2)] hover:text-[var(--foreground)]">
-            Close
+            {t("common.close")}
           </button>
         </div>
         <div className="flex-1 overflow-y-auto p-5">{children}</div>
