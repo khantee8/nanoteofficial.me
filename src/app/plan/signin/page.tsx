@@ -10,9 +10,18 @@ export default async function SignInPage() {
     await signIn("resend", { email: String(fd.get("email")), redirectTo: "/plan" });
   }
   return (
-    <div className="mx-auto mt-24 max-w-sm px-6">
-      <h1 className="mb-4 text-xl font-semibold">Sign in to Plan</h1>
-      <SignInForm action={action} />
+    <div className="flex min-h-dvh items-center justify-center bg-[var(--background)] px-6 text-[var(--foreground)]">
+      <div className="w-full max-w-sm">
+        <div className="mb-6 flex items-center gap-2">
+          <span className="h-2.5 w-2.5 rounded-full" style={{ background: "var(--feature-color)" }} />
+          <span className="text-lg font-semibold tracking-tight">Plan</span>
+        </div>
+        <h1 className="text-xl font-semibold tracking-tight">Sign in</h1>
+        <p className="mb-6 mt-1 text-sm text-[var(--muted)]">
+          Invite-only workspace. Enter your email and we&apos;ll send a magic link.
+        </p>
+        <SignInForm action={action} />
+      </div>
     </div>
   );
 }

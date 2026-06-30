@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import type { Task } from "@/lib/db/schema";
+import { btnSecondary } from "./ui";
 
 function monthMatrix(year: number, month: number): (Date | null)[] {
   const first = new Date(year, month, 1);
@@ -17,6 +18,7 @@ const WD = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 export function CalendarView({ tasks }: { tasks: Task[] }) {
   const now = new Date();
+  const todayKey = iso(now);
   const [ym, setYm] = useState({ y: now.getFullYear(), m: now.getMonth() });
   const cells = monthMatrix(ym.y, ym.m);
   const byDay = new Map<string, Task[]>();
@@ -29,24 +31,42 @@ export function CalendarView({ tasks }: { tasks: Task[] }) {
   });
 
   return (
-    <div>
-      <div className="mb-3 flex items-center justify-between">
-        <button onClick={() => shift(-1)} className="text-sm underline">← Prev</button>
-        <span className="font-medium">{new Date(ym.y, ym.m).toLocaleString("en", { month: "long", year: "numeric" })}</span>
-        <button onClick={() => shift(1)} className="text-sm underline">Next →</button>
+    <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm">
+      <div className="mb-4 flex items-center justify-between">
+        <button onClick={() => shift(-1)} className={btnSecondary} aria-label="Previous month">←</button>
+        <span className="font-medium tracking-tight">{new Date(ym.y, ym.m).toLocaleString("en", { month: "long", year: "numeric" })}</span>
+        <button onClick={() => shift(1)} className={btnSecondary} aria-label="Next month">→</button>
       </div>
-      <div className="grid grid-cols-7 gap-px text-xs">
-        {WD.map((d) => <div key={d} className="p-1 text-center opacity-60">{d}</div>)}
-        {cells.map((c, i) => (
-          <div key={i} className="min-h-20 border border-black/5 p-1 dark:border-white/5">
-            {c && <>
-              <div className="opacity-50">{c.getDate()}</div>
-              {(byDay.get(iso(c)) ?? []).map((t) => (
-                <div key={t.id} className="mt-0.5 truncate rounded bg-[var(--feature-color)]/15 px-1 text-[10px]">{t.title}</div>
-              ))}
-            </>}
-          </div>
-        ))}
+      <div className="grid grid-cols-7 gap-1 text-xs">
+        {WD.map((d) => <div key={d} className="pb-1 text-center font-medium text-[var(--muted-soft)]">{d}</div>)}
+        {cells.map((c, i) => {
+          const key = c ? iso(c) : "";
+          const isToday = key === todayKey;
+          return (
+            <div key={i}
+              className={`min-h-24 rounded-lg border p-1.5 ${
+                c ? "border-[var(--border-soft)] bg-[var(--background)]" : "border-transparent"
+              } ${isToday ? "ring-1 ring-[var(--feature-color)]" : ""}`}>
+              {c && <>
+                <div className={`mb-1 text-right text-[11px] tabular-nums ${isToday ? "font-semibold text-[var(--feature-color)]" : "text-[var(--muted-soft)]"}`}>
+                  {c.getDate()}
+                </div>
+                <div className="space-y-0.5">
+                  {(byDay.get(key) ?? []).map((t) => (
+                    <div key={t.id} title={t.title}
+                      className="truncate rounded px-1.5 py-0.5 text-[10px] font-medium"
+                      style={{
+                        background: "color-mix(in srgb, var(--feature-color) 14%, transparent)",
+                        color: "var(--feature-color)",
+                      }}>
+                      {t.title}
+                    </div>
+                  ))}
+                </div>
+              </>}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

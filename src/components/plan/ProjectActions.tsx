@@ -4,22 +4,25 @@ import { useRouter } from "next/navigation";
 import { ProjectForm } from "./ProjectForm";
 import { updateProject, archiveProject } from "@/lib/plan/actions";
 import type { Project } from "@/lib/db/schema";
+import { btnSecondary, btnDanger } from "./ui";
 
 export function ProjectActions({ project }: { project: Project }) {
   const [editing, setEditing] = useState(false);
   const router = useRouter();
   if (editing) return (
-    <ProjectForm project={project} defaultOpen
-      action={async (fd) => { await updateProject(project.id, fd); setEditing(false); }} />
+    <div className="w-full max-w-md">
+      <ProjectForm project={project} defaultOpen
+        action={async (fd) => { await updateProject(project.id, fd); setEditing(false); }} />
+    </div>
   );
   return (
-    <div className="flex gap-3 text-sm">
-      <button onClick={() => setEditing(true)} className="underline">Edit</button>
+    <div className="flex gap-2">
+      <button onClick={() => setEditing(true)} className={btnSecondary}>Edit</button>
       <button onClick={async () => {
         if (!confirm("Archive this project?")) return;
         await archiveProject(project.id);
         router.push("/plan");
-      }} className="text-red-500 underline">Archive</button>
+      }} className={btnDanger}>Archive</button>
     </div>
   );
 }

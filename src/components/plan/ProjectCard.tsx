@@ -1,20 +1,25 @@
 import Link from "next/link";
 import type { ProjectWithProgress } from "@/lib/plan/types";
+import { TypeBadge, ProgressBar, CalendarIcon } from "./ui";
 
 export function ProjectCard({ p }: { p: ProjectWithProgress }) {
   return (
     <Link href={`/plan/${p.id}`}
-      className="block rounded-lg border border-black/10 p-4 transition hover:shadow-md dark:border-white/10">
-      <div className="flex items-center justify-between">
-        <h3 className="font-medium">{p.name}</h3>
-        <span className="rounded-full px-2 py-0.5 text-xs"
-          style={{ background: `${p.color}22`, color: p.color }}>{p.type}</span>
+      className="group flex min-h-32 flex-col gap-4 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5 shadow-sm transition duration-150 hover:border-[color-mix(in_srgb,var(--feature-color)_40%,var(--border))] hover:shadow-md motion-safe:hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--feature-color)]">
+      <div className="flex items-start justify-between gap-3">
+        <h3 className="font-medium tracking-tight transition group-hover:text-[var(--feature-color)]">{p.name}</h3>
+        <TypeBadge type={p.type} color={p.color} />
       </div>
-      {p.targetDate && <p className="mt-1 text-xs opacity-60">Target: {p.targetDate}</p>}
-      <div className="mt-3 h-2 w-full rounded-full bg-black/10 dark:bg-white/10">
-        <div className="h-2 rounded-full" style={{ width: `${p.progress}%`, background: p.color }} />
+
+      <div className="mt-auto space-y-1.5">
+        <ProgressBar value={p.progress} color={p.color} />
+        <div className="flex items-center justify-between text-xs text-[var(--muted-soft)]">
+          <span>{p.done}/{p.total} done · {p.progress}%</span>
+          {p.targetDate && (
+            <span className="inline-flex items-center gap-1"><CalendarIcon /> {p.targetDate}</span>
+          )}
+        </div>
       </div>
-      <p className="mt-1 text-xs opacity-60">{p.done}/{p.total} done · {p.progress}%</p>
     </Link>
   );
 }

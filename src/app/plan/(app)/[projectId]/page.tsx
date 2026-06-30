@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProject, listTasks, listUsers, statusCounts } from "@/lib/plan/queries";
 import { createTask } from "@/lib/plan/actions";
@@ -10,6 +11,7 @@ import { CalendarView } from "@/components/plan/CalendarView";
 import { BurndownChart } from "@/components/plan/BurndownChart";
 import { TaskForm } from "@/components/plan/TaskForm";
 import { ProjectActions } from "@/components/plan/ProjectActions";
+import { TypeBadge, CalendarIcon } from "@/components/plan/ui";
 
 export const dynamic = "force-dynamic";
 
@@ -28,16 +30,36 @@ export default async function ProjectPage({
   ]);
 
   return (
-    <section>
-      <div className="mb-4 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">{project.name}</h1>
-        <ProjectActions project={project} />
+    <section className="space-y-6">
+      <div>
+        <Link href="/plan" className="inline-flex items-center gap-1 text-sm text-[var(--muted)] transition hover:text-[var(--foreground)]">
+          ← Projects
+        </Link>
+        <div className="mt-2 flex flex-wrap items-start justify-between gap-3">
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-3">
+              <h1 className="text-2xl font-semibold tracking-tight">{project.name}</h1>
+              <TypeBadge type={project.type} color={project.color} />
+            </div>
+            {project.targetDate && (
+              <p className="inline-flex items-center gap-1.5 text-sm text-[var(--muted-soft)]">
+                <CalendarIcon /> Target {project.targetDate}
+              </p>
+            )}
+          </div>
+          <ProjectActions project={project} />
+        </div>
       </div>
+
       <StatusOverview counts={counts} />
-      <ViewTabs />
-      {view !== "burndown" && (
-        <div className="mb-4"><TaskForm projectId={projectId} users={users} action={createTask.bind(null, projectId)} /></div>
-      )}
+
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <ViewTabs />
+        {view !== "burndown" && (
+          <TaskForm projectId={projectId} users={users} action={createTask.bind(null, projectId)} />
+        )}
+      </div>
+
       {view === "kanban" ? <KanbanBoard projectId={projectId} tasks={tasks} />
         : view === "calendar" ? <CalendarView tasks={tasks} />
         : view === "burndown" ? <BurndownChart data={computeBurndown(tasks, project)} />
