@@ -122,6 +122,15 @@ introduces the site's first **authentication**, **database**, and rich
   members.
 - **Roles:** owner / editor / viewer if collaboration grows.
 
+> **Authorization note (MVP):** the MVP is a single shared workspace with flat
+> permissions — every allowlisted, authenticated user may edit every project/task,
+> so server actions enforce only `requireUser()` (no per-row ownership checks).
+> There is intentionally no `ownerId`/tenant column. **If Phase 2 introduces
+> private/per-user projects or the owner/editor/viewer roles above, the mutation
+> actions MUST add ownership/role checks** (e.g. `WHERE ownerId = user.id`, and
+> validate `projectId`/`assigneeId` against the caller's membership) — otherwise
+> they become IDOR vectors. This is deferred deliberately, not overlooked.
+
 ## Testing / Verification
 
 No test runner configured in this repo. Verify via:
