@@ -59,7 +59,7 @@ export function CalendarView({ tasks, lang }: { tasks: Task[]; lang: Lang }) {
                     const overdue = dueState(t) === "overdue";
                     return (
                       <div key={t.id} title={t.title}
-                        className="truncate rounded px-1.5 py-0.5 text-[10px] font-medium"
+                        className="flex items-center justify-center rounded px-1 py-1 sm:block sm:justify-normal sm:truncate sm:px-1.5 sm:py-0.5 sm:text-[10px] sm:font-medium"
                         style={overdue ? {
                           background: "color-mix(in srgb, #f43f5e 16%, transparent)",
                           color: "#e11d48",
@@ -67,7 +67,12 @@ export function CalendarView({ tasks, lang }: { tasks: Task[]; lang: Lang }) {
                           background: "color-mix(in srgb, var(--feature-color) 14%, transparent)",
                           color: "var(--feature-color)",
                         }}>
-                        {t.title}
+                        {/* Below `sm`, day cells are ~38px wide — a truncated title only
+                            leaves room for one letter + ellipsis, which is illegible and
+                            misleading. Show a plain color-coded dot there instead; the full
+                            (still truncated) title returns at `sm:` and up where it fits. */}
+                        <span aria-hidden className="block h-1.5 w-1.5 rounded-full bg-current sm:hidden" />
+                        <span className="hidden sm:inline">{t.title}</span>
                       </div>
                     );
                   })}
