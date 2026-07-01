@@ -29,6 +29,11 @@ export default async function PlanLayout({ children }: { children: React.ReactNo
                 <Link href="/plan" className="hidden text-sm text-[var(--muted)] transition hover:text-[var(--foreground)] sm:block">
                   {pt(lang, "nav.projects")}
                 </Link>
+                {session.user.role === "admin" && (
+                  <Link href="/plan/admin" className="hidden text-sm text-[var(--muted)] transition hover:text-[var(--foreground)] sm:block">
+                    {pt(lang, "nav.admin")}
+                  </Link>
+                )}
               </div>
               <div className="flex items-center gap-3">
                 <span className="hidden items-center gap-1 rounded-md border border-[var(--border)] px-2 py-1 text-[11px] text-[var(--muted-soft)] lg:inline-flex">
