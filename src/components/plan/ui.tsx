@@ -2,7 +2,7 @@ import type { Task } from "@/lib/db/schema";
 
 /* Shared class tokens — keep every /plan control visually consistent. */
 export const btnPrimary =
-  "inline-flex items-center justify-center gap-1.5 rounded-md bg-[var(--feature-color)] px-3 py-1.5 text-sm font-medium text-white shadow-sm transition hover:opacity-90 active:scale-[.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--feature-color)] disabled:opacity-50";
+  "inline-flex items-center justify-center gap-1.5 rounded-md bg-[var(--feature-color)] px-3 py-1.5 text-sm font-medium text-[var(--feature-contrast)] shadow-sm transition hover:opacity-90 active:scale-[.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--feature-color)] disabled:opacity-50";
 export const btnSecondary =
   "inline-flex items-center justify-center gap-1.5 rounded-md border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-sm font-medium transition hover:bg-[var(--surface-2)] active:scale-[.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--feature-color)]";
 export const btnGhost =

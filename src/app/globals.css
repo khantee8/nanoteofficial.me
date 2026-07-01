@@ -48,6 +48,12 @@
   --feature-tint: rgba(59, 79, 191, 0.08);
   --feature-tint-strong: rgba(59, 79, 191, 0.16);
   --feature-glow: radial-gradient(ellipse at top, rgba(59, 79, 191, 0.15), transparent 60%);
+
+  /* Text color for solid feature/brand-accent fills (buttons, active tabs).
+     Light mode's accents are dark enough for white text; dark mode's are
+     deliberately bright/pastel for pop against a near-black background,
+     which fails contrast with white text — so this flips per theme. */
+  --feature-contrast: #ffffff;
 }
 
 [data-feature="finance"] {
@@ -116,6 +122,7 @@ html.dark {
   --status-design: #93c5fd;
   --status-prototyping: #6ee7b7;
   --status-live: #6ee7b7;
+  --feature-contrast: #06080d;
 }
 
 html.dark [data-feature="finance"] {

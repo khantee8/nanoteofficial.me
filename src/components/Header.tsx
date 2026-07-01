@@ -37,7 +37,7 @@ export function Header({ lang }: { lang: Lang }) {
             <LangToggle current={lang} />
             <a
               href={`mailto:${profile.email}`}
-              className="hidden sm:inline-flex items-center gap-2 rounded-full bg-[var(--brand-accent)] text-white px-4 py-2 text-sm font-semibold shadow-[0_1px_6px_color-mix(in_oklab,var(--brand-accent)_30%,transparent)] hover:brightness-110 transition-all"
+              className="hidden sm:inline-flex items-center gap-2 rounded-full bg-[var(--brand-accent)] text-[var(--feature-contrast)] px-4 py-2 text-sm font-semibold shadow-[0_1px_6px_color-mix(in_oklab,var(--brand-accent)_30%,transparent)] hover:brightness-110 transition-all"
             >
               {t("cta.hire", lang)}
             </a>
