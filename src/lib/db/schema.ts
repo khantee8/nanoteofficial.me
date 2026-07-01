@@ -5,12 +5,15 @@ import {
 import type { AdapterAccountType } from "next-auth/adapters";
 
 /* ---- Auth.js standard tables (Drizzle adapter shape) ---- */
+export const userRole = pgEnum("user_role", ["admin", "editor", "viewer"]);
+
 export const users = pgTable("user", {
   id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
   name: text("name"),
   email: text("email").unique(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   image: text("image"),
+  role: userRole("role").notNull().default("viewer"),
 });
 
 export const accounts = pgTable("account", {
@@ -77,3 +80,5 @@ export type Project = typeof projects.$inferSelect;
 export type NewProject = typeof projects.$inferInsert;
 export type Task = typeof tasks.$inferSelect;
 export type NewTask = typeof tasks.$inferInsert;
+export type User = typeof users.$inferSelect;
+export type UserRole = User["role"];
