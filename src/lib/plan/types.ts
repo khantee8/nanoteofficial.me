@@ -1,4 +1,4 @@
-import type { Project, Task } from "@/lib/db/schema";
+import type { Project, Task, UserRole } from "@/lib/db/schema";
 
 export const PROJECT_TYPES = ["it", "travel", "interview", "general"] as const;
 export const TASK_STATUSES = ["backlog", "todo", "in_progress", "done"] as const;
@@ -10,6 +10,14 @@ export type ProjectWithProgress = Project & { total: number; done: number; progr
 export type StatusCount = Record<Task["status"], number>;
 
 export type PlanUser = { id: string; name: string | null; email: string | null };
+
+export const USER_ROLES: UserRole[] = ["admin", "editor", "viewer"];
+
+export function canEditPlan(role: UserRole): boolean {
+  return role === "admin" || role === "editor";
+}
+
+export type PlanUserWithRole = PlanUser & { role: UserRole };
 
 /** Assumed weekly capacity per person (hours) — no per-user capacity stored in MVP. */
 export const DEFAULT_CAPACITY_HOURS = 40;

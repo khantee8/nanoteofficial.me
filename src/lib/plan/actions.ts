@@ -2,14 +2,26 @@
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
-import { projects, tasks } from "@/lib/db/schema";
-import type { Task } from "@/lib/db/schema";
+import { projects, tasks, users } from "@/lib/db/schema";
+import type { Task, UserRole } from "@/lib/db/schema";
 import { auth } from "@/auth";
 
 async function requireUser() {
   const session = await auth();
   if (!session?.user) throw new Error("Unauthorized");
   return session.user;
+}
+
+async function requireEditor() {
+  const user = await requireUser();
+  if (user.role !== "admin" && user.role !== "editor") throw new Error("Forbidden");
+  return user;
+}
+
+async function requireAdmin() {
+  const user = await requireUser();
+  if (user.role !== "admin") throw new Error("Forbidden");
+  return user;
 }
 
 const str = (fd: FormData, k: string) => {
@@ -22,7 +34,7 @@ const num = (fd: FormData, k: string) => {
 };
 
 export async function createProject(fd: FormData): Promise<void> {
-  await requireUser();
+  await requireEditor();
   const name = str(fd, "name");
   if (!name) throw new Error("Name required");
   await db.insert(projects).values({
@@ -37,7 +49,7 @@ export async function createProject(fd: FormData): Promise<void> {
 }
 
 export async function updateProject(id: string, fd: FormData): Promise<void> {
-  await requireUser();
+  await requireEditor();
   await db.update(projects).set({
     name: str(fd, "name") ?? undefined,
     type: (str(fd, "type") as never) ?? undefined,
@@ -52,14 +64,14 @@ export async function updateProject(id: string, fd: FormData): Promise<void> {
 }
 
 export async function archiveProject(id: string): Promise<void> {
-  await requireUser();
+  await requireEditor();
   await db.update(projects).set({ archived: true, updatedAt: new Date() })
     .where(eq(projects.id, id));
   revalidatePath("/plan");
 }
 
 export async function createTask(projectId: string, fd: FormData): Promise<void> {
-  await requireUser();
+  await requireEditor();
   const title = str(fd, "title");
   if (!title) throw new Error("Title required");
   await db.insert(tasks).values({
@@ -77,7 +89,7 @@ export async function createTask(projectId: string, fd: FormData): Promise<void>
 }
 
 export async function updateTask(id: string, fd: FormData): Promise<void> {
-  await requireUser();
+  await requireEditor();
   const projectId = str(fd, "projectId");
   await db.update(tasks).set({
     title: str(fd, "title") ?? undefined,
@@ -95,14 +107,20 @@ export async function updateTask(id: string, fd: FormData): Promise<void> {
 }
 
 export async function deleteTask(id: string): Promise<void> {
-  await requireUser();
+  await requireEditor();
   const [row] = await db.delete(tasks).where(eq(tasks.id, id)).returning({ p: tasks.projectId });
   if (row) revalidatePath(`/plan/${row.p}`);
 }
 
 export async function moveTask(id: string, status: Task["status"], order: number): Promise<void> {
-  await requireUser();
+  await requireEditor();
   const [row] = await db.update(tasks).set({ status, order, updatedAt: new Date() })
     .where(eq(tasks.id, id)).returning({ p: tasks.projectId });
   if (row) revalidatePath(`/plan/${row.p}`);
+}
+
+export async function setUserRole(userId: string, role: UserRole): Promise<void> {
+  await requireAdmin();
+  await db.update(users).set({ role }).where(eq(users.id, userId));
+  revalidatePath("/plan/admin");
 }
