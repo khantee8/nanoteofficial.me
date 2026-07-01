@@ -120,7 +120,7 @@ export function ContactForm({ lang }: { lang: Lang }) {
       <button
         type="submit"
         disabled={status === "sending"}
-        className="inline-flex items-center gap-2 rounded-full bg-[var(--brand-accent)] text-white px-6 py-2.5 text-sm font-semibold shadow-[0_2px_10px_color-mix(in_oklab,var(--brand-accent)_30%,transparent)] hover:brightness-110 transition-all disabled:opacity-60"
+        className="inline-flex items-center gap-2 rounded-full bg-[var(--brand-accent)] text-[var(--feature-contrast)] px-6 py-2.5 text-sm font-semibold shadow-[0_2px_10px_color-mix(in_oklab,var(--brand-accent)_30%,transparent)] hover:brightness-110 transition-all disabled:opacity-60"
       >
         {status === "sending" ? labels.sending[lang] : labels.send[lang]}
       </button>

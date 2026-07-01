@@ -16,7 +16,7 @@ export function ViewTabs() {
           aria-current={active === v}
           className={`rounded-md px-3 py-1.5 text-sm font-medium transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--feature-color)] ${
             active === v
-              ? "bg-[var(--feature-color)] text-white shadow-sm"
+              ? "bg-[var(--feature-color)] text-[var(--feature-contrast)] shadow-sm"
               : "text-[var(--muted)] hover:text-[var(--foreground)]"
           }`}>
           {t(`view.${v}` as PlanKey)}
