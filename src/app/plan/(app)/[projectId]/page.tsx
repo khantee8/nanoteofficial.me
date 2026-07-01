@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { auth } from "@/auth";
 import { getProject, listTasks, listUsers, statusCounts } from "@/lib/plan/queries";
 import { createTask } from "@/lib/plan/actions";
 import { computeBurndown } from "@/lib/plan/burndown";
+import { canEditPlan } from "@/lib/plan/types";
 import { getLang } from "@/lib/i18n";
 import { pt, typeKey } from "@/lib/plan/i18n";
 import { ViewTabs } from "@/components/plan/ViewTabs";
@@ -25,8 +27,9 @@ export default async function ProjectPage({
 }) {
   const { projectId } = await params;
   const { view = "table" } = await searchParams;
-  const project = await getProject(projectId);
+  const [project, session] = await Promise.all([getProject(projectId), auth()]);
   if (!project) notFound();
+  const role = session!.user.role;
   const [tasks, counts, users, lang] = await Promise.all([
     listTasks(projectId), statusCounts(projectId), listUsers(), getLang(),
   ]);
@@ -51,7 +54,7 @@ export default async function ProjectPage({
               </p>
             )}
           </div>
-          <ProjectActions project={project} />
+          <ProjectActions project={project} role={role} />
         </div>
       </div>
 
@@ -59,15 +62,15 @@ export default async function ProjectPage({
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <ViewTabs />
-        {view !== "burndown" && (
+        {view !== "burndown" && canEditPlan(role) && (
           <TaskForm projectId={projectId} users={users} action={createTask.bind(null, projectId)} />
         )}
       </div>
 
-      {view === "kanban" ? <KanbanBoard key={tasksKey} projectId={projectId} tasks={tasks} users={users} />
+      {view === "kanban" ? <KanbanBoard key={tasksKey} projectId={projectId} tasks={tasks} users={users} role={role} />
         : view === "calendar" ? <CalendarView tasks={tasks} lang={lang} />
         : view === "burndown" ? <BurndownChart data={computeBurndown(tasks, project)} lang={lang} />
-        : <TableView key={tasksKey} tasks={tasks} users={users} />}
+        : <TableView key={tasksKey} tasks={tasks} users={users} role={role} />}
     </section>
   );
 }

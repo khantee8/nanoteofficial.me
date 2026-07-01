@@ -6,7 +6,7 @@ import {
   type DragEndEvent, type DragStartEvent,
 } from "@dnd-kit/core";
 import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { TASK_STATUSES } from "@/lib/plan/types";
+import { TASK_STATUSES, canEditPlan } from "@/lib/plan/types";
 import type { PlanUser } from "@/lib/plan/types";
 import { moveTask, createTask, deleteTask } from "@/lib/plan/actions";
 import { statusKey } from "@/lib/plan/i18n";
@@ -15,7 +15,7 @@ import { TaskDrawer } from "./TaskDrawer";
 import { useToast } from "./Toaster";
 import { usePlanT } from "./LangContext";
 import { PlusIcon } from "./ui";
-import type { Task } from "@/lib/db/schema";
+import type { Task, UserRole } from "@/lib/db/schema";
 
 const COL_DOT: Record<Task["status"], string> = {
   backlog: "bg-slate-400", todo: "bg-blue-500", in_progress: "bg-amber-500", done: "bg-emerald-500",
@@ -61,7 +61,7 @@ function QuickAdd({ projectId, status, onError }: { projectId: string; status: T
   );
 }
 
-export function KanbanBoard({ projectId, tasks, users = [] }: { projectId: string; tasks: Task[]; users?: PlanUser[] }) {
+export function KanbanBoard({ projectId, tasks, users = [], role }: { projectId: string; tasks: Task[]; users?: PlanUser[]; role: UserRole }) {
   const [items, setItems] = useState(tasks);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [selected, setSelected] = useState<Task | null>(null);
@@ -69,10 +69,10 @@ export function KanbanBoard({ projectId, tasks, users = [] }: { projectId: strin
   const toast = useToast();
   const { t } = usePlanT();
 
-  const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
-    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
-  );
+  const canEdit = canEditPlan(role);
+  const pointerSensor = useSensor(PointerSensor, { activationConstraint: { distance: 6 } });
+  const keyboardSensor = useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates });
+  const sensors = useSensors(...(canEdit ? [pointerSensor, keyboardSensor] : []));
 
   const byStatus = (s: Task["status"]) => items.filter((t) => t.status === s);
   const active = activeId ? items.find((t) => t.id === activeId) ?? null : null;
@@ -134,13 +134,13 @@ export function KanbanBoard({ projectId, tasks, users = [] }: { projectId: strin
                   {byStatus(s).map((t) => <KanbanCard key={t.id} task={t} onOpen={() => setSelected(t)} />)}
                 </DroppableColumn>
               </SortableContext>
-              <QuickAdd projectId={projectId} status={s} onError={() => toast(t("toast.taskAddErr"), { tone: "error" })} />
+              {canEdit && <QuickAdd projectId={projectId} status={s} onError={() => toast(t("toast.taskAddErr"), { tone: "error" })} />}
             </div>
           ))}
         </div>
         <DragOverlay>{active ? <CardVisual task={active} dragging /> : null}</DragOverlay>
       </DndContext>
-      <TaskDrawer task={selected} users={users} onClose={() => setSelected(null)} onDelete={onDelete} />
+      <TaskDrawer task={selected} users={users} role={role} onClose={() => setSelected(null)} onDelete={onDelete} />
     </>
   );
 }

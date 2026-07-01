@@ -3,16 +3,18 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ProjectForm } from "./ProjectForm";
 import { updateProject, archiveProject } from "@/lib/plan/actions";
-import type { Project } from "@/lib/db/schema";
+import { canEditPlan } from "@/lib/plan/types";
+import type { Project, UserRole } from "@/lib/db/schema";
 import { btnSecondary, btnDanger } from "./ui";
 import { useToast } from "./Toaster";
 import { usePlanT } from "./LangContext";
 
-export function ProjectActions({ project }: { project: Project }) {
+export function ProjectActions({ project, role }: { project: Project; role: UserRole }) {
   const [editing, setEditing] = useState(false);
   const router = useRouter();
   const toast = useToast();
   const { t } = usePlanT();
+  if (!canEditPlan(role)) return null;
   if (editing) return (
     <div className="w-full max-w-md">
       <ProjectForm project={project} defaultOpen

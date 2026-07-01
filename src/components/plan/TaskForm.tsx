@@ -9,7 +9,7 @@ import { useToast } from "./Toaster";
 import { usePlanT } from "./LangContext";
 
 export function TaskForm({
-  projectId, task, action, users = [], defaultOpen = false, bare = false,
+  projectId, task, action, users = [], defaultOpen = false, bare = false, readOnly = false,
 }: {
   projectId: string;
   task?: Task;
@@ -18,6 +18,8 @@ export function TaskForm({
   defaultOpen?: boolean;
   /** Render the form fields directly (no toggle button / card chrome) — for the drawer. */
   bare?: boolean;
+  /** Disable every field and hide the save/cancel row — viewers looking at a task. */
+  readOnly?: boolean;
 }) {
   const [open, setOpen] = useState(defaultOpen);
   const [pending, setPending] = useState(false);
@@ -48,19 +50,19 @@ export function TaskForm({
     <form action={onSubmit}
       className={bare ? "flex flex-col gap-3" : "flex flex-col gap-3 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm"}>
       <input type="hidden" name="projectId" value={projectId} />
-      <input name="title" required defaultValue={task?.title ?? ""} placeholder={t("task.title")} className={inputCls} autoFocus />
-      <textarea name="description" defaultValue={task?.description ?? ""} placeholder={t("task.description")} rows={3} className={`${inputCls} resize-y`} />
+      <input name="title" required defaultValue={task?.title ?? ""} placeholder={t("task.title")} className={inputCls} autoFocus disabled={readOnly} />
+      <textarea name="description" defaultValue={task?.description ?? ""} placeholder={t("task.description")} rows={3} className={`${inputCls} resize-y`} disabled={readOnly} />
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <label className="flex flex-col gap-1 text-xs text-[var(--muted)]">
           {t("task.status")}
-          <select name="status" defaultValue={task?.status ?? "backlog"} className={inputCls}>
+          <select name="status" defaultValue={task?.status ?? "backlog"} className={inputCls} disabled={readOnly}>
             {TASK_STATUSES.map((s) => <option key={s} value={s}>{t(statusKey(s))}</option>)}
           </select>
         </label>
         {users.length > 0 && (
           <label className="flex flex-col gap-1 text-xs text-[var(--muted)]">
             {t("task.assignee")}
-            <select name="assigneeId" defaultValue={task?.assigneeId ?? ""} className={inputCls}>
+            <select name="assigneeId" defaultValue={task?.assigneeId ?? ""} className={inputCls} disabled={readOnly}>
               <option value="">{t("task.unassigned")}</option>
               {users.map((u) => <option key={u.id} value={u.id}>{userLabel(u)}</option>)}
             </select>
@@ -68,22 +70,24 @@ export function TaskForm({
         )}
         <label className="flex flex-col gap-1 text-xs text-[var(--muted)]">
           {t("task.due")}
-          <input name="dueDate" type="date" defaultValue={task?.dueDate ?? ""} className={inputCls} />
+          <input name="dueDate" type="date" defaultValue={task?.dueDate ?? ""} className={inputCls} disabled={readOnly} />
         </label>
         <label className="flex flex-col gap-1 text-xs text-[var(--muted)]">
           {t("task.estimate")}
-          <input name="estimateHours" type="number" step="0.5" defaultValue={task?.estimateHours ?? ""} placeholder="0" className={inputCls} />
+          <input name="estimateHours" type="number" step="0.5" defaultValue={task?.estimateHours ?? ""} placeholder="0" className={inputCls} disabled={readOnly} />
         </label>
         <label className="flex flex-col gap-1 text-xs text-[var(--muted)]">
           {t("task.cost")}
-          <input name="cost" type="number" step="0.01" defaultValue={task?.cost ?? ""} placeholder="0.00" className={inputCls} />
+          <input name="cost" type="number" step="0.01" defaultValue={task?.cost ?? ""} placeholder="0.00" className={inputCls} disabled={readOnly} />
         </label>
       </div>
-      <input name="tags" defaultValue={(task?.tags ?? []).join(", ")} placeholder={t("task.tags")} className={inputCls} />
-      <div className="flex gap-2">
-        <button type="submit" className={btnPrimary} disabled={pending}>{pending ? t("common.saving") : t("common.save")}</button>
-        {!bare && <button type="button" onClick={() => setOpen(false)} className={btnGhost}>{t("common.cancel")}</button>}
-      </div>
+      <input name="tags" defaultValue={(task?.tags ?? []).join(", ")} placeholder={t("task.tags")} className={inputCls} disabled={readOnly} />
+      {!readOnly && (
+        <div className="flex gap-2">
+          <button type="submit" className={btnPrimary} disabled={pending}>{pending ? t("common.saving") : t("common.save")}</button>
+          {!bare && <button type="button" onClick={() => setOpen(false)} className={btnGhost}>{t("common.cancel")}</button>}
+        </div>
+      )}
     </form>
   );
 }

@@ -5,18 +5,21 @@ import { StatusBadge, btnDanger } from "./ui";
 import { updateTask } from "@/lib/plan/actions";
 import { statusKey } from "@/lib/plan/i18n";
 import { usePlanT } from "./LangContext";
+import { canEditPlan } from "@/lib/plan/types";
 import type { PlanUser } from "@/lib/plan/types";
-import type { Task } from "@/lib/db/schema";
+import type { Task, UserRole } from "@/lib/db/schema";
 
 export function TaskDrawer({
-  task, users, onClose, onDelete,
+  task, users, role, onClose, onDelete,
 }: {
   task: Task | null;
   users: PlanUser[];
+  role: UserRole;
   onClose: () => void;
   onDelete: (task: Task) => void;
 }) {
   const { t } = usePlanT();
+  const canEdit = canEditPlan(role);
   return (
     <Drawer
       open={task != null}
@@ -34,13 +37,16 @@ export function TaskDrawer({
             task={task}
             users={users}
             bare
+            readOnly={!canEdit}
             action={async (fd) => { await updateTask(task.id, fd); onClose(); }}
           />
-          <div className="border-t border-[var(--border)] pt-4">
-            <button onClick={() => { onDelete(task); onClose(); }} className={btnDanger}>
-              {t("task.deleteBtn")}
-            </button>
-          </div>
+          {canEdit && (
+            <div className="border-t border-[var(--border)] pt-4">
+              <button onClick={() => { onDelete(task); onClose(); }} className={btnDanger}>
+                {t("task.deleteBtn")}
+              </button>
+            </div>
+          )}
         </div>
       )}
     </Drawer>
