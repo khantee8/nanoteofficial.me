@@ -3,7 +3,7 @@ import { and, asc, eq, ne, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { projects, tasks, users } from "@/lib/db/schema";
 import type { Project, Task } from "@/lib/db/schema";
-import type { PlanUser, ProjectWithProgress, StatusCount, TeamLoadRow } from "./types";
+import type { PlanUser, PlanUserWithRole, ProjectWithProgress, StatusCount, TeamLoadRow } from "./types";
 
 export async function listProjects(): Promise<ProjectWithProgress[]> {
   const rows = await db
@@ -49,6 +49,13 @@ export async function statusCounts(projectId: string): Promise<StatusCount> {
 export async function listUsers(): Promise<PlanUser[]> {
   return db
     .select({ id: users.id, name: users.name, email: users.email })
+    .from(users)
+    .orderBy(asc(users.name), asc(users.email));
+}
+
+export async function listUsersForAdmin(): Promise<PlanUserWithRole[]> {
+  return db
+    .select({ id: users.id, name: users.name, email: users.email, role: users.role })
     .from(users)
     .orderBy(asc(users.name), asc(users.email));
 }

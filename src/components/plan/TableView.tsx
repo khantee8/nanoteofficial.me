@@ -1,6 +1,6 @@
 "use client";
 import { useMemo, useRef, useState } from "react";
-import { userLabel, TASK_STATUSES } from "@/lib/plan/types";
+import { userLabel, TASK_STATUSES, canEditPlan } from "@/lib/plan/types";
 import type { PlanUser } from "@/lib/plan/types";
 import { deleteTask } from "@/lib/plan/actions";
 import { dueState, DUE_TEXT } from "@/lib/plan/dates";
@@ -9,12 +9,12 @@ import { StatusBadge, inputCls } from "./ui";
 import { TaskDrawer } from "./TaskDrawer";
 import { useToast } from "./Toaster";
 import { usePlanT } from "./LangContext";
-import type { Task } from "@/lib/db/schema";
+import type { Task, UserRole } from "@/lib/db/schema";
 
 type SortKey = "title" | "status" | "dueDate" | "estimateHours" | "cost";
 const STATUS_ORDER: Record<Task["status"], number> = { backlog: 0, todo: 1, in_progress: 2, done: 3 };
 
-export function TableView({ tasks, users = [] }: { tasks: Task[]; users?: PlanUser[] }) {
+export function TableView({ tasks, users = [], role }: { tasks: Task[]; users?: PlanUser[]; role: UserRole }) {
   const [list, setList] = useState(tasks);
   const [selected, setSelected] = useState<Task | null>(null);
   const [query, setQuery] = useState("");
@@ -29,6 +29,8 @@ export function TableView({ tasks, users = [] }: { tasks: Task[]; users?: PlanUs
     const u = users.find((x) => x.id === id);
     return u ? userLabel(u) : "—";
   };
+
+  const canEdit = canEditPlan(role);
 
   const rows = useMemo(() => {
     const needle = query.trim().toLowerCase();
@@ -131,10 +133,12 @@ export function TableView({ tasks, users = [] }: { tasks: Task[]; users?: PlanUs
                     <td className="px-4 py-2.5 text-right tabular-nums text-[var(--muted)]">{task.estimateHours ?? "—"}</td>
                     <td className="px-4 py-2.5 text-right tabular-nums text-[var(--muted)]">{task.cost ?? "—"}</td>
                     <td className="px-4 py-2.5">
-                      <button onClick={(e) => { e.stopPropagation(); onDelete(task); }}
-                        className="rounded-md px-2 py-1 text-sm text-[var(--muted-soft)] transition hover:bg-rose-500/10 hover:text-rose-600 dark:hover:text-rose-400">
-                        {t("common.delete")}
-                      </button>
+                      {canEdit && (
+                        <button onClick={(e) => { e.stopPropagation(); onDelete(task); }}
+                          className="rounded-md px-2 py-1 text-sm text-[var(--muted-soft)] transition hover:bg-rose-500/10 hover:text-rose-600 dark:hover:text-rose-400">
+                          {t("common.delete")}
+                        </button>
+                      )}
                     </td>
                   </tr>
                 );
@@ -144,7 +148,7 @@ export function TableView({ tasks, users = [] }: { tasks: Task[]; users?: PlanUs
         </div>
       )}
 
-      <TaskDrawer task={selected} users={users} onClose={() => setSelected(null)} onDelete={onDelete} />
+      <TaskDrawer task={selected} users={users} role={role} onClose={() => setSelected(null)} onDelete={onDelete} />
     </div>
   );
 }
