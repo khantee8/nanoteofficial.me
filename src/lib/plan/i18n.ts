@@ -7,6 +7,7 @@ import type { Lang } from "@/lib/i18n";
  */
 const dict = {
   "nav.projects": { en: "Projects", th: "โปรเจกต์" },
+  "nav.admin": { en: "Admin", th: "ผู้ดูแลระบบ" },
   "action.signOut": { en: "Sign out", th: "ออกจากระบบ" },
 
   "overview.teamLoad": { en: "Team load", th: "ภาระงานของทีม" },
@@ -129,6 +130,16 @@ const dict = {
   "toast.projectSaveErr": { en: "Couldn’t save project", th: "บันทึกโปรเจกต์ไม่สำเร็จ" },
   "toast.projectArchived": { en: "Project archived", th: "เก็บโปรเจกต์เข้าคลังแล้ว" },
   "toast.projectArchiveErr": { en: "Couldn’t archive project", th: "เก็บโปรเจกต์เข้าคลังไม่สำเร็จ" },
+  "toast.roleUpdated": { en: "Role updated", th: "อัปเดตบทบาทแล้ว" },
+  "toast.roleUpdateErr": { en: "Couldn’t update role", th: "อัปเดตบทบาทไม่สำเร็จ" },
+
+  "role.admin": { en: "Admin", th: "ผู้ดูแลระบบ" },
+  "role.editor": { en: "Editor", th: "ผู้แก้ไข" },
+  "role.viewer": { en: "Viewer", th: "ผู้ชม" },
+
+  "admin.title": { en: "Manage users", th: "จัดการผู้ใช้" },
+  "admin.user": { en: "User", th: "ผู้ใช้" },
+  "admin.role": { en: "Role", th: "บทบาท" },
 } as const;
 
 export type PlanKey = keyof typeof dict;
@@ -141,3 +152,4 @@ export function pt(lang: Lang, key: PlanKey, vars?: Record<string, string | numb
 
 export const statusKey = (s: string) => `status.${s}` as PlanKey;
 export const typeKey = (s: string) => `type.${s}` as PlanKey;
+export const roleKey = (r: string) => `role.${r}` as PlanKey;
