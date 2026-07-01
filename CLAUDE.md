@@ -13,6 +13,13 @@ npm run lint     # ESLint
 npx tsc --noEmit # type-check only
 ```
 
+There is **no test runner** — verify changes with `tsc --noEmit`, `lint`, and `build` (all must pass). The build must also pass **with `DATABASE_URL` unset** (see `/plan` below); a quick guard is `env -u DATABASE_URL npm run build`.
+
+**Database migrations** (`/plan` only) — `drizzle-kit` does **not** read `.env.local`, so pass the URL inline:
+```bash
+DATABASE_URL="postgres://…" npx drizzle-kit push   # apply src/lib/db/schema.ts to Neon
+```
+
 **Docker deployment** — build must happen on the host before starting the container:
 ```bash
 npm run build
@@ -76,7 +83,7 @@ CSP uses `'unsafe-inline'` on both `script-src` and `style-src`. `script-src` re
 
 ## Key constraints
 
-- `/kb` is intentionally excluded from `sitemap.ts` and blocked in `robots.ts` (private page).
+- `/kb` and `/plan` are intentionally excluded from `sitemap.ts` and blocked in `robots.ts` (private pages).
 - The `postcss` package is overridden to `>=8.5.10` in `package.json` to resolve a known advisory — do not remove the override.
 - The scroll-spy IntersectionObserver in `HeaderNav.tsx` only watches sections that exist on the homepage (`about`, `company`, `experience`, `projects`, `roadmap`, `contact`) — it has no effect on subdomain pages.
 - Certification vendor logos live in `public/logos/` as SVGs. Real logos (Cisco, ISC², Fortinet, Palo Alto, CompTIA) were sourced from Simple Icons CDN; others (EC-Council, PMI, ServiceNow, SEC Thailand) are hand-crafted SVGs.
