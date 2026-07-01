@@ -47,7 +47,8 @@ export function BurndownChart({ data, lang }: { data: Burndown; lang: Lang }) {
           </span>
         </span>
       </figcaption>
-      <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img"
+      <div className="overflow-x-auto">
+      <svg viewBox={`0 0 ${W} ${H}`} className="w-full min-w-[42rem]" role="img"
         aria-label={`Burndown chart, ${maxY} ${unitLabel} at start trending to zero`}>
         {/* gridlines */}
         {grid.map((g) => (
@@ -79,6 +80,7 @@ export function BurndownChart({ data, lang }: { data: Burndown; lang: Lang }) {
           <circle key={i} cx={x(i)} cy={y(p.remaining)} r={2.5} style={{ fill: "var(--feature-color)" }} />
         ))}
       </svg>
+      </div>
     </figure>
   );
 }
