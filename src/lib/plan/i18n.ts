@@ -140,6 +140,28 @@ const dict = {
   "admin.title": { en: "Manage users", th: "จัดการผู้ใช้" },
   "admin.user": { en: "User", th: "ผู้ใช้" },
   "admin.role": { en: "Role", th: "บทบาท" },
+  "admin.invites": { en: "Invite coworkers", th: "เชิญเพื่อนร่วมงาน" },
+  "admin.invitesDesc": {
+    en: "Invited emails can sign in with a magic link. Revoke an invite to withdraw access before first sign-in.",
+    th: "อีเมลที่ได้รับเชิญสามารถเข้าสู่ระบบด้วยลิงก์วิเศษ เพิกถอนคำเชิญเพื่อยกเลิกสิทธิ์ก่อนการเข้าสู่ระบบครั้งแรก",
+  },
+  "admin.invitedOn": { en: "Invited", th: "เชิญเมื่อ" },
+  "admin.noInvites": { en: "No pending invites.", th: "ไม่มีคำเชิญที่รอดำเนินการ" },
+  "invite.emailPh": { en: "coworker@example.com", th: "coworker@example.com" },
+  "invite.send": { en: "Send invite", th: "ส่งคำเชิญ" },
+  "invite.sending": { en: "Sending…", th: "กำลังส่ง…" },
+  "invite.resend": { en: "Resend", th: "ส่งอีกครั้ง" },
+  "invite.revoke": { en: "Revoke", th: "เพิกถอน" },
+  "toast.inviteSent": { en: "Invite sent", th: "ส่งคำเชิญแล้ว" },
+  "toast.inviteNoEmail": {
+    en: "Invite saved, but the email couldn't be sent — use Resend.",
+    th: "บันทึกคำเชิญแล้ว แต่ส่งอีเมลไม่สำเร็จ — กด \"ส่งอีกครั้ง\"",
+  },
+  "toast.inviteExists": { en: "That email is already a user or invited", th: "อีเมลนี้เป็นผู้ใช้อยู่แล้วหรือได้รับเชิญแล้ว" },
+  "toast.inviteInvalid": { en: "Enter a valid email address", th: "กรอกอีเมลให้ถูกต้อง" },
+  "toast.inviteResent": { en: "Invite re-sent", th: "ส่งคำเชิญอีกครั้งแล้ว" },
+  "toast.inviteRevoked": { en: "Invite revoked", th: "เพิกถอนคำเชิญแล้ว" },
+  "toast.inviteErr": { en: "Couldn't update invite", th: "อัปเดตคำเชิญไม่สำเร็จ" },
 } as const;
 
 export type PlanKey = keyof typeof dict;
