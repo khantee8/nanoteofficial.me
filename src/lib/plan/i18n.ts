@@ -8,6 +8,7 @@ import type { Lang } from "@/lib/i18n";
 const dict = {
   "nav.projects": { en: "Projects", th: "โปรเจกต์" },
   "nav.admin": { en: "Admin", th: "ผู้ดูแลระบบ" },
+  "nav.menu": { en: "Menu", th: "เมนู" },
   "action.signOut": { en: "Sign out", th: "ออกจากระบบ" },
 
   "overview.teamLoad": { en: "Team load", th: "ภาระงานของทีม" },
@@ -22,6 +23,7 @@ const dict = {
   "view.table": { en: "Table", th: "ตาราง" },
   "view.kanban": { en: "Kanban", th: "คัมบัง" },
   "view.calendar": { en: "Calendar", th: "ปฏิทิน" },
+  "view.gantt": { en: "Gantt", th: "แกนต์" },
   "view.burndown": { en: "Burndown", th: "เบิร์นดาวน์" },
 
   "status.backlog": { en: "Backlog", th: "รอดำเนินการ" },
@@ -75,6 +77,11 @@ const dict = {
   "kanban.add": { en: "Add", th: "เพิ่ม" },
   "kanban.quick": { en: "Task title…", th: "ชื่องาน…" },
 
+  "grid.empty": {
+    en: "No projects yet. Create your first project to start planning.",
+    th: "ยังไม่มีโปรเจกต์ สร้างโปรเจกต์แรกของคุณเพื่อเริ่มวางแผน",
+  },
+
   "bd.burndown": { en: "Burndown", th: "เบิร์นดาวน์" },
   "bd.hours": { en: "hours", th: "ชั่วโมง" },
   "bd.tasks": { en: "tasks", th: "งาน" },
@@ -84,6 +91,13 @@ const dict = {
   "bd.empty": {
     en: "Not enough task history yet to chart a burndown. Add tasks (with estimates for an hours-based chart) and complete a few to see the trend.",
     th: "ข้อมูลงานยังไม่พอที่จะสร้างกราฟเบิร์นดาวน์ เพิ่มงาน (พร้อมประมาณการชั่วโมงสำหรับกราฟแบบชั่วโมง) และทำให้เสร็จสักสองสามงานเพื่อดูแนวโน้ม",
+  },
+
+  "gantt.today": { en: "today", th: "วันนี้" },
+  "gantt.unscheduled": { en: "Unscheduled", th: "ยังไม่กำหนดวัน" },
+  "gantt.empty": {
+    en: "No scheduled tasks yet. Give tasks a start or due date to see them on the timeline.",
+    th: "ยังไม่มีงานที่กำหนดวัน กำหนดวันเริ่มหรือวันครบกำหนดให้งานเพื่อแสดงบนไทม์ไลน์",
   },
 
   "tl.desc": {
@@ -140,6 +154,28 @@ const dict = {
   "admin.title": { en: "Manage users", th: "จัดการผู้ใช้" },
   "admin.user": { en: "User", th: "ผู้ใช้" },
   "admin.role": { en: "Role", th: "บทบาท" },
+  "admin.invites": { en: "Invite coworkers", th: "เชิญเพื่อนร่วมงาน" },
+  "admin.invitesDesc": {
+    en: "Invited emails can sign in with a magic link. Revoke an invite to withdraw access before first sign-in.",
+    th: "อีเมลที่ได้รับเชิญสามารถเข้าสู่ระบบด้วยลิงก์วิเศษ เพิกถอนคำเชิญเพื่อยกเลิกสิทธิ์ก่อนการเข้าสู่ระบบครั้งแรก",
+  },
+  "admin.invitedOn": { en: "Invited", th: "เชิญเมื่อ" },
+  "admin.noInvites": { en: "No pending invites.", th: "ไม่มีคำเชิญที่รอดำเนินการ" },
+  "invite.emailPh": { en: "coworker@example.com", th: "coworker@example.com" },
+  "invite.send": { en: "Send invite", th: "ส่งคำเชิญ" },
+  "invite.sending": { en: "Sending…", th: "กำลังส่ง…" },
+  "invite.resend": { en: "Resend", th: "ส่งอีกครั้ง" },
+  "invite.revoke": { en: "Revoke", th: "เพิกถอน" },
+  "toast.inviteSent": { en: "Invite sent", th: "ส่งคำเชิญแล้ว" },
+  "toast.inviteNoEmail": {
+    en: "Invite saved, but the email couldn’t be sent — use Resend.",
+    th: "บันทึกคำเชิญแล้ว แต่ส่งอีเมลไม่สำเร็จ — กด“ส่งอีกครั้ง”",
+  },
+  "toast.inviteExists": { en: "That email is already a user or invited", th: "อีเมลนี้เป็นผู้ใช้อยู่แล้วหรือได้รับเชิญแล้ว" },
+  "toast.inviteInvalid": { en: "Enter a valid email address", th: "กรอกอีเมลให้ถูกต้อง" },
+  "toast.inviteResent": { en: "Invite re-sent", th: "ส่งคำเชิญอีกครั้งแล้ว" },
+  "toast.inviteRevoked": { en: "Invite revoked", th: "เพิกถอนคำเชิญแล้ว" },
+  "toast.inviteErr": { en: "Couldn’t update invite", th: "อัปเดตคำเชิญไม่สำเร็จ" },
 } as const;
 
 export type PlanKey = keyof typeof dict;

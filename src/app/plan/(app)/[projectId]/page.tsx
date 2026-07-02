@@ -12,6 +12,7 @@ import { StatusOverview } from "@/components/plan/StatusOverview";
 import { TableView } from "@/components/plan/TableView";
 import { KanbanBoard } from "@/components/plan/KanbanBoard";
 import { CalendarView } from "@/components/plan/CalendarView";
+import { GanttChart } from "@/components/plan/GanttChart";
 import { BurndownChart } from "@/components/plan/BurndownChart";
 import { TaskForm } from "@/components/plan/TaskForm";
 import { ProjectActions } from "@/components/plan/ProjectActions";
@@ -38,7 +39,8 @@ export default async function ProjectPage({
 
   return (
     <section className="space-y-6">
-      <div>
+      <div className="rounded-xl border border-[var(--border)] p-5"
+        style={{ background: `linear-gradient(135deg, color-mix(in srgb, ${project.color} 10%, transparent), transparent 60%)` }}>
         <Link href="/plan" className="inline-flex items-center gap-1 text-sm text-[var(--muted)] transition hover:text-[var(--foreground)]">
           ← {pt(lang, "project.back")}
         </Link>
@@ -69,6 +71,7 @@ export default async function ProjectPage({
 
       {view === "kanban" ? <KanbanBoard key={tasksKey} projectId={projectId} tasks={tasks} users={users} role={role} />
         : view === "calendar" ? <CalendarView tasks={tasks} lang={lang} />
+        : view === "gantt" ? <GanttChart key={tasksKey} tasks={tasks} users={users} role={role} lang={lang} />
         : view === "burndown" ? <BurndownChart data={computeBurndown(tasks, project)} lang={lang} />
         : <TableView key={tasksKey} tasks={tasks} users={users} role={role} />}
     </section>

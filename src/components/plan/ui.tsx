@@ -20,7 +20,7 @@ const STATUS_TONE: Record<Task["status"], string> = {
   in_progress: "bg-amber-500/12 text-amber-700 dark:text-amber-300",
   done: "bg-emerald-500/12 text-emerald-700 dark:text-emerald-300",
 };
-const STATUS_DOT: Record<Task["status"], string> = {
+export const STATUS_DOT: Record<Task["status"], string> = {
   backlog: "bg-slate-400",
   todo: "bg-blue-500",
   in_progress: "bg-amber-500",
@@ -72,5 +72,30 @@ export function PlusIcon({ className = "h-4 w-4" }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
       strokeLinecap="round" className={className} aria-hidden><path d="M12 5v14M5 12h14" /></svg>
+  );
+}
+
+const AVATAR_HUES = [210, 260, 330, 20, 150, 45, 190, 285];
+function hashHue(seed: string): number {
+  let h = 0;
+  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) | 0;
+  return AVATAR_HUES[Math.abs(h) % AVATAR_HUES.length];
+}
+
+/** Deterministic initials avatar — same email always gets the same hue.
+ *  Fixed oklch pastel bg + dark text stays legible in both themes. */
+export function Avatar({ name, email, size = "md" }: {
+  name: string | null; email: string | null; size?: "sm" | "md";
+}) {
+  const label = name?.trim() || email?.trim() || "?";
+  const initials = label.split(/\s+/).map((w) => w[0]).slice(0, 2).join("").toUpperCase();
+  const hue = hashHue(email?.trim() || label);
+  const cls = size === "sm" ? "h-5 w-5 text-[9px]" : "h-6 w-6 text-[10px]";
+  return (
+    <span title={label}
+      className={`inline-flex shrink-0 items-center justify-center rounded-full font-semibold ${cls}`}
+      style={{ background: `oklch(0.85 0.08 ${hue})`, color: `oklch(0.35 0.1 ${hue})` }}>
+      {initials}
+    </span>
   );
 }

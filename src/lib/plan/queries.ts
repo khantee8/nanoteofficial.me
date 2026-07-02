@@ -1,8 +1,8 @@
 import "server-only";
-import { and, asc, eq, ne, sql } from "drizzle-orm";
+import { and, asc, eq, isNull, ne, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
-import { projects, tasks, users } from "@/lib/db/schema";
-import type { Project, Task } from "@/lib/db/schema";
+import { projects, tasks, users, invites } from "@/lib/db/schema";
+import type { Project, Task, Invite } from "@/lib/db/schema";
 import type { PlanUser, PlanUserWithRole, ProjectWithProgress, StatusCount, TeamLoadRow } from "./types";
 
 export async function listProjects(): Promise<ProjectWithProgress[]> {
@@ -77,4 +77,11 @@ export async function teamLoad(): Promise<TeamLoadRow[]> {
     .groupBy(tasks.assigneeId, users.name, users.email)
     .orderBy(sql`sum(${tasks.estimateHours}) desc nulls last`);
   return rows;
+}
+
+/** Pending (unaccepted) invites — page is admin-gated. */
+export async function listPendingInvites(): Promise<Invite[]> {
+  return db.select().from(invites)
+    .where(isNull(invites.acceptedAt))
+    .orderBy(asc(invites.createdAt));
 }

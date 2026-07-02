@@ -5,7 +5,7 @@ import type { PlanUser } from "@/lib/plan/types";
 import { deleteTask } from "@/lib/plan/actions";
 import { dueState, DUE_TEXT } from "@/lib/plan/dates";
 import { statusKey } from "@/lib/plan/i18n";
-import { StatusBadge, inputCls } from "./ui";
+import { StatusBadge, inputCls, Avatar } from "./ui";
 import { TaskDrawer } from "./TaskDrawer";
 import { useToast } from "./Toaster";
 import { usePlanT } from "./LangContext";
@@ -128,7 +128,16 @@ export function TableView({ tasks, users = [], role }: { tasks: Task[]; users?: 
                       )}
                     </td>
                     <td className="px-4 py-2.5"><StatusBadge status={task.status} label={t(statusKey(task.status))} /></td>
-                    <td className="px-4 py-2.5 text-[var(--muted)]">{nameOf(task.assigneeId)}</td>
+                    <td className="px-4 py-2.5 text-[var(--muted)]">
+                      {task.assigneeId ? (
+                        <span className="inline-flex items-center gap-2">
+                          <Avatar size="sm"
+                            name={users.find((u) => u.id === task.assigneeId)?.name ?? null}
+                            email={users.find((u) => u.id === task.assigneeId)?.email ?? null} />
+                          {nameOf(task.assigneeId)}
+                        </span>
+                      ) : "—"}
+                    </td>
                     <td className={`px-4 py-2.5 ${ds === "overdue" || ds === "soon" ? DUE_TEXT[ds] : "text-[var(--muted)]"}`}>{task.dueDate ?? "—"}</td>
                     <td className="px-4 py-2.5 text-right tabular-nums text-[var(--muted)]">{task.estimateHours ?? "—"}</td>
                     <td className="px-4 py-2.5 text-right tabular-nums text-[var(--muted)]">{task.cost ?? "—"}</td>
