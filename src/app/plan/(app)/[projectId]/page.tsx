@@ -12,6 +12,7 @@ import { StatusOverview } from "@/components/plan/StatusOverview";
 import { TableView } from "@/components/plan/TableView";
 import { KanbanBoard } from "@/components/plan/KanbanBoard";
 import { CalendarView } from "@/components/plan/CalendarView";
+import { GanttChart } from "@/components/plan/GanttChart";
 import { BurndownChart } from "@/components/plan/BurndownChart";
 import { TaskForm } from "@/components/plan/TaskForm";
 import { ProjectActions } from "@/components/plan/ProjectActions";
@@ -69,6 +70,7 @@ export default async function ProjectPage({
 
       {view === "kanban" ? <KanbanBoard key={tasksKey} projectId={projectId} tasks={tasks} users={users} role={role} />
         : view === "calendar" ? <CalendarView tasks={tasks} lang={lang} />
+        : view === "gantt" ? <GanttChart key={tasksKey} tasks={tasks} users={users} role={role} lang={lang} />
         : view === "burndown" ? <BurndownChart data={computeBurndown(tasks, project)} lang={lang} />
         : <TableView key={tasksKey} tasks={tasks} users={users} role={role} />}
     </section>

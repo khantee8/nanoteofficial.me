@@ -23,6 +23,7 @@ const dict = {
   "view.table": { en: "Table", th: "ตาราง" },
   "view.kanban": { en: "Kanban", th: "คัมบัง" },
   "view.calendar": { en: "Calendar", th: "ปฏิทิน" },
+  "view.gantt": { en: "Gantt", th: "แกนต์" },
   "view.burndown": { en: "Burndown", th: "เบิร์นดาวน์" },
 
   "status.backlog": { en: "Backlog", th: "รอดำเนินการ" },
@@ -85,6 +86,13 @@ const dict = {
   "bd.empty": {
     en: "Not enough task history yet to chart a burndown. Add tasks (with estimates for an hours-based chart) and complete a few to see the trend.",
     th: "ข้อมูลงานยังไม่พอที่จะสร้างกราฟเบิร์นดาวน์ เพิ่มงาน (พร้อมประมาณการชั่วโมงสำหรับกราฟแบบชั่วโมง) และทำให้เสร็จสักสองสามงานเพื่อดูแนวโน้ม",
+  },
+
+  "gantt.today": { en: "today", th: "วันนี้" },
+  "gantt.unscheduled": { en: "Unscheduled", th: "ยังไม่กำหนดวัน" },
+  "gantt.empty": {
+    en: "No scheduled tasks yet. Give tasks a start or due date to see them on the timeline.",
+    th: "ยังไม่มีงานที่กำหนดวัน กำหนดวันเริ่มหรือวันครบกำหนดให้งานเพื่อแสดงบนไทม์ไลน์",
   },
 
   "tl.desc": {
