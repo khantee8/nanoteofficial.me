@@ -131,14 +131,20 @@ export function KanbanBoard({ projectId, tasks, users = [], role }: { projectId:
               </h3>
               <SortableContext items={byStatus(s).map((t) => t.id)} strategy={verticalListSortingStrategy}>
                 <DroppableColumn id={`col:${s}`}>
-                  {byStatus(s).map((t) => <KanbanCard key={t.id} task={t} onOpen={() => setSelected(t)} />)}
+                  {byStatus(s).map((t) => (
+                    <KanbanCard key={t.id} task={t}
+                      assignee={users.find((u) => u.id === t.assigneeId) ?? null}
+                      onOpen={() => setSelected(t)} />
+                  ))}
                 </DroppableColumn>
               </SortableContext>
               {canEdit && <QuickAdd projectId={projectId} status={s} onError={() => toast(t("toast.taskAddErr"), { tone: "error" })} />}
             </div>
           ))}
         </div>
-        <DragOverlay>{active ? <CardVisual task={active} dragging /> : null}</DragOverlay>
+        <DragOverlay>{active ? (
+          <CardVisual task={active} assignee={users.find((u) => u.id === active.assigneeId) ?? null} dragging />
+        ) : null}</DragOverlay>
       </DndContext>
       <TaskDrawer task={selected} users={users} role={role} onClose={() => setSelected(null)} onDelete={onDelete} />
     </>
