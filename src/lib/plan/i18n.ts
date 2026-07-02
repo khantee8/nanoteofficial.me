@@ -8,6 +8,7 @@ import type { Lang } from "@/lib/i18n";
 const dict = {
   "nav.projects": { en: "Projects", th: "โปรเจกต์" },
   "nav.admin": { en: "Admin", th: "ผู้ดูแลระบบ" },
+  "nav.menu": { en: "Menu", th: "เมนู" },
   "action.signOut": { en: "Sign out", th: "ออกจากระบบ" },
 
   "overview.teamLoad": { en: "Team load", th: "ภาระงานของทีม" },
