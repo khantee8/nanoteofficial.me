@@ -17,8 +17,6 @@ export function PlanSidebar({ projects, isAdmin, email, langToggle, signOut }: {
   const path = usePathname();
   const { t } = usePlanT();
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => { setOpen(false); }, [path]);
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
@@ -55,18 +53,18 @@ export function PlanSidebar({ projects, isAdmin, email, langToggle, signOut }: {
         open ? "translate-x-0" : "-translate-x-full"
       }`}>
         <div className="flex h-full flex-col gap-4 p-4">
-          <Link href="/plan" className="flex items-center gap-2 px-1 font-semibold tracking-tight">
+          <Link href="/plan" onClick={() => setOpen(false)} className="flex items-center gap-2 px-1 font-semibold tracking-tight">
             <span className="h-2 w-2 rounded-full" style={{ background: "var(--feature-color)" }} /> Plan
           </Link>
           <nav className="space-y-0.5">
-            <Link href="/plan" className={item(path === "/plan")}>{t("nav.projects")}</Link>
-            {isAdmin && <Link href="/plan/admin" className={item(path === "/plan/admin")}>{t("nav.admin")}</Link>}
+            <Link href="/plan" onClick={() => setOpen(false)} className={item(path === "/plan")}>{t("nav.projects")}</Link>
+            {isAdmin && <Link href="/plan/admin" onClick={() => setOpen(false)} className={item(path === "/plan/admin")}>{t("nav.admin")}</Link>}
           </nav>
           {projects.length > 0 && (
             <div className="min-h-0 flex-1 overflow-y-auto">
               <div className="space-y-0.5">
                 {projects.map((p) => (
-                  <Link key={p.id} href={`/plan/${p.id}`} className={item(path.startsWith(`/plan/${p.id}`))}>
+                  <Link key={p.id} href={`/plan/${p.id}`} onClick={() => setOpen(false)} className={item(path.startsWith(`/plan/${p.id}`))}>
                     <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: p.color }} />
                     <span className="truncate">{p.name}</span>
                   </Link>
