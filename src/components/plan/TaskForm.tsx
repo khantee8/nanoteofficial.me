@@ -29,20 +29,15 @@ export function TaskForm({
   const startRef = useRef<HTMLInputElement>(null);
   const dueRef = useRef<HTMLInputElement>(null);
   const estRef = useRef<HTMLInputElement>(null);
-  const lastAuto = useRef<string | null>(null);
 
-  // Auto-fill estimate from the date range (workdays × 8h). Never overwrites a
-  // value the user typed — only fills when empty or still equal to a prior auto-fill.
+  // Dates drive the estimate: any date change recalculates it as workdays × 8h
+  // (Mon–Fri). A manually typed estimate persists only until a date changes.
   const autoEstimate = () => {
     const start = startRef.current?.value, due = dueRef.current?.value, est = estRef.current;
     if (!start || !due || !est) return;
-    const current = est.value.trim();
-    if (current && current !== lastAuto.current) return;
     const days = workdaysBetween(start, due);
     if (days <= 0) return;
-    const value = String(days * WORKDAY_HOURS);
-    est.value = value;
-    lastAuto.current = value;
+    est.value = String(days * WORKDAY_HOURS);
   };
 
   if (!bare && !open) return (

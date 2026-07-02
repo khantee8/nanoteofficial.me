@@ -5,6 +5,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { FeatureSync } from "@/components/FeatureSync";
 import { BackToTop } from "@/components/BackToTop";
+import { SiteChrome } from "@/components/SiteChrome";
 import { profile, pick } from "@/lib/profile";
 import { getLang, t } from "@/lib/i18n";
 
@@ -86,10 +87,14 @@ export default async function RootLayout({
       </head>
       <body className="min-h-full flex flex-col">
         <FeatureSync />
-        <Header lang={lang} />
+        <SiteChrome>
+          <Header lang={lang} />
+        </SiteChrome>
         <main className="flex-1">{children}</main>
-        <Footer lang={lang} />
-        <BackToTop label={t("cta.backToTop", lang)} />
+        <SiteChrome>
+          <Footer lang={lang} />
+          <BackToTop label={t("cta.backToTop", lang)} />
+        </SiteChrome>
       </body>
     </html>
   );
