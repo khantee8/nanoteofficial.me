@@ -77,6 +77,11 @@ const dict = {
   "kanban.add": { en: "Add", th: "เพิ่ม" },
   "kanban.quick": { en: "Task title…", th: "ชื่องาน…" },
 
+  "grid.empty": {
+    en: "No projects yet. Create your first project to start planning.",
+    th: "ยังไม่มีโปรเจกต์ สร้างโปรเจกต์แรกของคุณเพื่อเริ่มวางแผน",
+  },
+
   "bd.burndown": { en: "Burndown", th: "เบิร์นดาวน์" },
   "bd.hours": { en: "hours", th: "ชั่วโมง" },
   "bd.tasks": { en: "tasks", th: "งาน" },

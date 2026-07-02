@@ -39,7 +39,8 @@ export default async function ProjectPage({
 
   return (
     <section className="space-y-6">
-      <div>
+      <div className="rounded-xl border border-[var(--border)] p-5"
+        style={{ background: `linear-gradient(135deg, color-mix(in srgb, ${project.color} 10%, transparent), transparent 60%)` }}>
         <Link href="/plan" className="inline-flex items-center gap-1 text-sm text-[var(--muted)] transition hover:text-[var(--foreground)]">
           ← {pt(lang, "project.back")}
         </Link>
