@@ -69,6 +69,10 @@ export function TaskForm({
           </label>
         )}
         <label className="flex flex-col gap-1 text-xs text-[var(--muted)]">
+          {t("task.start")}
+          <input name="startDate" type="date" defaultValue={task?.startDate ?? ""} className={inputCls} disabled={readOnly} />
+        </label>
+        <label className="flex flex-col gap-1 text-xs text-[var(--muted)]">
           {t("task.due")}
           <input name="dueDate" type="date" defaultValue={task?.dueDate ?? ""} className={inputCls} disabled={readOnly} />
         </label>

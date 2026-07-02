@@ -24,12 +24,6 @@ export function TableView({ tasks, users = [], role }: { tasks: Task[]; users?: 
   const toast = useToast();
   const { t } = usePlanT();
 
-  const nameOf = (id: string | null) => {
-    if (!id) return "—";
-    const u = users.find((x) => x.id === id);
-    return u ? userLabel(u) : "—";
-  };
-
   const canEdit = canEditPlan(role);
 
   const rows = useMemo(() => {
@@ -99,7 +93,7 @@ export function TableView({ tasks, users = [], role }: { tasks: Task[]; users?: 
         </div>
       ) : (
         <div className="overflow-x-auto rounded-xl border border-[var(--border)] bg-[var(--surface)] shadow-sm">
-          <table className="w-full min-w-[44rem] text-sm">
+          <table className="w-full min-w-[52rem] text-sm">
             <thead>
               <tr className="border-b border-[var(--border)] text-left text-xs uppercase tracking-wide text-[var(--muted-soft)]">
                 <th className={`${th} cursor-pointer`} onClick={() => toggleSort("title")}>{t("col.title")}{sortMark("title")}</th>
@@ -114,11 +108,12 @@ export function TableView({ tasks, users = [], role }: { tasks: Task[]; users?: 
             <tbody>
               {rows.map((task) => {
                 const ds = dueState(task);
+                const assignee = task.assigneeId ? users.find((u) => u.id === task.assigneeId) ?? null : null;
                 return (
                   <tr key={task.id} onClick={() => setSelected(task)}
                     className="cursor-pointer border-t border-[var(--border-soft)] transition hover:bg-[var(--surface-2)]">
-                    <td className="px-4 py-2.5">
-                      <div className="font-medium">{task.title}</div>
+                    <td className="min-w-[16rem] px-4 py-2.5">
+                      <div className="font-medium break-words">{task.title}</div>
                       {task.tags.length > 0 && (
                         <div className="mt-1 flex flex-wrap gap-1">
                           {task.tags.map((tag) => (
@@ -129,16 +124,14 @@ export function TableView({ tasks, users = [], role }: { tasks: Task[]; users?: 
                     </td>
                     <td className="px-4 py-2.5"><StatusBadge status={task.status} label={t(statusKey(task.status))} /></td>
                     <td className="px-4 py-2.5 text-[var(--muted)]">
-                      {task.assigneeId ? (
-                        <span className="inline-flex items-center gap-2">
-                          <Avatar size="sm"
-                            name={users.find((u) => u.id === task.assigneeId)?.name ?? null}
-                            email={users.find((u) => u.id === task.assigneeId)?.email ?? null} />
-                          {nameOf(task.assigneeId)}
+                      {assignee ? (
+                        <span className="inline-flex max-w-[10rem] items-center gap-2" title={userLabel(assignee)}>
+                          <Avatar size="sm" name={assignee.name} email={assignee.email} />
+                          <span className="truncate">{userLabel(assignee)}</span>
                         </span>
                       ) : "—"}
                     </td>
-                    <td className={`px-4 py-2.5 ${ds === "overdue" || ds === "soon" ? DUE_TEXT[ds] : "text-[var(--muted)]"}`}>{task.dueDate ?? "—"}</td>
+                    <td className={`whitespace-nowrap px-4 py-2.5 tabular-nums ${ds === "overdue" || ds === "soon" ? DUE_TEXT[ds] : "text-[var(--muted)]"}`}>{task.dueDate ?? "—"}</td>
                     <td className="px-4 py-2.5 text-right tabular-nums text-[var(--muted)]">{task.estimateHours ?? "—"}</td>
                     <td className="px-4 py-2.5 text-right tabular-nums text-[var(--muted)]">{task.cost ?? "—"}</td>
                     <td className="px-4 py-2.5">

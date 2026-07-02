@@ -44,6 +44,7 @@ const dict = {
   "task.status": { en: "Status", th: "สถานะ" },
   "task.assignee": { en: "Assignee", th: "ผู้รับผิดชอบ" },
   "task.unassigned": { en: "— Unassigned —", th: "— ยังไม่มอบหมาย —" },
+  "task.start": { en: "Start date", th: "วันเริ่ม" },
   "task.due": { en: "Due date", th: "กำหนดส่ง" },
   "task.estimate": { en: "Estimate (h)", th: "ประมาณการ (ชม.)" },
   "task.cost": { en: "Cost", th: "ต้นทุน" },
