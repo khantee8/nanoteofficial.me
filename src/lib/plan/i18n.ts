@@ -154,14 +154,14 @@ const dict = {
   "invite.revoke": { en: "Revoke", th: "เพิกถอน" },
   "toast.inviteSent": { en: "Invite sent", th: "ส่งคำเชิญแล้ว" },
   "toast.inviteNoEmail": {
-    en: "Invite saved, but the email couldn't be sent — use Resend.",
-    th: "บันทึกคำเชิญแล้ว แต่ส่งอีเมลไม่สำเร็จ — กด \"ส่งอีกครั้ง\"",
+    en: "Invite saved, but the email couldn’t be sent — use Resend.",
+    th: "บันทึกคำเชิญแล้ว แต่ส่งอีเมลไม่สำเร็จ — กด“ส่งอีกครั้ง”",
   },
   "toast.inviteExists": { en: "That email is already a user or invited", th: "อีเมลนี้เป็นผู้ใช้อยู่แล้วหรือได้รับเชิญแล้ว" },
   "toast.inviteInvalid": { en: "Enter a valid email address", th: "กรอกอีเมลให้ถูกต้อง" },
   "toast.inviteResent": { en: "Invite re-sent", th: "ส่งคำเชิญอีกครั้งแล้ว" },
   "toast.inviteRevoked": { en: "Invite revoked", th: "เพิกถอนคำเชิญแล้ว" },
-  "toast.inviteErr": { en: "Couldn't update invite", th: "อัปเดตคำเชิญไม่สำเร็จ" },
+  "toast.inviteErr": { en: "Couldn’t update invite", th: "อัปเดตคำเชิญไม่สำเร็จ" },
 } as const;
 
 export type PlanKey = keyof typeof dict;
