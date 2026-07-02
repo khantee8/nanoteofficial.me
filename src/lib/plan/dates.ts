@@ -15,6 +15,21 @@ export function dueState(task: Pick<Task, "dueDate" | "status">, now = new Date(
   return "normal";
 }
 
+export const WORKDAY_HOURS = 8;
+
+/** Inclusive count of Mon–Fri days between two ISO dates; 0 when invalid or end < start. */
+export function workdaysBetween(startIso: string, endIso: string): number {
+  const start = Date.parse(`${startIso}T00:00:00Z`);
+  const end = Date.parse(`${endIso}T00:00:00Z`);
+  if (Number.isNaN(start) || Number.isNaN(end) || end < start) return 0;
+  let n = 0;
+  for (let ts = start; ts <= end; ts += DAY_MS) {
+    const day = new Date(ts).getUTCDay();
+    if (day !== 0 && day !== 6) n++;
+  }
+  return n;
+}
+
 export const DUE_TEXT: Record<DueState, string> = {
   overdue: "text-rose-600 dark:text-rose-400 font-medium",
   soon: "text-amber-600 dark:text-amber-400 font-medium",

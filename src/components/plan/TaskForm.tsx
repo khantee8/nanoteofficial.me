@@ -1,6 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { TASK_STATUSES, userLabel } from "@/lib/plan/types";
+import { WORKDAY_HOURS, workdaysBetween } from "@/lib/plan/dates";
 import { statusKey } from "@/lib/plan/i18n";
 import type { PlanUser } from "@/lib/plan/types";
 import type { Task } from "@/lib/db/schema";
@@ -25,6 +26,24 @@ export function TaskForm({
   const [pending, setPending] = useState(false);
   const toast = useToast();
   const { t } = usePlanT();
+  const startRef = useRef<HTMLInputElement>(null);
+  const dueRef = useRef<HTMLInputElement>(null);
+  const estRef = useRef<HTMLInputElement>(null);
+  const lastAuto = useRef<string | null>(null);
+
+  // Auto-fill estimate from the date range (workdays × 8h). Never overwrites a
+  // value the user typed — only fills when empty or still equal to a prior auto-fill.
+  const autoEstimate = () => {
+    const start = startRef.current?.value, due = dueRef.current?.value, est = estRef.current;
+    if (!start || !due || !est) return;
+    const current = est.value.trim();
+    if (current && current !== lastAuto.current) return;
+    const days = workdaysBetween(start, due);
+    if (days <= 0) return;
+    const value = String(days * WORKDAY_HOURS);
+    est.value = value;
+    lastAuto.current = value;
+  };
 
   if (!bare && !open) return (
     <button onClick={() => setOpen(true)}
@@ -70,15 +89,15 @@ export function TaskForm({
         )}
         <label className="flex flex-col gap-1 text-xs text-[var(--muted)]">
           {t("task.start")}
-          <input name="startDate" type="date" defaultValue={task?.startDate ?? ""} className={inputCls} disabled={readOnly} />
+          <input ref={startRef} name="startDate" type="date" defaultValue={task?.startDate ?? ""} onChange={autoEstimate} className={inputCls} disabled={readOnly} />
         </label>
         <label className="flex flex-col gap-1 text-xs text-[var(--muted)]">
           {t("task.due")}
-          <input name="dueDate" type="date" defaultValue={task?.dueDate ?? ""} className={inputCls} disabled={readOnly} />
+          <input ref={dueRef} name="dueDate" type="date" defaultValue={task?.dueDate ?? ""} onChange={autoEstimate} className={inputCls} disabled={readOnly} />
         </label>
         <label className="flex flex-col gap-1 text-xs text-[var(--muted)]">
           {t("task.estimate")}
-          <input name="estimateHours" type="number" step="0.5" defaultValue={task?.estimateHours ?? ""} placeholder="0" className={inputCls} disabled={readOnly} />
+          <input ref={estRef} name="estimateHours" type="number" step="0.5" defaultValue={task?.estimateHours ?? ""} placeholder="0" className={inputCls} disabled={readOnly} />
         </label>
         <label className="flex flex-col gap-1 text-xs text-[var(--muted)]">
           {t("task.cost")}

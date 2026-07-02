@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import { usePlanT } from "./LangContext";
 import type { PlanKey } from "@/lib/plan/i18n";
 
-const VIEWS = ["table", "kanban", "calendar", "gantt", "burndown"] as const;
+const VIEWS = ["table", "kanban", "gantt", "burndown", "calendar"] as const;
 
 const icon = "h-3.5 w-3.5";
 const stroke = { fill: "none", stroke: "currentColor", strokeWidth: 1.8, strokeLinecap: "round" } as const;
