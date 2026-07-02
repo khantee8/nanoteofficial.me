@@ -76,9 +76,19 @@ export const tasks = pgTable("task", {
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
+export const invites = pgTable("invite", {
+  id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+  email: text("email").notNull().unique(),
+  role: userRole("role").notNull().default("viewer"),
+  invitedBy: text("invited_by").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  acceptedAt: timestamp("accepted_at", { withTimezone: true }),
+});
+
 export type Project = typeof projects.$inferSelect;
 export type NewProject = typeof projects.$inferInsert;
 export type Task = typeof tasks.$inferSelect;
 export type NewTask = typeof tasks.$inferInsert;
 export type User = typeof users.$inferSelect;
 export type UserRole = User["role"];
+export type Invite = typeof invites.$inferSelect;
