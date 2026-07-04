@@ -1,11 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState, useTransition } from "react";
 import type { Task, UserRole } from "@/lib/db/schema";
 import type { Lang } from "@/lib/i18n";
 import type { PlanUser } from "@/lib/plan/types";
-import { userLabel } from "@/lib/plan/types";
+import { canEditPlan, userLabel } from "@/lib/plan/types";
 import { computeGantt } from "@/lib/plan/gantt";
-import { deleteTask } from "@/lib/plan/actions";
+import { deleteTask, setTaskDates } from "@/lib/plan/actions";
+import { addDays } from "@/lib/plan/dates";
 import { statusKey } from "@/lib/plan/i18n";
 import { TaskDrawer } from "./TaskDrawer";
 import { Avatar, STATUS_DOT } from "./ui";
@@ -13,14 +14,20 @@ import { useToast } from "./Toaster";
 import { usePlanT } from "./LangContext";
 
 type Tip = { task: Task; top: number; left: number; below: boolean };
+type DragMode = "move" | "start" | "end";
+type Drag = { taskId: string; mode: DragMode; originX: number; dayPx: number; delta: number; moved: boolean };
 
 export function GanttChart({ tasks, users, role, lang }: {
   tasks: Task[]; users: PlanUser[]; role: UserRole; lang: Lang;
 }) {
   const [selected, setSelected] = useState<Task | null>(null);
   const [tip, setTip] = useState<Tip | null>(null);
+  const [drag, setDrag] = useState<Drag | null>(null);
+  const justDragged = useRef(false);
+  const [, startTransition] = useTransition();
   const toast = useToast();
   const { t } = usePlanT();
+  const canEdit = canEditPlan(role);
   const g = computeGantt(tasks, { locale: lang === "th" ? "th-TH" : "en-GB" });
   const pct = (d: number) => `${(d / g.days) * 100}%`;
   const assigneeOf = (id: string | null) => users.find((u) => u.id === id) ?? null;
@@ -31,6 +38,7 @@ export function GanttChart({ tasks, users, role, lang }: {
   };
 
   const showTip = (task: Task) => (e: React.SyntheticEvent<HTMLButtonElement>) => {
+    if (drag) return;
     const rowsEl = e.currentTarget.closest("[data-rows]");
     if (!rowsEl) return;
     const r = e.currentTarget.getBoundingClientRect();
@@ -45,6 +53,50 @@ export function GanttChart({ tasks, users, role, lang }: {
   };
   const hideTip = () => setTip(null);
   const tipAssignee = tip ? assigneeOf(tip.task.assigneeId) : null;
+
+  /* --- Drag to reschedule (editors, mouse/pen only; click still opens drawer) --- */
+  const onBarPointerDown = (task: Task) => (e: React.PointerEvent<HTMLButtonElement>) => {
+    if (!canEdit || e.pointerType === "touch" || e.button !== 0) return;
+    const track = e.currentTarget.closest("[data-track]");
+    if (!track) return;
+    const mode = ((e.target as HTMLElement).dataset.handle as DragMode | undefined) ?? "move";
+    e.preventDefault();
+    e.currentTarget.setPointerCapture(e.pointerId);
+    setTip(null);
+    setDrag({ taskId: task.id, mode, originX: e.clientX, dayPx: track.getBoundingClientRect().width / g.days, delta: 0, moved: false });
+  };
+
+  const onBarPointerMove = (e: React.PointerEvent<HTMLButtonElement>) => {
+    if (!drag) return;
+    const dx = e.clientX - drag.originX;
+    const delta = Math.round(dx / drag.dayPx);
+    const moved = drag.moved || Math.abs(dx) > 4;
+    if (delta !== drag.delta || moved !== drag.moved) setDrag({ ...drag, delta, moved });
+  };
+
+  const onBarPointerUp = (task: Task) => () => {
+    if (!drag) return;
+    const { mode, delta, moved } = drag;
+    setDrag(null);
+    if (!moved) return; // plain click — the click handler opens the drawer
+    justDragged.current = true;
+    if (delta === 0) return;
+    const s0 = (task.startDate ?? task.dueDate)!;
+    const d0 = (task.dueDate ?? task.startDate)!;
+    let ns = s0, nd = d0;
+    if (mode === "move") { ns = addDays(s0, delta); nd = addDays(d0, delta); }
+    else if (mode === "start") { ns = addDays(s0, delta); if (ns > nd) ns = nd; }
+    else { nd = addDays(d0, delta); if (nd < ns) nd = ns; }
+    startTransition(async () => {
+      try { await setTaskDates(task.id, ns, nd); toast(t("toast.taskUpdated"), { tone: "success" }); }
+      catch { toast(t("toast.taskSaveErr"), { tone: "error" }); }
+    });
+  };
+
+  const openDrawer = (task: Task) => {
+    if (justDragged.current) { justDragged.current = false; return; }
+    setSelected(task);
+  };
 
   if (g.bars.length === 0) {
     return (
@@ -88,6 +140,15 @@ export function GanttChart({ tasks, users, role, lang }: {
               {/* Rows */}
               {g.bars.map(({ task, startIdx, span, overdue }) => {
                 const a = assigneeOf(task.assigneeId);
+                // Ghost the bar into its dragged position while a drag is live.
+                let dIdx = startIdx, dSpan = span;
+                if (drag?.taskId === task.id && drag.moved) {
+                  if (drag.mode === "move") dIdx = startIdx + drag.delta;
+                  else if (drag.mode === "start") {
+                    const dd = Math.min(drag.delta, span - 1);
+                    dIdx = startIdx + dd; dSpan = span - dd;
+                  } else dSpan = Math.max(1, span + drag.delta);
+                }
                 return (
                   <div key={task.id} className="flex items-center border-t border-[var(--border-soft)] first:border-t-0">
                     <button onClick={() => setSelected(task)}
@@ -97,21 +158,34 @@ export function GanttChart({ tasks, users, role, lang }: {
                         {task.title}
                       </span>
                     </button>
-                    <div className="relative h-9 min-w-0 flex-1">
-                      <button onClick={() => setSelected(task)}
+                    <div className="relative h-9 min-w-0 flex-1" data-track>
+                      <button onClick={() => openDrawer(task)}
+                        onPointerDown={onBarPointerDown(task)}
+                        onPointerMove={onBarPointerMove}
+                        onPointerUp={onBarPointerUp(task)}
+                        onPointerCancel={() => setDrag(null)}
                         onMouseEnter={showTip(task)} onMouseLeave={hideTip}
                         onFocus={showTip(task)} onBlur={hideTip}
                         aria-label={task.title}
                         className={`absolute top-1/2 h-3.5 min-w-2 -translate-y-1/2 rounded-full transition hover:opacity-80 ${STATUS_DOT[task.status]} ${
                           task.status === "done" ? "opacity-50" : ""
-                        } ${overdue ? "ring-2 ring-rose-500/70" : ""}`}
-                        style={{ left: pct(startIdx), width: pct(span) }} />
+                        } ${overdue ? "ring-2 ring-rose-500/70" : ""} ${
+                          canEdit ? "cursor-grab active:cursor-grabbing" : ""
+                        } ${drag?.taskId === task.id && drag.moved ? "opacity-70 ring-2 ring-[var(--feature-color)]" : ""}`}
+                        style={{ left: pct(dIdx), width: pct(dSpan) }}>
+                        {canEdit && (
+                          <>
+                            <span data-handle="start" className="absolute inset-y-0 left-0 w-2 cursor-ew-resize" />
+                            <span data-handle="end" className="absolute inset-y-0 right-0 w-2 cursor-ew-resize" />
+                          </>
+                        )}
+                      </button>
                     </div>
                   </div>
                 );
               })}
               {/* Hover detail card */}
-              {tip && (
+              {tip && !drag && (
                 <div className="pointer-events-none absolute z-10 w-max max-w-[17rem] rounded-lg border border-[var(--border)] bg-[var(--surface)] p-2.5 text-xs shadow-lg"
                   style={{ left: tip.left, top: tip.top, transform: tip.below ? undefined : "translateY(-100%)" }}>
                   <div className="font-medium">{tip.task.title}</div>

@@ -15,6 +15,11 @@ export function dueState(task: Pick<Task, "dueDate" | "status">, now = new Date(
   return "normal";
 }
 
+/** Shift an ISO date by n days (UTC-stable). */
+export function addDays(iso: string, days: number): string {
+  return new Date(Date.parse(`${iso}T00:00:00Z`) + days * DAY_MS).toISOString().slice(0, 10);
+}
+
 export const WORKDAY_HOURS = 8;
 
 /** Inclusive count of Mon–Fri days between two ISO dates; 0 when invalid or end < start. */

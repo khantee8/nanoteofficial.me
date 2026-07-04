@@ -6,6 +6,7 @@ import { projects, tasks, users, invites } from "@/lib/db/schema";
 import type { Task, UserRole } from "@/lib/db/schema";
 import { auth } from "@/auth";
 import { USER_ROLES } from "@/lib/plan/types";
+import { WORKDAY_HOURS, workdaysBetween } from "@/lib/plan/dates";
 import { sendInviteEmail } from "@/lib/plan/invite-email";
 
 async function requireUser() {
@@ -117,6 +118,22 @@ export async function deleteTask(id: string): Promise<void> {
 export async function moveTask(id: string, status: Task["status"], order: number): Promise<void> {
   await requireEditor();
   const [row] = await db.update(tasks).set({ status, order, updatedAt: new Date() })
+    .where(eq(tasks.id, id)).returning({ p: tasks.projectId });
+  if (row) revalidatePath(`/plan/${row.p}`);
+}
+
+const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+/** Gantt drag-reschedule: updates only the dates (the full update action nulls
+ *  omitted fields). Dates drive the estimate — recalculated as workdays × 8h. */
+export async function setTaskDates(id: string, startDate: string, dueDate: string): Promise<void> {
+  await requireEditor();
+  if (!ISO_DATE_RE.test(startDate) || !ISO_DATE_RE.test(dueDate) || dueDate < startDate) {
+    throw new Error("Invalid date range");
+  }
+  const estimateHours = String(workdaysBetween(startDate, dueDate) * WORKDAY_HOURS);
+  const [row] = await db.update(tasks)
+    .set({ startDate, dueDate, estimateHours, updatedAt: new Date() })
     .where(eq(tasks.id, id)).returning({ p: tasks.projectId });
   if (row) revalidatePath(`/plan/${row.p}`);
 }
