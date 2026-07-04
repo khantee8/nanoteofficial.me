@@ -23,6 +23,8 @@ export function GanttChart({ tasks, users, role, lang }: {
   const [selected, setSelected] = useState<Task | null>(null);
   const [tip, setTip] = useState<Tip | null>(null);
   const [drag, setDrag] = useState<Drag | null>(null);
+  const [labelPx, setLabelPx] = useState<number | null>(null);
+  const resize = useRef<{ originX: number; startW: number; max: number } | null>(null);
   const justDragged = useRef(false);
   const [, startTransition] = useTransition();
   const toast = useToast();
@@ -93,6 +95,26 @@ export function GanttChart({ tasks, users, role, lang }: {
     });
   };
 
+  /* --- Drag the column divider to resize the task-label column --- */
+  const onDividerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    const rows = e.currentTarget.closest("[data-rows]");
+    if (!rows) return;
+    e.preventDefault();
+    e.currentTarget.setPointerCapture(e.pointerId);
+    const rowsRect = rows.getBoundingClientRect();
+    resize.current = {
+      originX: e.clientX,
+      startW: e.currentTarget.getBoundingClientRect().left + e.currentTarget.offsetWidth / 2 - rowsRect.left,
+      max: rowsRect.width * 0.6,
+    };
+  };
+  const onDividerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!resize.current) return;
+    const w = Math.max(128, Math.min(resize.current.startW + e.clientX - resize.current.originX, resize.current.max));
+    setLabelPx(w);
+  };
+  const onDividerUp = () => { resize.current = null; };
+
   const openDrawer = (task: Task) => {
     if (justDragged.current) { justDragged.current = false; return; }
     setSelected(task);
@@ -110,8 +132,8 @@ export function GanttChart({ tasks, users, role, lang }: {
     <div className="space-y-3">
       <figure className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5 shadow-sm">
         <div className="overflow-x-auto">
-          {/* Label column flexes between 11rem and 18rem via --gantt-label. */}
-          <div className="min-w-[48rem]" style={{ "--gantt-label": "clamp(11rem, 26%, 18rem)" } as React.CSSProperties}>
+          {/* Label column flexes 11–18rem by default; the divider drag overrides it. */}
+          <div className="min-w-[48rem]" style={{ "--gantt-label": labelPx ? `${labelPx}px` : "clamp(11rem, 26%, 18rem)" } as React.CSSProperties}>
             {/* Month labels */}
             <div className="relative ml-[var(--gantt-label)] h-5">
               {g.months.map((m) => (
@@ -137,6 +159,13 @@ export function GanttChart({ tasks, users, role, lang }: {
                   </span>
                 )}
               </div>
+              {/* Column-resize divider (drag; double-click resets) */}
+              <div role="separator" aria-orientation="vertical" aria-label={t("gantt.resize")}
+                onPointerDown={onDividerDown} onPointerMove={onDividerMove}
+                onPointerUp={onDividerUp} onPointerCancel={onDividerUp}
+                onDoubleClick={() => setLabelPx(null)}
+                className="absolute inset-y-0 z-10 w-2 -translate-x-1/2 cursor-col-resize touch-none bg-[linear-gradient(to_right,transparent_calc(50%-0.5px),var(--border)_calc(50%-0.5px),var(--border)_calc(50%+0.5px),transparent_calc(50%+0.5px))] transition hover:bg-[color-mix(in_srgb,var(--feature-color)_25%,transparent)]"
+                style={{ left: "var(--gantt-label)" }} />
               {/* Rows */}
               {g.bars.map(({ task, startIdx, span, overdue }) => {
                 const a = assigneeOf(task.assigneeId);
@@ -151,7 +180,7 @@ export function GanttChart({ tasks, users, role, lang }: {
                 }
                 return (
                   <div key={task.id} className="flex items-center border-t border-[var(--border-soft)] first:border-t-0">
-                    <button onClick={() => setSelected(task)}
+                    <button onClick={() => setSelected(task)} title={task.title}
                       className="flex w-[var(--gantt-label)] shrink-0 items-center gap-2 truncate px-2 py-2 text-left text-sm transition hover:bg-[var(--surface-2)]">
                       {a && <Avatar size="sm" name={a.name} email={a.email} />}
                       <span className={`truncate ${task.status === "done" ? "text-[var(--muted-soft)] line-through" : ""}`}>

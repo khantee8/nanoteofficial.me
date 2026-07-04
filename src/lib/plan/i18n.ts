@@ -96,6 +96,7 @@ const dict = {
 
   "gantt.today": { en: "today", th: "วันนี้" },
   "gantt.unscheduled": { en: "Unscheduled", th: "ยังไม่กำหนดวัน" },
+  "gantt.resize": { en: "Resize task column", th: "ปรับความกว้างคอลัมน์งาน" },
   "gantt.empty": {
     en: "No scheduled tasks yet. Give tasks a start or due date to see them on the timeline.",
     th: "ยังไม่มีงานที่กำหนดวัน กำหนดวันเริ่มหรือวันครบกำหนดให้งานเพื่อแสดงบนไทม์ไลน์",
