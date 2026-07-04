@@ -72,5 +72,10 @@ export function computeGantt(
       });
     }
   }
+  // The forced window-start label overlaps the first real month boundary when
+  // the window opens near a month's end — drop it if the boundary is too close.
+  if (months.length >= 2 && months[1].startIdx - months[0].startIdx < Math.max(7, Math.round(days * 0.08))) {
+    months.shift();
+  }
   return { days, bars, unscheduled, todayIdx, weeks, months };
 }

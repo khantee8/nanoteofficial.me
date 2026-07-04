@@ -138,7 +138,7 @@ export function GanttChart({ tasks, users, role, lang }: {
             <div className="relative ml-[var(--gantt-label)] h-5">
               {g.months.map((m) => (
                 <span key={m.startIdx} style={{ left: pct(m.startIdx) }}
-                  className="absolute text-[10px] uppercase tracking-wide text-[var(--muted-soft)]">
+                  className="absolute whitespace-nowrap text-[10px] uppercase tracking-wide text-[var(--muted-soft)]">
                   {m.label}
                 </span>
               ))}
