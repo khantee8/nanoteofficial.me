@@ -19,7 +19,8 @@ export function canEditPlan(role: UserRole): boolean {
 
 export type PlanUserWithRole = PlanUser & { role: UserRole };
 
-/** Assumed weekly capacity per person (hours) — no per-user capacity stored in MVP. */
+/** Weekly capacity fallback (hours) — used when an assignee has no dated open
+ *  tasks; otherwise capacity = workdays until their furthest due date × 8h. */
 export const DEFAULT_CAPACITY_HOURS = 40;
 
 export type TeamLoadRow = {
@@ -28,6 +29,8 @@ export type TeamLoadRow = {
   email: string | null;
   openCount: number;
   openHours: number;
+  /** Furthest due date among open tasks (ISO), null when none are dated. */
+  maxDue: string | null;
 };
 
 export function userLabel(u: { name: string | null; email: string | null }): string {

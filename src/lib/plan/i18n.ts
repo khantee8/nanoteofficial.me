@@ -103,8 +103,8 @@ const dict = {
   },
 
   "tl.desc": {
-    en: "Open (non-done) work across active projects. Bars compare allocated hours to an assumed {cap}h capacity per person.",
-    th: "งานที่ยังไม่เสร็จในโปรเจกต์ที่ใช้งานอยู่ แถบเปรียบเทียบชั่วโมงที่จัดสรรกับกำลังคนที่สมมติไว้ {cap} ชม. ต่อคน",
+    en: "Open (non-done) work across active projects. Bars compare remaining hours to each person's capacity until their furthest due date (8h per workday; {cap}h/week when no dates are set).",
+    th: "งานที่ยังไม่เสร็จในโปรเจกต์ที่ใช้งานอยู่ แถบเทียบชั่วโมงคงเหลือกับกำลังทำงานจนถึงกำหนดส่งไกลสุดของแต่ละคน (วันทำการละ 8 ชม. หากไม่กำหนดวันใช้ {cap} ชม./สัปดาห์)",
   },
   "tl.unassigned": { en: "Unassigned", th: "ยังไม่มอบหมาย" },
   "tl.over": { en: "over capacity", th: "เกินกำลัง" },

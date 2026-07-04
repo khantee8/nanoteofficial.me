@@ -69,6 +69,7 @@ export async function teamLoad(): Promise<TeamLoadRow[]> {
       email: users.email,
       openCount: sql<number>`count(*)::int`,
       openHours: sql<number>`coalesce(sum(${tasks.estimateHours}), 0)::float`,
+      maxDue: sql<string | null>`max(${tasks.dueDate})`,
     })
     .from(tasks)
     .innerJoin(projects, eq(tasks.projectId, projects.id))
