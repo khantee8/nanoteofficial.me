@@ -16,6 +16,7 @@ import { GanttChart } from "@/components/plan/GanttChart";
 import { BurndownChart } from "@/components/plan/BurndownChart";
 import { TaskForm } from "@/components/plan/TaskForm";
 import { ProjectActions } from "@/components/plan/ProjectActions";
+import { SlidesLink } from "@/components/plan/slides/SlidesLink";
 import { TypeBadge, CalendarIcon } from "@/components/plan/ui";
 
 export const dynamic = "force-dynamic";
@@ -56,7 +57,10 @@ export default async function ProjectPage({
               </p>
             )}
           </div>
-          <ProjectActions project={project} role={role} />
+          <div className="flex items-center gap-2">
+            <SlidesLink projectId={projectId} label={pt(lang, "slides.button")} />
+            <ProjectActions project={project} role={role} />
+          </div>
         </div>
       </div>
 

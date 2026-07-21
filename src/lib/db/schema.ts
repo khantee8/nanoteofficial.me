@@ -1,6 +1,6 @@
 import {
   pgTable, text, timestamp, boolean, integer, numeric, date,
-  uuid, primaryKey, pgEnum,
+  uuid, primaryKey, pgEnum, jsonb, unique,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
 
@@ -76,6 +76,19 @@ export const tasks = pgTable("task", {
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
+/** AI-generated slide decks, versioned per project — see the AI Slide button
+ *  on a project's page. No separate "plan" entity: the project row already
+ *  is the plan; this table is just its deck history. */
+export const deckVersion = pgTable("deck_version", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  projectId: uuid("project_id").notNull().references(() => projects.id, { onDelete: "cascade" }),
+  versionNo: integer("version_no").notNull(),
+  deckJson: jsonb("deck_json").notNull(),
+  metaJson: jsonb("meta_json").notNull().default({}),
+  createdBy: text("created_by").references(() => users.id, { onDelete: "set null" }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [unique("deck_version_project_version_unique").on(t.projectId, t.versionNo)]);
+
 export const invites = pgTable("invite", {
   id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
   email: text("email").notNull().unique(),
@@ -92,3 +105,5 @@ export type NewTask = typeof tasks.$inferInsert;
 export type User = typeof users.$inferSelect;
 export type UserRole = User["role"];
 export type Invite = typeof invites.$inferSelect;
+export type DeckVersion = typeof deckVersion.$inferSelect;
+export type NewDeckVersion = typeof deckVersion.$inferInsert;

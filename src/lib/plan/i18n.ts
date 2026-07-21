@@ -178,6 +178,34 @@ const dict = {
   "toast.inviteResent": { en: "Invite re-sent", th: "ส่งคำเชิญอีกครั้งแล้ว" },
   "toast.inviteRevoked": { en: "Invite revoked", th: "เพิกถอนคำเชิญแล้ว" },
   "toast.inviteErr": { en: "Couldn’t update invite", th: "อัปเดตคำเชิญไม่สำเร็จ" },
+
+  "slides.button": { en: "✦ AI Slide", th: "✦ สไลด์ AI" },
+  "slides.title": { en: "AI Slides", th: "สไลด์ AI" },
+  "slides.viewerNotice": {
+    en: "Only editors and admins can generate slides. You can view and export existing versions.",
+    th: "เฉพาะผู้แก้ไขและผู้ดูแลระบบเท่านั้นที่สร้างสไลด์ได้ คุณสามารถดูและส่งออกเวอร์ชันที่มีอยู่ได้",
+  },
+  "slides.emptyDeck": { en: "Generate a deck to see it here.", th: "สร้างสไลด์เพื่อดูที่นี่" },
+  "slides.streamFailed": { en: "generation stream failed — try again", th: "การสร้างล้มเหลว — ลองอีกครั้ง" },
+
+  "slides.wizard.theme": { en: "Theme", th: "ธีม" },
+  "slides.wizard.slides": { en: "Slides", th: "จำนวนสไลด์" },
+  "slides.wizard.audience": { en: "Audience", th: "กลุ่มเป้าหมาย" },
+  "slides.wizard.extraPlaceholder": { en: "Optional extra context", th: "บริบทเพิ่มเติม (ถ้ามี)" },
+  "slides.wizard.estCost": { en: "Est. cost", th: "ค่าใช้จ่ายโดยประมาณ" },
+  "slides.wizard.generate": { en: "✦ Generate", th: "✦ สร้างสไลด์" },
+  "slides.wizard.generating": { en: "Generating…", th: "กำลังสร้าง…" },
+
+  "slides.thinking.title": { en: "Thinking", th: "กำลังคิด" },
+  "slides.thinking.outline": { en: "Outlining narrative", th: "ร่างโครงเรื่อง" },
+  "slides.thinking.draft": { en: "Drafting slides", th: "ร่างสไลด์" },
+  "slides.thinking.lint": { en: "Quality check", th: "ตรวจสอบคุณภาพ" },
+  "slides.thinking.critic": { en: "Revising flagged slides", th: "แก้ไขสไลด์ที่พบปัญหา" },
+  "slides.thinking.working": { en: "working…", th: "กำลังทำงาน…" },
+
+  "slides.versions.title": { en: "Versions", th: "เวอร์ชัน" },
+  "slides.export.pptx": { en: "Export PPTX", th: "ส่งออก PPTX" },
+  "slides.export.pdf": { en: "Export PDF", th: "ส่งออก PDF" },
 } as const;
 
 export type PlanKey = keyof typeof dict;
