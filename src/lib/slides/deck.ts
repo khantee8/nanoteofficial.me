@@ -1,5 +1,7 @@
-export type ThemeId = 'midnight' | 'editorial' | 'grid';
-export const THEMES: ThemeId[] = ['midnight', 'editorial', 'grid'];
+export type { ThemeId } from './themes';
+export { THEMES } from './themes';
+import type { ThemeId } from './themes';
+import { THEMES } from './themes';
 
 export type Slide =
   | { layout: 'title'; title: string; subtitle?: string }
