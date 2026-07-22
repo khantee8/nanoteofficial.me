@@ -20,7 +20,7 @@ export function PresentOverlay({ deck, project, onClose }: { deck: Deck; project
       else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prev(); }
       else if (e.key === 'Escape') { /* fullscreenchange handler closes */ if (!document.fullscreenElement) onClose(); }
       else if (e.key.toLowerCase() === 's') setNotesOpen((v) => !v);
-      else if (e.key.toLowerCase() === 'f') { document.fullscreenElement ? document.exitFullscreen() : ref.current?.requestFullscreen?.(); }
+      else if (e.key.toLowerCase() === 'f') { if (document.fullscreenElement) document.exitFullscreen(); else ref.current?.requestFullscreen?.(); }
     };
     const onFsChange = () => { if (!document.fullscreenElement) onClose(); };
     window.addEventListener('keydown', onKey);
