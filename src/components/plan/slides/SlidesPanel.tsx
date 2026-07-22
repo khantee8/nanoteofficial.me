@@ -7,6 +7,7 @@ import { ThinkingPane } from './ThinkingPane';
 import { DeckRenderer } from './DeckRenderer';
 import { VersionSwitcher } from './VersionSwitcher';
 import { ExportButtons } from './ExportButtons';
+import { PresentOverlay } from './PresentOverlay';
 import { usePlanT } from '@/components/plan/LangContext';
 
 type Version = { versionNo: number; deck: Deck; meta: { costUsd: number; lintFixed: number } };
@@ -17,9 +18,10 @@ type Version = { versionNo: number; deck: Deck; meta: { costUsd: number; lintFix
  *  and updates locally from the SSE `done` event — no separate list-refresh
  *  route needed; the stream already carries everything a new version adds. */
 export function SlidesPanel({
-  projectId, audience, canGenerate, initialVersions,
+  projectId, projectName, audience, canGenerate, initialVersions,
 }: {
   projectId: string;
+  projectName: string;
   audience: string;
   canGenerate: boolean;
   initialVersions: Version[];
@@ -30,6 +32,7 @@ export function SlidesPanel({
   const [steps, setSteps] = useState<StepNote[]>([]);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState('');
+  const [presenting, setPresenting] = useState(false);
   const { t } = usePlanT();
 
   async function generate(opts: { theme: ThemeId; slideCount: number; extra: string }) {
@@ -68,23 +71,31 @@ export function SlidesPanel({
   }
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 380px) 1fr', gap: 20, alignItems: 'start' }}>
-      <section style={{ display: 'grid', gap: 16 }}>
-        {canGenerate
-          ? <GenerateWizard audience={audience} onGenerate={generate} busy={busy} />
-          : <p style={{ fontSize: 13, opacity: 0.7 }}>{t('slides.viewerNotice')}</p>}
-        {steps.length > 0 && <ThinkingPane steps={steps} done={!busy} />}
-        {err && <p style={{ color: '#ff6b6b' }}>{err}</p>}
-        {versions.length > 0 && <VersionSwitcher versions={versions} disabled={busy} onPick={(d, versionNo) => { setShown(d); setShownVersionNo(versionNo); }} />}
-      </section>
-      <section>
-        {shown ? (
-          <>
-            <ExportButtons projectId={projectId} versionNo={shownVersionNo ?? versions[0]?.versionNo ?? 1} />
-            <div className="print-root"><DeckRenderer deck={shown} /></div>
-          </>
-        ) : <p style={{ opacity: 0.5 }}>{t('slides.emptyDeck')}</p>}
-      </section>
-    </div>
+    <>
+      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 380px) 1fr', gap: 20, alignItems: 'start' }}>
+        <section style={{ display: 'grid', gap: 16 }}>
+          {canGenerate
+            ? <GenerateWizard audience={audience} onGenerate={generate} busy={busy} />
+            : <p style={{ fontSize: 13, opacity: 0.7 }}>{t('slides.viewerNotice')}</p>}
+          {steps.length > 0 && <ThinkingPane steps={steps} done={!busy} />}
+          {err && <p style={{ color: '#ff6b6b' }}>{err}</p>}
+          {versions.length > 0 && <VersionSwitcher versions={versions} disabled={busy} onPick={(d, versionNo) => { setShown(d); setShownVersionNo(versionNo); }} />}
+        </section>
+        <section>
+          {shown ? (
+            <>
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                <ExportButtons projectId={projectId} versionNo={shownVersionNo ?? versions[0]?.versionNo ?? 1} />
+                <button onClick={() => setPresenting(true)} style={{ padding: '6px 12px', border: '1px solid var(--border)', borderRadius: 6, background: 'transparent', color: 'inherit', marginBottom: 12 }}>
+                  {t('slides.present.button')}
+                </button>
+              </div>
+              <div className="print-root"><DeckRenderer deck={shown} project={projectName} /></div>
+            </>
+          ) : <p style={{ opacity: 0.5 }}>{t('slides.emptyDeck')}</p>}
+        </section>
+      </div>
+      {presenting && shown && <PresentOverlay deck={shown} project={projectName} onClose={() => setPresenting(false)} />}
+    </>
   );
 }

@@ -33,6 +33,7 @@ export default async function ProjectSlidesPage({
       </div>
       <SlidesPanel
         projectId={projectId}
+        projectName={project.name}
         audience=""
         canGenerate={canEditPlan(role)}
         initialVersions={versions.map((v) => ({
