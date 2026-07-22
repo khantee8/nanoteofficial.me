@@ -142,6 +142,7 @@ export function validateDeck(x: unknown): { ok: true; deck: Deck } | { ok: false
   const d = x as Record<string, unknown>;
   if (!THEMES.includes(d.theme as ThemeId)) return { ok: false, error: `bad theme: ${String(d.theme)}` };
   if (!Array.isArray(d.slides)) return { ok: false, error: 'slides must be an array' };
+  if (d.slides.length < 1) return { ok: false, error: 'deck has no slides' };
   for (const [i, s] of d.slides.entries()) {
     if (!s || typeof s !== 'object') {
       return { ok: false, error: `slide ${i}: not an object` };
