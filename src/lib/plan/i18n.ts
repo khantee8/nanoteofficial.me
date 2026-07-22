@@ -206,6 +206,29 @@ const dict = {
   "slides.versions.title": { en: "Versions", th: "เวอร์ชัน" },
   "slides.export.pptx": { en: "Export PPTX", th: "ส่งออก PPTX" },
   "slides.export.pdf": { en: "Export PDF", th: "ส่งออก PDF" },
+
+  "slides.present.button": { en: "▶ Present", th: "▶ นำเสนอ" },
+  "slides.present.exitHint": { en: "Esc to exit · ← → to navigate · S notes · F fullscreen", th: "Esc ออก · ← → เลื่อน · S โน้ต · F เต็มจอ" },
+  "slides.present.notes": { en: "Speaker notes", th: "โน้ตผู้บรรยาย" },
+  "slides.present.noNotes": { en: "No notes for this slide.", th: "ไม่มีโน้ตสำหรับสไลด์นี้" },
+  "slides.present.counter": { en: "{cur} / {total}", th: "{cur} / {total}" },
+
+  "slides.wizard.audienceLabel": { en: "Audience", th: "กลุ่มเป้าหมาย" },
+  "slides.wizard.audience.exec": { en: "Executives", th: "ผู้บริหาร" },
+  "slides.wizard.audience.investor": { en: "Investors", th: "นักลงทุน" },
+  "slides.wizard.audience.team": { en: "Team", th: "ทีมงาน" },
+  "slides.wizard.audience.client": { en: "Client", th: "ลูกค้า" },
+  "slides.wizard.audience.custom": { en: "Custom…", th: "กำหนดเอง…" },
+  "slides.wizard.notesInfo": { en: "Speaker notes are generated for every slide.", th: "ระบบสร้างโน้ตผู้บรรยายให้ทุกสไลด์" },
+
+  "slides.versions.current": { en: "current", th: "ปัจจุบัน" },
+  "slides.versions.cost": { en: "${cost} · {fixed} fixed", th: "${cost} · แก้ {fixed}" },
+  "slides.versions.justNow": { en: "just now", th: "เมื่อสักครู่" },
+  "slides.versions.minsAgo": { en: "{n}m ago", th: "{n} นาทีที่แล้ว" },
+  "slides.versions.hrsAgo": { en: "{n}h ago", th: "{n} ชม.ที่แล้ว" },
+  "slides.versions.daysAgo": { en: "{n}d ago", th: "{n} วันที่แล้ว" },
+
+  "slides.chart.empty": { en: "No data", th: "ไม่มีข้อมูล" },
 } as const;
 
 export type PlanKey = keyof typeof dict;
