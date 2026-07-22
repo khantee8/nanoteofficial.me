@@ -34,6 +34,15 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      {
+        source: "/plan/:path*",
+        destination: "https://plan.nanoteofficial.me/:path*",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

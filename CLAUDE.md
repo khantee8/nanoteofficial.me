@@ -13,12 +13,7 @@ npm run lint     # ESLint
 npx tsc --noEmit # type-check only
 ```
 
-There is **no test runner** — verify changes with `tsc --noEmit`, `lint`, and `build` (all must pass). The build must also pass **with `DATABASE_URL` unset** (see `/plan` below); a quick guard is `env -u DATABASE_URL npm run build`.
-
-**Database migrations** (`/plan` only) — `drizzle-kit` does **not** read `.env.local`, so pass the URL inline:
-```bash
-DATABASE_URL="postgres://…" npx drizzle-kit push   # apply src/lib/db/schema.ts to Neon
-```
+There is **no test runner** — verify changes with `tsc --noEmit`, `lint`, and `build` (all must pass).
 
 **Docker deployment** — build must happen on the host before starting the container:
 ```bash
@@ -60,18 +55,13 @@ All HTTP security headers — CSP, HSTS, X-Frame-Options, Referrer-Policy, Permi
 
 CSP uses `'unsafe-inline'` on both `script-src` and `style-src`. `script-src` requires it because Next.js injects inline scripts for RSC hydration — removing it breaks all client components (React never hydrates). `style-src` requires it for Tailwind v4. Neither can be tightened without a full nonce-based CSP overhaul.
 
-### `/plan` — auth + database workspace
+### /plan — migrated out (2026-07-22)
 
-`/plan` is the site's only stateful area — a private, invite-only Notion/Linear-style project-management tool. It is the site's first **authentication**, **database**, and rich **client interactivity**, and is otherwise unrelated to the static portfolio above. Full design + deployment docs live in `docs/superpowers/`.
-
-- **Route protection without middleware.** `middleware.ts` is forbidden (conflicts with `proxy.ts`). The route group `src/app/plan/(app)/` is gated in its `layout.tsx`, which calls Auth.js `auth()` and `redirect()`s anonymous users. `src/app/plan/signin/` sits **outside** the group so it stays public. `/plan` is an apex path, not a subdomain, so `proxy.ts`/`subdomainMap` are untouched.
-- **Auth** (`src/auth.ts`) — Auth.js v5 (`next-auth@beta`) magic link via the Resend provider + `@auth/drizzle-adapter`, **database** sessions. Invite-only: the `signIn` callback rejects any email not in `ALLOWED_EMAILS` (comma-separated). The Resend provider is passed `apiKey: process.env.RESEND_API_KEY` explicitly (Auth.js otherwise looks for `AUTH_RESEND_KEY`); sender is `noreply@nanoteofficial.me` (must be a verified Resend domain).
-- **Database** — Neon Postgres via `@neondatabase/serverless` (`neon-http` driver) + Drizzle ORM. `src/lib/db/schema.ts` holds the Auth.js tables + `projects`/`tasks`. **`src/lib/db/index.ts` must construct `neon()` non-throwing** — it falls back to a placeholder URL when `DATABASE_URL` is unset so the build never crashes (the Drizzle adapter needs a real instance at module load, so it cannot be lazy-Proxied). Keep this invariant.
-- **Data layer** (`src/lib/plan/`) — `queries.ts` (server-only reads), `actions.ts` (Server Actions for all mutations), `types.ts`, `burndown.ts` (pure, on-the-fly chart computation — no snapshots table), `dates.ts`. **Authorization is role-gated but still flat:** every mutation calls `requireEditor()` (admin or editor role), except `setUserRole`, which calls `requireAdmin()`; `canEditPlan(role)` in `types.ts` is the single client-side check used to hide/disable controls for viewers (defense-in-depth on top of the real server-side gate, not a substitute for it). The workspace itself remains a single shared workspace with no `ownerId`/tenant column — roles gate *actions*, not *which projects are visible*. If you ever add private/per-user projects or ownership, that would introduce new IDOR vectors and MUST add ownership checks (see the spec's Authorization note).
-- **`/plan` i18n** (`src/lib/plan/i18n.ts`) — a **separate** dictionary from the site-wide `src/lib/i18n.ts`, because the latter imports `next/headers` (server-only) and cannot be used in client components. `pt(lang, key, vars)` is pure; server components call it directly with `getLang()`, client components use `usePlanT()` from `LangContext` (a provider fed by the layout). Sign-in (outside the provider) takes `lang` as a prop.
-- **UI** (`src/components/plan/`) — shared primitives in `ui.tsx` (button/input classes, `StatusBadge`/`TypeBadge` take a translated `label`); `Toaster` (client mutation feedback), `Drawer`/`TaskDrawer`, `CommandPalette` (⌘K), `KanbanBoard` (dnd-kit). Reuses the global design tokens (`--surface`, `--border`, `--feature-color`, …) — do not hard-code colors.
-- **Client view state** (table/kanban) is reset on server revalidation via a server-derived `key` prop, not a prop→state `useEffect` (the repo's ESLint flags `react-hooks/set-state-in-effect`).
-- **Env vars:** `DATABASE_URL`, `AUTH_SECRET`, `ALLOWED_EMAILS`, `PLAN_ADMIN_EMAILS` (comma-separated emails auto-promoted to the `admin` role on sign-in), `RESEND_API_KEY`, `AUTH_URL` (pin to `https://nanoteofficial.me` so magic links don't point at preview URLs).
+The plan workspace now lives in its own repo/deployment:
+`khantee8/plan.nanoteofficial.me` → https://plan.nanoteofficial.me.
+This repo keeps a permanent redirect (`/plan/:path*` → the subdomain) in
+`next.config.ts` and no longer contains auth, database, or Anthropic code.
+Pre-migration history: this repo's git log through v0.2.9.
 
 ## Component conventions
 
@@ -83,7 +73,7 @@ CSP uses `'unsafe-inline'` on both `script-src` and `style-src`. `script-src` re
 
 ## Key constraints
 
-- `/kb` and `/plan` are intentionally excluded from `sitemap.ts` and blocked in `robots.ts` (private pages).
+- `/kb` is intentionally excluded from `sitemap.ts` and blocked in `robots.ts` (private page). `/plan` is a permanent redirect (`next.config.ts`) to `plan.nanoteofficial.me`, not a page on this site.
 - The `postcss` package is overridden to `>=8.5.10` in `package.json` to resolve a known advisory — do not remove the override.
 - The scroll-spy IntersectionObserver in `HeaderNav.tsx` only watches sections that exist on the homepage (`about`, `company`, `experience`, `projects`, `roadmap`, `contact`) — it has no effect on subdomain pages.
 - Certification vendor logos live in `public/logos/` as SVGs. Real logos (Cisco, ISC², Fortinet, Palo Alto, CompTIA) were sourced from Simple Icons CDN; others (EC-Council, PMI, ServiceNow, SEC Thailand) are hand-crafted SVGs.
