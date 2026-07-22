@@ -3,7 +3,11 @@ export { THEMES } from './themes';
 import type { ThemeId } from './themes';
 import { THEMES } from './themes';
 
-export type Slide =
+export interface ChartSeries { name: string; values: number[] }
+export interface Segment { label: string; value: number }
+export interface Kpi { value: string; label: string }
+
+type SlideBody =
   | { layout: 'title'; title: string; subtitle?: string }
   | { layout: 'agenda'; heading: string; items: string[] }
   | { layout: 'section'; title: string; kicker?: string }
@@ -11,11 +15,18 @@ export type Slide =
   | { layout: 'quote'; quote: string; attribution?: string }
   | { layout: 'data'; heading: string; stat: string; caption?: string }
   | { layout: 'comparison'; heading: string; left: { title: string; points: string[] }; right: { title: string; points: string[] } }
-  | { layout: 'closing'; title: string; cta?: string };
+  | { layout: 'closing'; title: string; cta?: string }
+  | { layout: 'kpi'; heading: string; kpis: Kpi[] }
+  | { layout: 'barChart'; heading: string; categories: string[]; series: ChartSeries[]; note?: string }
+  | { layout: 'lineChart'; heading: string; categories: string[]; series: ChartSeries[]; note?: string }
+  | { layout: 'donutChart'; heading: string; segments: Segment[]; note?: string };
+
+export type Slide = SlideBody & { notes?: string };
+export type SlideLayout = SlideBody['layout'];
 
 export interface Deck { theme: ThemeId; slides: Slide[] }
 
-const LAYOUTS = new Set<Slide['layout']>(['title','agenda','section','bulletsVisual','quote','data','comparison','closing']);
+const LAYOUTS = new Set<SlideLayout>(['title','agenda','section','bulletsVisual','quote','data','comparison','closing','kpi','barChart','lineChart','donutChart']);
 
 function isStr(v: unknown): v is string {
   return typeof v === 'string';
@@ -23,6 +34,32 @@ function isStr(v: unknown): v is string {
 
 function isStrArray(v: unknown): v is string[] {
   return Array.isArray(v) && v.every(isStr);
+}
+
+function isNum(v: unknown): v is number {
+  return typeof v === 'number' && Number.isFinite(v);
+}
+
+function isNumArray(v: unknown): v is number[] {
+  return Array.isArray(v) && v.every(isNum);
+}
+
+function isKpi(v: unknown): v is Kpi {
+  if (!v || typeof v !== 'object') return false;
+  const k = v as Record<string, unknown>;
+  return isStr(k.value) && isStr(k.label);
+}
+
+function isSegment(v: unknown): v is Segment {
+  if (!v || typeof v !== 'object') return false;
+  const s = v as Record<string, unknown>;
+  return isStr(s.label) && isNum(s.value);
+}
+
+function isSeries(categories: number, v: unknown): v is ChartSeries {
+  if (!v || typeof v !== 'object') return false;
+  const s = v as Record<string, unknown>;
+  return isStr(s.name) && isNumArray(s.values) && (s.values as number[]).length === categories;
 }
 
 function optStr(v: unknown): boolean {
@@ -41,7 +78,7 @@ function isPanel(v: unknown): v is { title: string; points: string[] } {
  * caption, cta) are checked for type only when present, at the call site.
  */
 function validateSlideFields(s: Record<string, unknown>): string | null {
-  switch (s.layout as Slide['layout']) {
+  switch (s.layout as SlideLayout) {
     case 'title':
       if (!isStr(s.title)) return 'missing/invalid title';
       if (!optStr(s.subtitle)) return 'missing/invalid subtitle';
@@ -77,6 +114,24 @@ function validateSlideFields(s: Record<string, unknown>): string | null {
       if (!isStr(s.title)) return 'missing/invalid title';
       if (!optStr(s.cta)) return 'missing/invalid cta';
       return null;
+    case 'kpi':
+      if (!isStr(s.heading)) return 'missing/invalid heading';
+      if (!Array.isArray(s.kpis) || s.kpis.length < 2 || s.kpis.length > 4 || !s.kpis.every(isKpi)) return 'kpi needs 2–4 {value,label}';
+      return null;
+    case 'barChart':
+    case 'lineChart': {
+      if (!isStr(s.heading)) return 'missing/invalid heading';
+      if (!isStrArray(s.categories) || s.categories.length < 1) return 'missing/invalid categories';
+      if (!optStr(s.note)) return 'missing/invalid note';
+      const n = (s.categories as string[]).length;
+      if (!Array.isArray(s.series) || s.series.length < 1 || !s.series.every((x) => isSeries(n, x))) return 'series must match categories length';
+      return null;
+    }
+    case 'donutChart':
+      if (!isStr(s.heading)) return 'missing/invalid heading';
+      if (!optStr(s.note)) return 'missing/invalid note';
+      if (!Array.isArray(s.segments) || s.segments.length < 1 || !s.segments.every(isSegment)) return 'missing/invalid segments';
+      return null;
     default:
       return 'bad layout';
   }
@@ -92,12 +147,15 @@ export function validateDeck(x: unknown): { ok: true; deck: Deck } | { ok: false
       return { ok: false, error: `slide ${i}: not an object` };
     }
     const rec = s as Record<string, unknown>;
-    if (!LAYOUTS.has(rec.layout as Slide['layout'])) {
+    if (!LAYOUTS.has(rec.layout as SlideLayout)) {
       return { ok: false, error: `slide ${i}: bad layout` };
     }
     const fieldError = validateSlideFields(rec);
     if (fieldError) {
       return { ok: false, error: `slide ${i}: ${fieldError}` };
+    }
+    if (rec.notes !== undefined && !isStr(rec.notes)) {
+      return { ok: false, error: `slide ${i}: invalid notes` };
     }
   }
   return { ok: true, deck: x as Deck };
