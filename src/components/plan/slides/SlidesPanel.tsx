@@ -18,7 +18,7 @@ type Version = { versionNo: number; deck: Deck; meta: { costUsd: number; lintFix
  *  and updates locally from the SSE `done` event — no separate list-refresh
  *  route needed; the stream already carries everything a new version adds. */
 export function SlidesPanel({
-  projectId, projectName, audience, canGenerate, initialVersions,
+  projectId, projectName, canGenerate, initialVersions,
 }: {
   projectId: string;
   projectName: string;
@@ -75,7 +75,7 @@ export function SlidesPanel({
       <div style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 380px) 1fr', gap: 20, alignItems: 'start' }}>
         <section style={{ display: 'grid', gap: 16 }}>
           {canGenerate
-            ? <GenerateWizard audience={audience} onGenerate={generate} busy={busy} />
+            ? <GenerateWizard onGenerate={generate} busy={busy} />
             : <p style={{ fontSize: 13, opacity: 0.7 }}>{t('slides.viewerNotice')}</p>}
           {steps.length > 0 && <ThinkingPane steps={steps} done={!busy} />}
           {err && <p style={{ color: '#ff6b6b' }}>{err}</p>}

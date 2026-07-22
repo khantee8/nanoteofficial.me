@@ -11,9 +11,8 @@ const AUDIENCES = [
   { key: 'team', value: 'the internal team' }, { key: 'client', value: 'the client' },
 ] as const;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- audience prop kept for call-site compatibility; the wizard derives its own audience from the persona picker
-export function GenerateWizard({ audience: _seed, onGenerate, busy }: {
-  audience: string; onGenerate: (o: { theme: ThemeId; slideCount: number; extra: string; audience: string }) => void; busy: boolean;
+export function GenerateWizard({ onGenerate, busy }: {
+  onGenerate: (o: { theme: ThemeId; slideCount: number; extra: string; audience: string }) => void; busy: boolean;
 }) {
   const { t } = usePlanT();
   const [theme, setTheme] = useState<ThemeId>('keynote');
