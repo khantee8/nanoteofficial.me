@@ -35,7 +35,7 @@ export function SlidesPanel({
   const [presenting, setPresenting] = useState(false);
   const { t } = usePlanT();
 
-  async function generate(opts: { theme: ThemeId; slideCount: number; extra: string }) {
+  async function generate(opts: { theme: ThemeId; slideCount: number; extra: string; audience: string }) {
     setBusy(true); setErr(''); setSteps([]); setShown(null);
     try {
       const res = await fetch(`/api/plan/${projectId}/generate`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(opts) });
