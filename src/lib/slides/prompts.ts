@@ -9,12 +9,19 @@ Slide layouts (pick the RIGHT one per idea; vary them, never 3 of the same in a 
 - {"layout":"quote","quote":"...","attribution":"..."}
 - {"layout":"data","heading":"...","stat":"42%","caption":"..."}
 - {"layout":"comparison","heading":"...","left":{"title":"...","points":["..."]},"right":{"title":"...","points":["..."]}}
-- {"layout":"closing","title":"...","cta":"..."}`;
+- {"layout":"closing","title":"...","cta":"..."}
+- {"layout":"kpi","heading":"...","kpis":[{"value":"3.2x","label":"ROI"}]}  (2–4 tiles)
+- {"layout":"barChart","heading":"...","categories":["Q1","Q2"],"series":[{"name":"2026","values":[10,20]}]}  (values length == categories length)
+- {"layout":"lineChart","heading":"...","categories":["Jan","Feb"],"series":[{"name":"Users","values":[3,7]}]}
+- {"layout":"donutChart","heading":"...","segments":[{"label":"Cloud","value":60},{"label":"On-prem","value":40}]}
+Every slide object MAY include "notes":"..." — a 1–2 sentence speaker note in the presenter's voice.`;
 
 const VOICE = `Write like a sharp human operator, NOT an AI. Rules:
 - Every content slide cites a specific number or proper noun FROM THE BRIEF. No vague claims.
 - Ban filler: "fast-paced world", "leverage synergies", "game-changer", "it's not just X it's Y", "move the needle".
-- Short, declarative. No triads-for-the-sake-of-it. No emoji. Vary sentence and slide shape.`;
+- Short, declarative. No triads-for-the-sake-of-it. No emoji. Vary sentence and slide shape.
+- When the brief contains numbers, prefer a data/kpi/barChart/lineChart/donutChart slide over prose. NEVER invent numbers — every chart value must trace to a number in the brief.
+- ALWAYS include "notes" on every slide: what the presenter says out loud, not a repeat of the on-slide text.`;
 
 export function outlinePrompt(p: { brief: string; audience: string; slideCount: number; extra?: string }) {
   return {
