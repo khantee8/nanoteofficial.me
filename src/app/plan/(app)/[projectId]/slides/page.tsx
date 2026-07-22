@@ -8,6 +8,7 @@ import { getLang } from "@/lib/i18n";
 import { pt } from "@/lib/plan/i18n";
 import { SlidesPanel } from "@/components/plan/slides/SlidesPanel";
 import type { Deck } from "@/lib/slides/deck";
+import { slideFontVars } from "@/lib/slides/fonts";
 
 export const dynamic = "force-dynamic";
 
@@ -23,7 +24,7 @@ export default async function ProjectSlidesPage({
   const versions = await listDeckVersions(projectId);
 
   return (
-    <section className="space-y-6">
+    <section className={`space-y-6 ${slideFontVars}`}>
       <div>
         <Link href={`/plan/${projectId}`} className="inline-flex items-center gap-1 text-sm text-[var(--muted)] transition hover:text-[var(--foreground)]">
           ← {project.name}
