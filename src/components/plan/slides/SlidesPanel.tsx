@@ -10,7 +10,7 @@ import { ExportButtons } from './ExportButtons';
 import { PresentOverlay } from './PresentOverlay';
 import { usePlanT } from '@/components/plan/LangContext';
 
-type Version = { versionNo: number; deck: Deck; meta: { costUsd: number; lintFixed: number } };
+type Version = { versionNo: number; deck: Deck; meta: { costUsd: number; lintFixed: number }; createdAt: string };
 
 /** The Manus-split generation UI for one project's slide decks. Unlike the
  *  ported source (which self-fetched plan + versions on mount), this reads
@@ -55,7 +55,7 @@ export function SlidesPanel({
             if (ev.type === 'step') setSteps((s) => [...s, ev]);
             else if (ev.type === 'done') {
               setShown(ev.deck); setShownVersionNo(ev.versionNo);
-              setVersions((vs) => [{ versionNo: ev.versionNo, deck: ev.deck, meta: ev.meta }, ...vs]);
+              setVersions((vs) => [{ versionNo: ev.versionNo, deck: ev.deck, meta: ev.meta, createdAt: new Date().toISOString() }, ...vs]);
             }
             else if (ev.type === 'error') setErr(ev.message);
           } catch {
@@ -79,7 +79,7 @@ export function SlidesPanel({
             : <p style={{ fontSize: 13, opacity: 0.7 }}>{t('slides.viewerNotice')}</p>}
           {steps.length > 0 && <ThinkingPane steps={steps} done={!busy} />}
           {err && <p style={{ color: '#ff6b6b' }}>{err}</p>}
-          {versions.length > 0 && <VersionSwitcher versions={versions} disabled={busy} onPick={(d, versionNo) => { setShown(d); setShownVersionNo(versionNo); }} />}
+          {versions.length > 0 && <VersionSwitcher versions={versions} disabled={busy} activeVersionNo={shownVersionNo} onPick={(d, versionNo) => { setShown(d); setShownVersionNo(versionNo); }} />}
         </section>
         <section>
           {shown ? (

@@ -40,6 +40,7 @@ export default async function ProjectSlidesPage({
           versionNo: v.versionNo,
           deck: v.deckJson as Deck,
           meta: v.metaJson as { costUsd: number; lintFixed: number },
+          createdAt: v.createdAt.toISOString(),
         }))}
       />
     </section>
