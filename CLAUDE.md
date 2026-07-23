@@ -45,15 +45,21 @@ Cookie is set with `httpOnly: true` and `secure: true` in production — it is o
 
 ### Feature theming (`src/app/globals.css` + `src/components/FeatureSync.tsx`)
 
-CSS tokens (`--feature-color`, `--feature-tint`, `--feature-color-strong`, `--feature-glow`) are defined on `:root` (executive navy brand default `#3B4FBF`) and overridden per `[data-feature="finance|cyber|kb|art"]`, with separate dark-mode overrides in `@media (prefers-color-scheme: dark)`.
+CSS tokens (`--feature-color`, `--feature-tint`, `--feature-color-strong`, `--feature-glow`) are defined on `:root` (executive navy brand default `#3B4FBF`) and overridden per `[data-feature="finance|cyber|kb|art"]`, with separate dark-mode overrides under `html.dark` (class-based, not a media query).
 
 `FeatureSync` (client component) sets `data-feature` on `<body>` via `usePathname()` for global token inheritance. Subdomain pages also set it on their own root div for SSR correctness before hydration. Use `var(--feature-color)` in any component to automatically adopt the active accent.
+
+**Light/dark is a separate axis** from the feature accent. `globals.css` maps Tailwind's `dark:` variant to a class via `@custom-variant dark (&:where(html.dark, ...))`; `ThemeToggle` (in the header) toggles the `html.dark` class and persists to `localStorage("theme")`. A blocking inline `themeScript` in `layout.tsx` (`dangerouslySetInnerHTML`) applies the class pre-hydration to avoid a flash — it is one of the inline scripts the CSP `'unsafe-inline'` covers.
 
 ### Security headers (`next.config.ts`)
 
 All HTTP security headers — CSP, HSTS, X-Frame-Options, Referrer-Policy, Permissions-Policy, X-Content-Type-Options — are applied globally in `next.config.ts` via the `headers()` async function. Modify headers there, not in middleware. `poweredByHeader: false` hides the Next.js version.
 
 CSP uses `'unsafe-inline'` on both `script-src` and `style-src`. `script-src` requires it because Next.js injects inline scripts for RSC hydration — removing it breaks all client components (React never hydrates). `style-src` requires it for Tailwind v4. Neither can be tightened without a full nonce-based CSP overhaul.
+
+### Contact form (`src/app/api/contact/route.ts`)
+
+The site's **only server code** and **only env-dependent feature**. `ContactForm.tsx` (`"use client"`) POSTs `{name, email, message}` to `/api/contact`, which length-validates each field and sends the message via **Resend** (`from: contact@nanoteofficial.me`, `replyTo` = the sender). It reads the **only two env vars in the codebase**: `RESEND_API_KEY` and `CONTACT_EMAIL` (recipient; falls back to a hardcoded address if unset). Everything else on the site is static — no database, no auth, no other runtime dependencies (`resend` is the sole non-React/Next runtime dependency).
 
 ### /plan — migrated out (2026-07-22)
 
