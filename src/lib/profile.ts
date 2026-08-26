@@ -45,8 +45,8 @@ export const profile = {
   name: { en: "Saksit Jantila", th: "ศักดิ์สิทธิ์ จันทิหล้า" } as LStr,
   handle: "nanoteofficial",
   headline: {
-    en: "Technology Strategy & Cybersecurity | MBA — Finance & MIS",
-    th: "กลยุทธ์เทคโนโลยีและความมั่นคงปลอดภัยไซเบอร์ | MBA — การเงินและ MIS",
+    en: "Technology Strategy & Cybersecurity | IT Risk & Governance | MBA — Finance & MIS",
+    th: "กลยุทธ์เทคโนโลยีและความมั่นคงปลอดภัยไซเบอร์ | ความเสี่ยงด้าน IT และการกำกับดูแล | MBA — การเงินและ MIS",
   } as LStr,
   location: {
     en: "Bangkok, Thailand",
@@ -65,8 +65,8 @@ export const profile = {
       th: "ผู้นำด้านกลยุทธ์เทคโนโลยีและความมั่นคงปลอดภัยไซเบอร์ — ขับเคลื่อนการเปลี่ยนผ่านด้านความมั่นคงปลอดภัย การกำกับดูแล และความยืดหยุ่นในการดำเนินงานให้กับหน่วยงานภาครัฐและองค์กรภาคการเงินในประเทศไทย",
     },
     {
-      en: "Deep expertise spanning SIEM, SOAR, SOC-as-a-Service, SDN architecture, and enterprise security — bridging technical delivery with business strategy and stakeholder alignment.",
-      th: "ความเชี่ยวชาญเชิงลึกครอบคลุม SIEM, SOAR, SOC-as-a-Service, สถาปัตยกรรม SDN และ Enterprise Security — เชื่อมโยงการส่งมอบเทคนิคเข้ากับกลยุทธ์ธุรกิจและการประสานงานกับผู้มีส่วนเกี่ยวข้อง",
+      en: "Deep expertise spanning XDR, SIEM, SOAR, SOC-as-a-Service, SDN architecture, and enterprise security — plus emerging-technology advisory on AI defense and Post-Quantum Cryptography (PQC).",
+      th: "ความเชี่ยวชาญเชิงลึกครอบคลุม XDR, SIEM, SOAR, SOC-as-a-Service, สถาปัตยกรรม SDN และ Enterprise Security — พร้อมการให้คำปรึกษาด้านเทคโนโลยีใหม่ ทั้ง AI Defense และการเข้ารหัสหลังควอนตัม (PQC)",
     },
     {
       en: "MBA graduate from NIDA in Finance & MIS, passionate about business transformation, strategic technology initiatives, and applied AI to shorten the loop between insight and decision.",
@@ -76,6 +76,35 @@ export const profile = {
   experience: [
     {
       role: {
+        en: "Senior Cybersecurity Consultant (Pre-sales)",
+        th: "ที่ปรึกษาอาวุโสด้านความมั่นคงปลอดภัยไซเบอร์ (Pre-sales)",
+      },
+      company: {
+        en: "Advanced Information Technology PCL. (AIT)",
+        th: "บริษัท แอดวานซ์ อินฟอร์เมชั่น เทคโนโลยี จำกัด (มหาชน) (AIT)",
+      },
+      period: { en: "July 2026 — Present", th: "ก.ค. 2026 — ปัจจุบัน" },
+      bullets: [
+        {
+          en: "Cybersecurity consulting and solution advisory — prepared technology proposals and Proof of Value (POV) engagements for IT Security, Cloud Security, XDR, SIEM, SOAR, SOC, and MSSP, including Bill of Materials (BOM) development for accurate budgeting.",
+          th: "ให้คำปรึกษาด้านความมั่นคงปลอดภัยไซเบอร์และการออกแบบโซลูชัน — จัดเตรียมข้อเสนอด้านเทคโนโลยีและการพิสูจน์คุณค่า (POV) สำหรับงาน IT Security, Cloud Security, XDR, SIEM, SOAR, SOC และ MSSP รวมถึงจัดทำ Bill of Materials (BOM) เพื่อการประมาณการงบประมาณที่แม่นยำ",
+        },
+        {
+          en: "Emerging technology enabler — showcased AI defense and Post-Quantum Cryptography (PQC) with vendor partners, highlighting advances across the security landscape.",
+          th: "เป็นผู้สนับสนุนเทคโนโลยีใหม่ — นำเสนอ AI Defense และการเข้ารหัสหลังควอนตัม (PQC) ร่วมกับผู้จำหน่ายหลายราย โดยเน้นย้ำถึงความก้าวหน้าในด้านความมั่นคงปลอดภัย",
+        },
+        {
+          en: "Applied governance, risk, and compliance frameworks — including NIST, ISO 27001, and CRAF — to strengthen security controls and organizational resilience.",
+          th: "ประยุกต์ใช้กรอบการกำกับดูแล ความเสี่ยง และการปฏิบัติตามมาตรฐาน เช่น NIST, ISO 27001 และ CRAF เพื่อเสริมสร้างการควบคุมความปลอดภัยและความยืดหยุ่นขององค์กร",
+        },
+        {
+          en: "Security architecture and solution design focused on stakeholder engagement, aligning security strategy with business needs.",
+          th: "ออกแบบสถาปัตยกรรมและโซลูชันด้านความมั่นคงปลอดภัยที่มุ่งเน้นการมีส่วนร่วมของผู้มีส่วนได้ส่วนเสีย และการปรับให้สอดคล้องกับความต้องการทางธุรกิจ",
+        },
+      ],
+    },
+    {
+      role: {
         en: "Senior Account Engineer — Cybersecurity",
         th: "Senior Account Engineer — ความมั่นคงปลอดภัยไซเบอร์",
       },
@@ -83,27 +112,23 @@ export const profile = {
         en: "Advanced Information Technology PCL. (AIT)",
         th: "บริษัท แอดวานซ์ อินฟอร์เมชั่น เทคโนโลยี จำกัด (มหาชน) (AIT)",
       },
-      period: { en: "Apr 2024 — Present", th: "เม.ย. 2024 — ปัจจุบัน" },
+      period: { en: "Apr 2024 — July 2026", th: "เม.ย. 2024 — ก.ค. 2026" },
       bullets: [
         {
-          en: "Led cybersecurity transformation initiatives for enterprise and government-sector clients by coordinating stakeholders, partners, and technical teams to deliver strategic security solutions, including SIEM, SOAR, and SOC-as-a-Service.",
-          th: "นำโครงการด้าน Cybersecurity Transformation สำหรับองค์กรภาครัฐและองค์กรระดับ Enterprise โดยประสานงานร่วมกับผู้มีส่วนเกี่ยวข้อง พันธมิตร และทีมเทคนิค เพื่อส่งมอบโซลูชันด้านความมั่นคงปลอดภัย เช่น SIEM, SOAR และ SOC-as-a-Service",
+          en: "Led cybersecurity transformation initiatives for enterprise and government clients, delivering strategic solutions including XDR, SIEM, SOAR, and SOC-as-a-Service.",
+          th: "นำโครงการด้าน Cybersecurity Transformation สำหรับองค์กรภาครัฐและองค์กรระดับ Enterprise โดยส่งมอบโซลูชันเชิงกลยุทธ์ เช่น XDR, SIEM, SOAR และ SOC-as-a-Service",
         },
         {
-          en: "Advised clients on cybersecurity governance, risk management, and compliance alignment based on NIST, ISO 27001, and NCSA frameworks to strengthen organizational security posture and operational resilience.",
-          th: "ให้คำปรึกษาด้าน Cybersecurity Governance, Risk Management และ Compliance ตามมาตรฐาน NIST, ISO 27001 และแนวทางของ NCSA เพื่อเสริมสร้าง Security Posture และ Operational Resilience ขององค์กร",
+          en: "Advised clients on cybersecurity governance, risk management, and compliance aligned with NIST, ISO 27001, and NCSA frameworks.",
+          th: "ให้คำปรึกษาด้าน Cybersecurity Governance, Risk Management และ Compliance ที่สอดคล้องกับกรอบมาตรฐาน NIST, ISO 27001 และแนวทางของ NCSA",
         },
         {
-          en: "Designed and optimized SOC operational workflows and service processes, improving incident response coordination and enhancing managed security service quality.",
-          th: "ออกแบบและปรับปรุงกระบวนการดำเนินงานด้าน SOC และ Security Services เพื่อเพิ่มประสิทธิภาพในการตอบสนองต่อ Incident และยกระดับคุณภาพบริการด้าน Managed Security Services",
+          en: "Optimized SOC workflows and service processes to improve incident response and managed security service quality.",
+          th: "ปรับปรุงกระบวนการทำงานของ SOC และกระบวนการให้บริการ เพื่อเพิ่มประสิทธิภาพการตอบสนองต่อ Incident และยกระดับคุณภาพบริการด้าน Managed Security Services",
         },
         {
-          en: "Collaborated with enterprise stakeholders to align cybersecurity initiatives with organizational objectives, operational requirements, and long-term technology strategies.",
-          th: "ประสานงานร่วมกับผู้บริหารและหน่วยงานต่าง ๆ เพื่อให้โครงการด้าน Cybersecurity สอดคล้องกับเป้าหมายองค์กร กระบวนการดำเนินงาน และกลยุทธ์ด้านเทคโนโลยีระยะยาว",
-        },
-        {
-          en: "Supported strategic discussions and solution planning for digital infrastructure modernization and cyber resilience initiatives.",
-          th: "สนับสนุนการวางแผนเชิงกลยุทธ์และการออกแบบแนวทางด้าน Digital Infrastructure Transformation และ Cyber Resilience Initiatives",
+          en: "Aligned cybersecurity initiatives with business objectives, digital infrastructure modernization, and cyber resilience strategies.",
+          th: "ผลักดันโครงการด้าน Cybersecurity ให้สอดคล้องกับเป้าหมายทางธุรกิจ การปรับปรุงโครงสร้างพื้นฐานดิจิทัล และยุทธศาสตร์ด้าน Cyber Resilience",
         },
       ],
     },
@@ -119,24 +144,20 @@ export const profile = {
       period: { en: "Apr 2019 — Apr 2024", th: "เม.ย. 2019 — เม.ย. 2024" },
       bullets: [
         {
-          en: "Managed enterprise network and cybersecurity projects for major government and public-sector organizations, supporting digital transformation and infrastructure modernization initiatives.",
-          th: "บริหารและดำเนินโครงการด้าน Enterprise Network และ Cybersecurity สำหรับหน่วยงานภาครัฐและองค์กรขนาดใหญ่ เพื่อสนับสนุน Digital Transformation และการพัฒนาโครงสร้างพื้นฐานด้านเทคโนโลยี",
+          en: "Managed enterprise network and cybersecurity projects for government and public-sector organizations, supporting digital transformation and infrastructure modernization.",
+          th: "บริหารโครงการด้าน Enterprise Network และ Cybersecurity สำหรับหน่วยงานภาครัฐและองค์กรภาครัฐวิสาหกิจ เพื่อสนับสนุน Digital Transformation และการปรับปรุงโครงสร้างพื้นฐานให้ทันสมัย",
         },
         {
-          en: "Led implementation and enhancement of Software Defined Network (SDN) and enterprise security solutions to improve scalability, operational efficiency, and system resilience.",
-          th: "นำการพัฒนาและปรับปรุงระบบ Software Defined Network (SDN) และ Enterprise Security Solutions เพื่อเพิ่มประสิทธิภาพ ความยืดหยุ่น และเสถียรภาพของระบบองค์กร",
+          en: "Delivered SDN, enterprise security, network segmentation, endpoint protection, and risk-mitigation solutions to improve scalability, efficiency, and resilience.",
+          th: "ส่งมอบโซลูชัน SDN, Enterprise Security, Network Segmentation, Endpoint Protection และการลดความเสี่ยง เพื่อเพิ่มความสามารถในการขยายตัว ประสิทธิภาพ และความยืดหยุ่นของระบบ",
         },
         {
-          en: "Coordinated with cross-functional stakeholders, technology partners, and client management teams to deliver complex technology projects aligned with business and operational goals.",
-          th: "ประสานงานกับหน่วยงานภายใน พันธมิตรทางเทคโนโลยี และผู้บริหารโครงการ เพื่อส่งมอบโครงการเทคโนโลยีที่สอดคล้องกับเป้าหมายทางธุรกิจและการดำเนินงาน",
+          en: "Coordinated stakeholders, technology partners, and client management teams to deliver projects aligned with business goals.",
+          th: "ประสานงานกับผู้มีส่วนได้ส่วนเสีย พันธมิตรทางเทคโนโลยี และทีมบริหารลูกค้า เพื่อส่งมอบโครงการที่สอดคล้องกับเป้าหมายทางธุรกิจ",
         },
         {
-          en: "Provided strategic technical consultation for enterprise security architecture, network segmentation, endpoint protection, and infrastructure risk mitigation.",
-          th: "ให้คำปรึกษาด้าน Enterprise Security Architecture, Network Segmentation, Endpoint Protection และ Infrastructure Risk Mitigation สำหรับองค์กรระดับ Enterprise",
-        },
-        {
-          en: "Contributed to large-scale technology initiatives for organizations including DGA, NSTDA, Ministry of Finance, and other national agencies.",
-          th: "มีส่วนร่วมในโครงการด้านเทคโนโลยีระดับประเทศร่วมกับหน่วยงาน เช่น DGA, NSTDA, กระทรวงการคลัง และหน่วยงานภาครัฐอื่น ๆ",
+          en: "Provided strategic technical consultation and contributed to major initiatives for DGA, NSTDA, Ministry of Finance, and other national agencies.",
+          th: "ให้คำปรึกษาเชิงกลยุทธ์ด้านเทคนิค และมีส่วนร่วมในโครงการสำคัญของ DGA, NSTDA, กระทรวงการคลัง และหน่วยงานระดับชาติอื่น ๆ",
         },
       ],
     },
@@ -263,20 +284,35 @@ export const profile = {
   projects: [
     {
       role: {
+        en: "Senior Cybersecurity Consultant (Pre-sales)",
+        th: "ที่ปรึกษาอาวุโสด้านความมั่นคงปลอดภัยไซเบอร์ (Pre-sales)",
+      },
+      period: "2026 — Present",
+      clients: [
+        {
+          en: "National Cyber Security Agency (NCSA)",
+          th: "สำนักงานความมั่นคงปลอดภัยไซเบอร์แห่งชาติ (สกมช.)",
+        },
+        {
+          en: "SME Development Bank (SME D Bank)",
+          th: "ธนาคารพัฒนาวิสาหกิจขนาดกลางและขนาดย่อมแห่งประเทศไทย (SME D Bank)",
+        },
+        { en: "Social Security Office (SSO)", th: "สำนักงานประกันสังคม (SSO)" },
+        { en: "Ministry of Finance (MOF)", th: "กระทรวงการคลัง (MOF)" },
+      ],
+    },
+    {
+      role: {
         en: "Sr. Account Engineer — Cybersecurity",
         th: "Senior Account Engineer — ความมั่นคงปลอดภัยไซเบอร์",
       },
-      period: "2024 — Present",
+      period: "2024 — 2026",
       clients: [
         {
           en: "Secretariat of the House of Representatives (Thai Parliament)",
           th: "สำนักงานเลขาธิการสภาผู้แทนราษฎร (รัฐสภาไทย)",
         },
         { en: "Bank of Thailand (BOT)", th: "ธนาคารแห่งประเทศไทย (ธปท.)" },
-        {
-          en: "National Cyber Security Agency (NCSA)",
-          th: "สำนักงานความมั่นคงปลอดภัยไซเบอร์แห่งชาติ (สกมช.)",
-        },
         { en: "Department of Lands (DOL)", th: "กรมที่ดิน" },
         {
           en: "Geo-Informatics & Space Technology Development Agency (GISTDA)",
@@ -306,7 +342,6 @@ export const profile = {
           en: "King Chulalongkorn Memorial Hospital (KCMH)",
           th: "โรงพยาบาลจุฬาลงกรณ์ สภากาชาดไทย (KCMH)",
         },
-        { en: "Ministry of Finance (MOF)", th: "กระทรวงการคลัง (MOF)" },
         {
           en: "Metropolitan Waterworks Authority (MWA)",
           th: "การประปานครหลวง (MWA)",
