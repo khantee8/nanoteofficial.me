@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-> **Note:** This is Next.js 16 with React 19 — APIs and conventions may differ from your training data. When in doubt, read `node_modules/next/dist/docs/` or use the context7 MCP tool to fetch live docs.
+> **Note:** This is Next.js 16 with React 19 — APIs and conventions may differ from your training data. When in doubt, read `node_modules/next/dist/docs/` or use the context7 MCP tool to fetch live docs. (`AGENTS.md` at the repo root carries the same warning for other agents.)
 
 ## Commands
 
@@ -29,7 +29,11 @@ docker compose up -d   # runs `next start` inside the container
 
 Next.js 16 treats `src/proxy.ts` as a native proxy/middleware entry point — **do not create a `middleware.ts`**, it will conflict. The proxy rewrites `<sub>.nanoteofficial.me` → `/<sub>` so that `finance.nanoteofficial.me` serves `src/app/finance/page.tsx`, and so on for `cyber`, `kb`, `art`. These are preview shells, not live apps. The build output will show `ƒ Proxy (Middleware)` confirming it is active.
 
-If you add a new subdomain, update `subdomainMap` in `proxy.ts` and create the corresponding `src/app/<sub>/page.tsx`.
+Adding a subdomain takes four edits, not two: `subdomainMap` in `proxy.ts`, `src/app/<sub>/page.tsx`, a `src/app/<sub>/opengraph-image.tsx`, and a `sitemap.ts` entry.
+
+There are five `opengraph-image.tsx` routes (root + the four subdomains). Each sets `runtime = "nodejs"`, calls `getLang()` so the OG card is localized, and **hardcodes its own accent hex** — the CSS feature tokens are not available to `ImageResponse`, so the color must be duplicated there by hand.
+
+`sitemap.ts` lists `/finance`, `/cyber`, `/art` as **path** URLs (not subdomain URLs) and deliberately omits `/kb`.
 
 ### Content (`src/lib/profile.ts`)
 
@@ -57,6 +61,14 @@ All HTTP security headers — CSP, HSTS, X-Frame-Options, Referrer-Policy, Permi
 
 CSP uses `'unsafe-inline'` on both `script-src` and `style-src`. `script-src` requires it because Next.js injects inline scripts for RSC hydration — removing it breaks all client components (React never hydrates). `style-src` requires it for Tailwind v4. Neither can be tightened without a full nonce-based CSP overhaul.
 
+The policy is `default-src 'self'`, so **any new external embed, fetch, or asset host needs a matching directive added**. The existing allowances are feature-specific, not generic — each exists for exactly one caller:
+
+| Directive | Exists for |
+|---|---|
+| `frame-src https://company.nanoteofficial.me` | the `<iframe>` in `Company.tsx` |
+| `connect-src https://api.resend.com` | the Resend call in the contact route |
+| `font-src https://fonts.gstatic.com` | `next/font/google` in `layout.tsx` |
+
 ### Contact form (`src/app/api/contact/route.ts`)
 
 The site's **only server code** and **only env-dependent feature**. `ContactForm.tsx` (`"use client"`) POSTs `{name, email, message}` to `/api/contact`, which length-validates each field and sends the message via **Resend** (`from: contact@nanoteofficial.me`, `replyTo` = the sender). It reads the **only two env vars in the codebase**: `RESEND_API_KEY` and `CONTACT_EMAIL` (recipient; falls back to a hardcoded address if unset). Everything else on the site is static — no database, no auth, no other runtime dependencies (`resend` is the sole non-React/Next runtime dependency).
@@ -83,4 +95,13 @@ Pre-migration history: this repo's git log through v0.2.9.
 - The `postcss` package is overridden to `>=8.5.10` in `package.json` to resolve a known advisory — do not remove the override.
 - The scroll-spy IntersectionObserver in `HeaderNav.tsx` only watches sections that exist on the homepage (`about`, `company`, `experience`, `projects`, `roadmap`, `contact`) — it has no effect on subdomain pages.
 - Certification vendor logos live in `public/logos/` as SVGs. Real logos (Cisco, ISC², Fortinet, Palo Alto, CompTIA) were sourced from Simple Icons CDN; others (EC-Council, PMI, ServiceNow, SEC Thailand) are hand-crafted SVGs.
-- CV download files (`public/cv-en.pdf`, `public/cv-th.pdf`) are copied from `/project/Profile/` — update them there first, then copy to `public/`.
+- CV download files (`public/cv-en.pdf`, `public/cv-th.pdf`) are copied from `/project/Profile/` — update them there first, then copy to `public/`. `/project/Profile/` is **not** tracked by git, so a deployed PDF's only durable history is this repo's commits on `public/`.
+
+## Releases
+
+Vercel auto-deploys from `main`. A release is:
+
+1. Bump `package.json` **and** the two top-level `version` fields in `package-lock.json` together — the lock has silently drifted before (it sat at 0.2.9 through the 0.3.0 release).
+2. Verify: `npx tsc --noEmit`, `npm run lint`, `npm run build` — all three must pass; there is no test runner.
+3. Commit as `feat: vX.Y.Z — …` (or `fix:` for a patch), then annotated tag `git tag -a vX.Y.Z`.
+4. Push `main` and the tag; confirm production actually serves the change before calling it done (e.g. checksum a changed asset against the local file).
