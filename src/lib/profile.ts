@@ -48,6 +48,13 @@ export type ToolItem = {
   stack: string[];
 };
 
+/**
+ * How the tools connect. Mirrors `platformEdges` in the private
+ * tools.nanoteofficial.me repo, which is the source of truth. Public-safe:
+ * relationships only, never configuration.
+ */
+export type ToolEdge = { from: string; to: string; label: LStr };
+
 export type RoadmapItem = {
   key: "finance" | "cyber" | "kb" | "art";
   subdomain: string;
@@ -596,6 +603,35 @@ export const tools: ToolItem[] = [
     repoVisibility: "public",
     href: "https://tools.nanoteofficial.me/finance",
     stack: ["Next.js 16", "Auth0"],
+  },
+];
+
+export const toolEdges: ToolEdge[] = [
+  {
+    from: "portfolio",
+    to: "company",
+    label: { en: "embeds the live office", th: "ฝังหน้าออฟฟิศแบบสด" },
+  },
+  {
+    from: "portfolio",
+    to: "plan",
+    label: { en: "permanent redirect", th: "เปลี่ยนเส้นทางถาวร" },
+  },
+  { from: "portfolio", to: "kb", label: { en: "links here", th: "ลิงก์จากหน้านี้" } },
+  { from: "portfolio", to: "exam", label: { en: "links here", th: "ลิงก์จากหน้านี้" } },
+  { from: "portfolio", to: "finance", label: { en: "links here", th: "ลิงก์จากหน้านี้" } },
+  {
+    from: "company",
+    to: "thai-funds-mcp",
+    label: {
+      en: "the finance agent calls fund tools",
+      th: "เอเจนต์การเงินเรียกเครื่องมือกองทุน",
+    },
+  },
+  {
+    from: "kb",
+    to: "company",
+    label: { en: "daily pull of published briefs", th: "ดึงบทสรุปที่เผยแพร่ทุกวัน" },
   },
 ];
 

@@ -24,6 +24,11 @@
   --brand-accent: #3b4fbf;
   --brand-accent-soft: #e8ebf7;
 
+  /* Tool maturity — stated honestly, so it gets real tokens. */
+  --tool-production: #0f8a5f;
+  --tool-minimal: #2f6fd0;
+  --tool-shell: #b4771a;
+
   /* Surface system */
   --background: #ffffff;
   --foreground: #0a0e17;
@@ -123,6 +128,11 @@ html.dark {
   --status-prototyping: #6ee7b7;
   --status-live: #6ee7b7;
   --feature-contrast: #06080d;
+
+  /* Lifted for contrast against the dark ground. */
+  --tool-production: #45c48d;
+  --tool-minimal: #7aa9f5;
+  --tool-shell: #e0a844;
 }
 
 html.dark [data-feature="finance"] {

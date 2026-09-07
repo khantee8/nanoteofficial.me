@@ -29,8 +29,9 @@ type UiKey =
   | "tools.maturity.shell"
   | "tools.repo.private"
   | "tools.repo.public"
-  | "tools.open"
   | "tools.seeAll"
+  | "tools.hint"
+  | "tools.mapLabel"
   | "tools.footnote"
   | "section.company.eyebrow"
   | "section.company.title"
@@ -132,7 +133,14 @@ const dict: Record<UiKey, Record<Lang, string>> = {
   "tools.maturity.shell": { en: "Interface only", th: "มีเฉพาะส่วนติดต่อ" },
   "tools.repo.private": { en: "Private repo", th: "รีโพส่วนตัว" },
   "tools.repo.public": { en: "Public repo", th: "รีโพสาธารณะ" },
-  "tools.open": { en: "View architecture", th: "ดูสถาปัตยกรรม" },
+  "tools.hint": {
+    en: "Hover a system to trace its connections. Click through for its architecture.",
+    th: "วางเมาส์บนระบบเพื่อดูเส้นเชื่อมต่อ คลิกเพื่อดูสถาปัตยกรรม",
+  },
+  "tools.mapLabel": {
+    en: "Diagram of how the six systems connect",
+    th: "แผนผังการเชื่อมต่อของทั้งหกระบบ",
+  },
   "tools.seeAll": { en: "All systems and diagrams →", th: "ดูระบบและแผนผังทั้งหมด →" },
   "tools.footnote": {
     en: "Status is stated as it is, including where a system is less finished than it looks.",

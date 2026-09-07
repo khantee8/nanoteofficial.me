@@ -46,22 +46,22 @@ export default async function HomePage() {
       </Section>
 
       <Section
-        id="tools"
-        band
-        eyebrow={t("section.tools.eyebrow", lang)}
-        title={t("section.tools.title", lang)}
-        description={t("section.tools.description", lang)}
-      >
-        <Tools lang={lang} />
-      </Section>
-
-      <Section
         id="roadmap"
+        band
         eyebrow={t("section.roadmap.eyebrow", lang)}
         title={t("section.roadmap.title", lang)}
         description={t("section.roadmap.description", lang)}
       >
         <Roadmap lang={lang} />
+      </Section>
+
+      <Section
+        id="tools"
+        eyebrow={t("section.tools.eyebrow", lang)}
+        title={t("section.tools.title", lang)}
+        description={t("section.tools.description", lang)}
+      >
+        <Tools lang={lang} />
       </Section>
 
       <Section
