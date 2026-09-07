@@ -37,7 +37,7 @@ There are five `opengraph-image.tsx` routes (root + the four subdomains). Each s
 
 ### Content (`src/lib/profile.ts`)
 
-Single source of truth for all resume/portfolio data. `profile` holds experience, education, skills, certs, and projects. `roadmap` holds the four subdomain items. All user-facing strings use `type LStr = Record<"en" | "th", string>` — every field must have both languages. Edit only this file to update page content.
+Single source of truth for all resume/portfolio data. `profile` holds experience, education, skills, certs, and projects. `roadmap` holds the four subdomain items. `tools` + `toolEdges` hold the internal-toolchain graph (see below). All user-facing strings use `type LStr = Record<"en" | "th", string>` — every field must have both languages. Edit only this file to update page content.
 
 `hardSkills` is `LStr[]` (competency labels, no percentages). `certifications` is `string[]` — each entry maps to a metadata record in `Certifications.tsx` that provides vendor name, brand color, category, and an SVG logo path from `public/logos/`. When adding a cert, add both the string to the array and a `CERT_META` entry.
 
@@ -73,6 +73,33 @@ The policy is `default-src 'self'`, so **any new external embed, fetch, or asset
 
 The site's **only server code** and **only env-dependent feature**. `ContactForm.tsx` (`"use client"`) POSTs `{name, email, message}` to `/api/contact`, which length-validates each field and sends the message via **Resend** (`from: contact@nanoteofficial.me`, `replyTo` = the sender). It reads the **only two env vars in the codebase**: `RESEND_API_KEY` and `CONTACT_EMAIL` (recipient; falls back to a hardcoded address if unset). Everything else on the site is static — no database, no auth, no other runtime dependencies (`resend` is the sole non-React/Next runtime dependency).
 
+### Tools section (`#tools`) — the internal-toolchain map
+
+Added v0.5.0, became a map in v0.6.0. Renders the six shipped `khantee8` systems
+(`company, thai-funds-mcp, plan, exam, kb, finance`) as a connection graph rather
+than a card grid — the point of these systems is that they interlock.
+
+Three pieces: `tools` + `toolEdges` in `profile.ts` (data), `graph-layout.ts`
+(placement), `ToolsMap.tsx` (`"use client"` SVG renderer).
+
+`layoutGraph` places nodes by **longest path**, not shortest. This matters: the
+portfolio links directly to both `kb` and `company` *and* `kb` feeds `company`,
+so shortest-path would put them in the same column and draw a backwards-looking
+arrow. Don't "simplify" it to a BFS.
+
+Maturity is stated honestly and drives colour via `--tool-production` /
+`--tool-minimal` / `--tool-shell` (defined in both themes in `globals.css`).
+`finance` is marked `shell` because it has no persistence and a stubbed
+endpoint; the roadmap copy was corrected in v0.5.0 to match.
+
+**Duplication to keep in mind:** the authoritative architecture model —
+nodes, edges, protocols, plus a private layer of env var names and schedules —
+lives in the **private** repo `khantee8/tools.nanoteofficial.me`
+(→ https://tools.nanoteofficial.me), which renders the same map plus a page per
+system. This repo carries only public-safe summary data and its own renderer. If
+a system's connections change, both need updating. Never copy configuration
+detail (env var names, admin routes, gate locations) into this public repo.
+
 ### /plan — migrated out (2026-07-22)
 
 The plan workspace now lives in its own repo/deployment:
@@ -93,7 +120,9 @@ Pre-migration history: this repo's git log through v0.2.9.
 
 - `/kb` is intentionally excluded from `sitemap.ts` and blocked in `robots.ts` (private page). `/plan` is a permanent redirect (`next.config.ts`) to `plan.nanoteofficial.me`, not a page on this site.
 - The `postcss` package is overridden to `>=8.5.10` in `package.json` to resolve a known advisory — do not remove the override.
-- The scroll-spy IntersectionObserver in `HeaderNav.tsx` only watches sections that exist on the homepage (`about`, `company`, `experience`, `projects`, `roadmap`, `contact`) — it has no effect on subdomain pages.
+- The scroll-spy IntersectionObserver in `HeaderNav.tsx` only watches sections that exist on the homepage (`about`, `company`, `roadmap`, `tools`, `experience`, `projects`, `contact`) — it has no effect on subdomain pages.
+- Homepage sections alternate tinted/plain via the `band` prop. Reordering sections means swapping `band` flags too, or the rhythm breaks. Current nav and section order is `about → company → roadmap (Builds) → tools → experience → projects → contact`.
+- The `cyber` and `art` preview shells describe systems with no repo and no deployment. This is a known, deliberate choice by the owner — raised and declined; do not "fix" it unprompted.
 - Certification vendor logos live in `public/logos/` as SVGs. Real logos (Cisco, ISC², Fortinet, Palo Alto, CompTIA) were sourced from Simple Icons CDN; others (EC-Council, PMI, ServiceNow, SEC Thailand) are hand-crafted SVGs.
 - CV download files (`public/cv-en.pdf`, `public/cv-th.pdf`) are copied from `/project/Profile/` — update them there first, then copy to `public/`. `/project/Profile/` is **not** tracked by git, so a deployed PDF's only durable history is this repo's commits on `public/`.
 
