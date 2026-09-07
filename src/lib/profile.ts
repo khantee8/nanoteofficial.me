@@ -29,6 +29,25 @@ export type ProjectGroup = {
   clients: LStr[];
 };
 
+/**
+ * A shipped internal tool. Summary level only — the full architecture model
+ * (nodes, edges, protocols) lives in the private `tools.nanoteofficial.me`
+ * repo, which is the source of truth. Keep these fields in step with the
+ * `systems.ts` public model there; do not add configuration detail here.
+ */
+export type ToolItem = {
+  key: string;
+  name: LStr;
+  tagline: LStr;
+  purpose: LStr;
+  /** Stated honestly, including where that is unflattering. */
+  maturity: "production" | "minimal" | "shell";
+  repoVisibility: "public" | "private";
+  /** Present only where the deployment is reachable by a visitor. */
+  href?: string;
+  stack: string[];
+};
+
 export type RoadmapItem = {
   key: "finance" | "cyber" | "kb" | "art";
   subdomain: string;
@@ -367,32 +386,32 @@ export const roadmap: RoadmapItem[] = [
     subdomain: "finance.nanoteofficial.me",
     title: { en: "Finance", th: "การเงิน" },
     tagline: {
-      en: "Client portfolio analytics & financial planning",
-      th: "วิเคราะห์พอร์ตลูกค้าและวางแผนการเงิน",
+      en: "Advisor & client interface — analytics still in development",
+      th: "ส่วนติดต่อสำหรับที่ปรึกษาและลูกค้า — ส่วนวิเคราะห์ยังพัฒนาไม่เสร็จ",
     },
     description: {
-      en: "A member-only platform for clients I consult — to monitor portfolio performance, run risk scenarios, and stay informed with curated market news.",
-      th: "แพลตฟอร์มสำหรับลูกค้าที่ปรึกษาเท่านั้น — ติดตามผลตอบแทนพอร์ต ทดสอบสถานการณ์ความเสี่ยง และติดตามข่าวตลาดที่คัดสรรมาเฉพาะตัว",
+      en: "An authenticated workspace with separate advisor, client and admin views. Sign-in and role-based routing are live; the portfolio analytics behind them are still being built.",
+      th: "พื้นที่ทำงานที่ต้องยืนยันตัวตน แยกมุมมองสำหรับที่ปรึกษา ลูกค้า และผู้ดูแล ระบบเข้าสู่ระบบและการแยกสิทธิ์ตามบทบาทใช้งานได้จริงแล้ว ส่วนการวิเคราะห์พอร์ตยังอยู่ระหว่างพัฒนา",
     },
     features: [
       {
-        en: "Portfolio dashboard with cost basis & P/L tracking",
-        th: "แดชบอร์ดพอร์ตที่ติดตามต้นทุนและกำไร/ขาดทุน",
+        en: "Role-based sign-in (advisor, client, admin)",
+        th: "เข้าสู่ระบบแยกตามบทบาท (ที่ปรึกษา ลูกค้า ผู้ดูแล)",
       },
       {
-        en: "Risk evaluation (volatility, concentration, currency)",
-        th: "ประเมินความเสี่ยง (ผันผวน กระจุกตัว สกุลเงิน)",
+        en: "Distinct workspace layout per role",
+        th: "หน้าจอทำงานแยกตามแต่ละบทบาท",
       },
       {
-        en: "Curated financial news filtered by holdings",
-        th: "ข่าวการเงินคัดสรรตามหุ้นในพอร์ต",
+        en: "Portfolio & risk analytics — in progress",
+        th: "การวิเคราะห์พอร์ตและความเสี่ยง — อยู่ระหว่างพัฒนา",
       },
       {
-        en: "Client login & multi-account workspace",
-        th: "ระบบเข้าใช้งานสำหรับลูกค้า รองรับหลายบัญชี",
+        en: "AI assistant — planned",
+        th: "ผู้ช่วย AI — อยู่ในแผน",
       },
     ],
-    status: "Live",
+    status: "Prototyping",
     accent: "from-emerald-500/20 to-emerald-500/0 border-emerald-500/30",
     href: "/finance",
   },
@@ -473,6 +492,109 @@ export const roadmap: RoadmapItem[] = [
     status: "Planned",
     accent: "from-rose-500/20 to-rose-500/0 border-rose-500/30",
     href: "/art",
+  },
+];
+
+/**
+ * The internal toolchain — the systems actually used to run the work, most of
+ * which live in private repositories. Ordered by how central each is to the
+ * platform rather than alphabetically.
+ */
+export const tools: ToolItem[] = [
+  {
+    key: "company",
+    name: { en: "AI Company", th: "บริษัท AI" },
+    tagline: {
+      en: "Six AI departments that research, write and publish on a schedule",
+      th: "หกแผนก AI ที่ค้นคว้า เขียน และเผยแพร่ตามตารางเวลา",
+    },
+    purpose: {
+      en: "The engine of the toolchain. Autonomous agents produce cited research on their own cadence, and everything downstream reads what they publish.",
+      th: "เครื่องยนต์ของระบบทั้งหมด เอเจนต์ทำงานเองตามรอบเวลาและผลิตงานวิจัยที่อ้างอิงแหล่งที่มา ระบบปลายทางอื่นเพียงอ่านสิ่งที่เผยแพร่ออกมา",
+    },
+    maturity: "production",
+    repoVisibility: "public",
+    href: "https://company.nanoteofficial.me",
+    stack: ["Next.js 16", "Anthropic SDK", "Upstash Redis", "Neon Postgres"],
+  },
+  {
+    key: "thai-funds-mcp",
+    name: { en: "Thai Funds MCP", th: "Thai Funds MCP" },
+    tagline: {
+      en: "A machine-to-machine data backend for Thai fund, market and FX data",
+      th: "แหล่งข้อมูลกองทุนไทย ตลาด และอัตราแลกเปลี่ยน สำหรับให้เครื่องเรียกใช้",
+    },
+    purpose: {
+      en: "The only system here with no human interface. It exists so an AI agent can look up Thai fund data and cite where every number came from.",
+      th: "ระบบเดียวที่ไม่มีหน้าจอสำหรับคน มีไว้เพื่อให้เอเจนต์ AI ค้นข้อมูลกองทุนไทยได้ พร้อมอ้างอิงที่มาของทุกตัวเลข",
+    },
+    maturity: "production",
+    repoVisibility: "private",
+    stack: ["Next.js 16", "MCP", "Upstash Redis", "Zod"],
+  },
+  {
+    key: "plan",
+    name: { en: "Plan", th: "แผนงาน" },
+    tagline: {
+      en: "Project workspace with an AI slide generator attached",
+      th: "พื้นที่จัดการโปรเจกต์ พร้อมตัวสร้างสไลด์ด้วย AI",
+    },
+    purpose: {
+      en: "Where work actually gets tracked, and where a project turns into a presentation without leaving the tool.",
+      th: "ที่ที่ติดตามงานจริง และเปลี่ยนโปรเจกต์เป็นงานนำเสนอได้โดยไม่ต้องออกจากเครื่องมือ",
+    },
+    maturity: "production",
+    repoVisibility: "private",
+    href: "https://plan.nanoteofficial.me",
+    stack: ["Next.js 16", "Auth.js", "Drizzle", "Neon Postgres", "Anthropic SDK"],
+  },
+  {
+    key: "exam",
+    name: { en: "Exam Trainer", th: "ระบบฝึกสอบ" },
+    tagline: {
+      en: "Certification practice built from a versioned question bank",
+      th: "ฝึกสอบใบรับรอง จากคลังข้อสอบที่เก็บเวอร์ชัน",
+    },
+    purpose: {
+      en: "Passing certifications without trusting a question bank blindly — where the source's answer is disputed, the reasoning is shown rather than hidden.",
+      th: "สอบใบรับรองให้ผ่านโดยไม่เชื่อคลังข้อสอบแบบหลับหูหลับตา เมื่อคำตอบต้นทางยังเป็นที่ถกเถียง ระบบจะแสดงเหตุผลให้เห็น ไม่ใช่ซ่อนไว้",
+    },
+    maturity: "production",
+    repoVisibility: "private",
+    href: "https://exam.nanoteofficial.me",
+    stack: ["Next.js 16", "Auth.js", "Drizzle", "Neon Postgres"],
+  },
+  {
+    key: "kb",
+    name: { en: "Library", th: "ห้องสมุด" },
+    tagline: {
+      en: "A deliberately dumb reader over what the AI company publishes",
+      th: "ตัวอ่านที่จงใจทำให้เรียบง่าย สำหรับงานที่บริษัท AI เผยแพร่",
+    },
+    purpose: {
+      en: "Somewhere calm to read and organise the company's output. It generates nothing itself — that constraint is the design, not a limitation.",
+      th: "พื้นที่สงบสำหรับอ่านและจัดระเบียบผลงานของบริษัท ตัวมันเองไม่ผลิตอะไรเลย ข้อจำกัดนี้คือการออกแบบ ไม่ใช่ความบกพร่อง",
+    },
+    maturity: "minimal",
+    repoVisibility: "public",
+    href: "https://kb.nanoteofficial.me",
+    stack: ["Next.js 16", "Neon Postgres"],
+  },
+  {
+    key: "finance",
+    name: { en: "Finance", th: "การเงิน" },
+    tagline: {
+      en: "Role-based client views — an interface shell, not yet a platform",
+      th: "หน้าจอแยกตามบทบาทผู้ใช้ — เป็นเปลือกส่วนติดต่อ ยังไม่ใช่แพลตฟอร์มเต็มรูปแบบ",
+    },
+    purpose: {
+      en: "A worked-through interface for advisor, client and admin views. Identity and role routing are real, but nothing persists yet.",
+      th: "งานออกแบบส่วนติดต่อสำหรับมุมมองที่ปรึกษา ลูกค้า และผู้ดูแล ระบบยืนยันตัวตนและการแยกบทบาททำงานจริง แต่ยังไม่มีการบันทึกข้อมูล",
+    },
+    maturity: "shell",
+    repoVisibility: "public",
+    href: "https://finance.nanoteofficial.me",
+    stack: ["Next.js 16", "Auth0"],
   },
 ];
 

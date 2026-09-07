@@ -14,6 +14,7 @@ export function Header({ lang }: { lang: Lang }) {
   const items: NavItem[] = [
     { href: "/#about", id: "about", label: t("nav.about", lang) },
     { href: "/#company", id: "company", label: t("nav.company", lang) },
+    { href: "/#tools", id: "tools", label: t("nav.tools", lang) },
     { href: "/#roadmap", id: "roadmap", label: t("nav.roadmap", lang) },
     { href: "/#experience", id: "experience", label: t("nav.experience", lang) },
     { href: "/#projects", id: "projects", label: t("nav.projects", lang) },

@@ -20,6 +20,18 @@ type UiKey =
   | "nav.certs"
   | "nav.projects"
   | "nav.company"
+  | "nav.tools"
+  | "section.tools.eyebrow"
+  | "section.tools.title"
+  | "section.tools.description"
+  | "tools.maturity.production"
+  | "tools.maturity.minimal"
+  | "tools.maturity.shell"
+  | "tools.repo.private"
+  | "tools.repo.public"
+  | "tools.open"
+  | "tools.internalOnly"
+  | "tools.footnote"
   | "section.company.eyebrow"
   | "section.company.title"
   | "section.company.description"
@@ -105,6 +117,27 @@ const dict: Record<UiKey, Record<Lang, string>> = {
   "nav.certs": { en: "Certifications", th: "ใบรับรอง" },
   "nav.projects": { en: "Projects", th: "โปรเจกต์" },
   "nav.company": { en: "Company", th: "บริษัท" },
+  "nav.tools": { en: "Tools", th: "เครื่องมือ" },
+  "section.tools.eyebrow": { en: "Internal toolchain", th: "เครื่องมือภายใน" },
+  "section.tools.title": {
+    en: "The systems I run on.",
+    th: "ระบบที่ผมใช้ทำงานจริง",
+  },
+  "section.tools.description": {
+    en: "Six systems I designed, built and operate — most of them in private repositories. They are not demos: they run the work, and they connect to each other.",
+    th: "หกระบบที่ผมออกแบบ พัฒนา และดูแลเอง ส่วนใหญ่อยู่ในรีโพแบบส่วนตัว ไม่ใช่งานสาธิต แต่คือระบบที่ใช้ทำงานจริงและเชื่อมต่อถึงกัน",
+  },
+  "tools.maturity.production": { en: "In production", th: "ใช้งานจริง" },
+  "tools.maturity.minimal": { en: "Minimal by design", th: "เรียบง่ายโดยตั้งใจ" },
+  "tools.maturity.shell": { en: "Interface only", th: "มีเฉพาะส่วนติดต่อ" },
+  "tools.repo.private": { en: "Private repo", th: "รีโพส่วนตัว" },
+  "tools.repo.public": { en: "Public repo", th: "รีโพสาธารณะ" },
+  "tools.open": { en: "Open", th: "เปิดดู" },
+  "tools.internalOnly": { en: "Internal endpoint", th: "ปลายทางภายใน" },
+  "tools.footnote": {
+    en: "Status is stated as it is, including where a system is less finished than it looks.",
+    th: "สถานะระบุตามความเป็นจริง รวมถึงกรณีที่ระบบยังเสร็จไม่เท่าที่เห็น",
+  },
   "section.company.eyebrow": { en: "NaNote Corp", th: "NaNote Corp" },
   "section.company.title": { en: "Meet the team.", th: "พบกับทีมงาน" },
   "section.company.description": {

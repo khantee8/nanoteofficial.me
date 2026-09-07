@@ -1,6 +1,7 @@
 import { Hero } from "@/components/Hero";
 import { Section } from "@/components/Section";
 import { Company } from "@/components/Company";
+import { Tools } from "@/components/Tools";
 import { Roadmap } from "@/components/Roadmap";
 import { Experience } from "@/components/Experience";
 import { Skills } from "@/components/Skills";
@@ -42,6 +43,16 @@ export default async function HomePage() {
         description={t("section.company.description", lang)}
       >
         <Company lang={lang} />
+      </Section>
+
+      <Section
+        id="tools"
+        band
+        eyebrow={t("section.tools.eyebrow", lang)}
+        title={t("section.tools.title", lang)}
+        description={t("section.tools.description", lang)}
+      >
+        <Tools lang={lang} />
       </Section>
 
       <Section
