@@ -30,7 +30,7 @@ type UiKey =
   | "tools.repo.private"
   | "tools.repo.public"
   | "tools.open"
-  | "tools.internalOnly"
+  | "tools.seeAll"
   | "tools.footnote"
   | "section.company.eyebrow"
   | "section.company.title"
@@ -132,8 +132,8 @@ const dict: Record<UiKey, Record<Lang, string>> = {
   "tools.maturity.shell": { en: "Interface only", th: "มีเฉพาะส่วนติดต่อ" },
   "tools.repo.private": { en: "Private repo", th: "รีโพส่วนตัว" },
   "tools.repo.public": { en: "Public repo", th: "รีโพสาธารณะ" },
-  "tools.open": { en: "Open", th: "เปิดดู" },
-  "tools.internalOnly": { en: "Internal endpoint", th: "ปลายทางภายใน" },
+  "tools.open": { en: "View architecture", th: "ดูสถาปัตยกรรม" },
+  "tools.seeAll": { en: "All systems and diagrams →", th: "ดูระบบและแผนผังทั้งหมด →" },
   "tools.footnote": {
     en: "Status is stated as it is, including where a system is less finished than it looks.",
     th: "สถานะระบุตามความเป็นจริง รวมถึงกรณีที่ระบบยังเสร็จไม่เท่าที่เห็น",

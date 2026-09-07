@@ -77,28 +77,33 @@ export function Tools({ lang }: { lang: Lang }) {
                 {t(`tools.repo.${tool.repoVisibility}` as const, lang)}
               </span>
 
-              {tool.href ? (
-                <a
-                  href={tool.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-sm font-semibold transition-colors hover:brightness-110"
-                  style={{ color: "var(--brand-accent)" }}
-                >
-                  {t("tools.open", lang)}
-                  <ArrowRight className="transition-transform group-hover:translate-x-0.5" />
-                </a>
-              ) : (
-                <span className="text-sm text-[var(--muted)]">
-                  {t("tools.internalOnly", lang)}
-                </span>
-              )}
+              <a
+                href={tool.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold transition-colors hover:brightness-110"
+                style={{ color: "var(--brand-accent)" }}
+              >
+                {t("tools.open", lang)}
+                <ArrowRight className="transition-transform group-hover:translate-x-0.5" />
+              </a>
             </div>
           </article>
         ))}
       </div>
 
-      <p className="mt-6 text-xs text-[var(--muted)]">{t("tools.footnote", lang)}</p>
+      <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
+        <p className="text-xs text-[var(--muted)]">{t("tools.footnote", lang)}</p>
+        <a
+          href="https://tools.nanoteofficial.me"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sm font-semibold transition-colors hover:brightness-110"
+          style={{ color: "var(--brand-accent)" }}
+        >
+          {t("tools.seeAll", lang)}
+        </a>
+      </div>
     </>
   );
 }

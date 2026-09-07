@@ -43,8 +43,8 @@ export type ToolItem = {
   /** Stated honestly, including where that is unflattering. */
   maturity: "production" | "minimal" | "shell";
   repoVisibility: "public" | "private";
-  /** Present only where the deployment is reachable by a visitor. */
-  href?: string;
+  /** Architecture page on tools.nanoteofficial.me. Every tool has one. */
+  href: string;
   stack: string[];
 };
 
@@ -514,7 +514,7 @@ export const tools: ToolItem[] = [
     },
     maturity: "production",
     repoVisibility: "public",
-    href: "https://company.nanoteofficial.me",
+    href: "https://tools.nanoteofficial.me/company",
     stack: ["Next.js 16", "Anthropic SDK", "Upstash Redis", "Neon Postgres"],
   },
   {
@@ -530,6 +530,7 @@ export const tools: ToolItem[] = [
     },
     maturity: "production",
     repoVisibility: "private",
+    href: "https://tools.nanoteofficial.me/thai-funds-mcp",
     stack: ["Next.js 16", "MCP", "Upstash Redis", "Zod"],
   },
   {
@@ -545,7 +546,7 @@ export const tools: ToolItem[] = [
     },
     maturity: "production",
     repoVisibility: "private",
-    href: "https://plan.nanoteofficial.me",
+    href: "https://tools.nanoteofficial.me/plan",
     stack: ["Next.js 16", "Auth.js", "Drizzle", "Neon Postgres", "Anthropic SDK"],
   },
   {
@@ -561,7 +562,7 @@ export const tools: ToolItem[] = [
     },
     maturity: "production",
     repoVisibility: "private",
-    href: "https://exam.nanoteofficial.me",
+    href: "https://tools.nanoteofficial.me/exam",
     stack: ["Next.js 16", "Auth.js", "Drizzle", "Neon Postgres"],
   },
   {
@@ -577,7 +578,7 @@ export const tools: ToolItem[] = [
     },
     maturity: "minimal",
     repoVisibility: "public",
-    href: "https://kb.nanoteofficial.me",
+    href: "https://tools.nanoteofficial.me/kb",
     stack: ["Next.js 16", "Neon Postgres"],
   },
   {
@@ -593,7 +594,7 @@ export const tools: ToolItem[] = [
     },
     maturity: "shell",
     repoVisibility: "public",
-    href: "https://finance.nanoteofficial.me",
+    href: "https://tools.nanoteofficial.me/finance",
     stack: ["Next.js 16", "Auth0"],
   },
 ];
