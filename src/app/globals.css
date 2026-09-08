@@ -28,6 +28,8 @@
   --tool-production: #0f8a5f;
   --tool-minimal: #2f6fd0;
   --tool-shell: #b4771a;
+  /* Nothing is built behind this tier — deliberately the greyest of the four. */
+  --tool-planned: #7c7f8a;
 
   /* Surface system */
   --background: #ffffff;
@@ -133,6 +135,7 @@ html.dark {
   --tool-production: #45c48d;
   --tool-minimal: #7aa9f5;
   --tool-shell: #e0a844;
+  --tool-planned: #9aa0ad;
 }
 
 html.dark [data-feature="finance"] {

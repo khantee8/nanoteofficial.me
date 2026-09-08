@@ -27,6 +27,7 @@ type UiKey =
   | "tools.maturity.production"
   | "tools.maturity.minimal"
   | "tools.maturity.shell"
+  | "tools.maturity.planned"
   | "tools.repo.private"
   | "tools.repo.public"
   | "tools.seeAll"
@@ -54,6 +55,7 @@ type UiKey =
   | "cta.cvEn"
   | "cta.cvTh"
   | "cta.preview"
+  | "cta.visit"
   | "cta.back"
   | "section.about.eyebrow"
   | "section.about.title"
@@ -133,12 +135,13 @@ const dict: Record<UiKey, Record<Lang, string>> = {
     th: "ระบบที่ผมใช้ทำงานจริง",
   },
   "section.tools.description": {
-    en: "Six systems I designed, built and operate — most of them in private repositories. They are not demos: they run the work, and they connect to each other.",
-    th: "หกระบบที่ผมออกแบบ พัฒนา และดูแลเอง ส่วนใหญ่อยู่ในรีโพแบบส่วนตัว ไม่ใช่งานสาธิต แต่คือระบบที่ใช้ทำงานจริงและเชื่อมต่อถึงกัน",
+    en: "Seven systems I designed, built and operate — most of them in private repositories. They are not demos: they run the work, and they connect to each other. An eighth is drawn dashed, because it is planned and not yet built.",
+    th: "เจ็ดระบบที่ผมออกแบบ พัฒนา และดูแลเอง ส่วนใหญ่อยู่ในรีโพแบบส่วนตัว ไม่ใช่งานสาธิต แต่คือระบบที่ใช้ทำงานจริงและเชื่อมต่อถึงกัน ส่วนระบบที่แปดวาดด้วยเส้นประ เพราะยังอยู่ในแผนและยังไม่ได้สร้าง",
   },
   "tools.maturity.production": { en: "In production", th: "ใช้งานจริง" },
   "tools.maturity.minimal": { en: "Minimal by design", th: "เรียบง่ายโดยตั้งใจ" },
   "tools.maturity.shell": { en: "Interface only", th: "มีเฉพาะส่วนติดต่อ" },
+  "tools.maturity.planned": { en: "Not built yet", th: "ยังไม่ได้สร้าง" },
   "tools.repo.private": { en: "Private repo", th: "รีโพส่วนตัว" },
   "tools.repo.public": { en: "Public repo", th: "รีโพสาธารณะ" },
   "tools.hint": {
@@ -157,8 +160,8 @@ const dict: Record<UiKey, Record<Lang, string>> = {
   "tools.kind.job": { en: "Scheduled", th: "ตามเวลา" },
   "tools.kind.channel": { en: "Channel", th: "ช่องทาง" },
   "tools.mapLabel": {
-    en: "Diagram of how the six systems connect",
-    th: "แผนผังการเชื่อมต่อของทั้งหกระบบ",
+    en: "Diagram of how the systems connect",
+    th: "แผนผังการเชื่อมต่อของระบบทั้งหมด",
   },
   "tools.seeAll": { en: "All systems and diagrams →", th: "ดูระบบและแผนผังทั้งหมด →" },
   "tools.footnote": {
@@ -181,6 +184,7 @@ const dict: Record<UiKey, Record<Lang, string>> = {
   "cta.cvEn": { en: "Download CV (EN)", th: "ดาวน์โหลด CV (EN)" },
   "cta.cvTh": { en: "Download CV (TH)", th: "ดาวน์โหลด CV (TH)" },
   "cta.preview": { en: "Explore preview", th: "ดูตัวอย่าง" },
+  "cta.visit": { en: "Open the live site", th: "เปิดเว็บไซต์จริง" },
   "cta.back": { en: "Back to home", th: "กลับหน้าแรก" },
   "section.about.eyebrow": { en: "About", th: "เกี่ยวกับ" },
   "section.about.title": {

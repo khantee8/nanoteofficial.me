@@ -16,10 +16,16 @@ const statusStyles: Record<RoadmapItem["status"], string> = {
 export function Roadmap({ lang }: { lang: Lang }) {
   return (
     <div className="grid gap-5 md:grid-cols-2">
-      {roadmap.map((item, i) => (
+      {roadmap.map((item, i) => {
+        // A shipped item points at its own deployment rather than a preview
+        // shell on this site, so the card has to leave the origin properly.
+        const external = item.href.startsWith("http");
+        return (
         <Link
           key={item.key}
           href={item.href}
+          target={external ? "_blank" : undefined}
+          rel={external ? "noopener noreferrer" : undefined}
           data-feature={item.key}
           data-reveal
           style={{ "--reveal-d": i * 100 } as React.CSSProperties}
@@ -72,11 +78,12 @@ export function Roadmap({ lang }: { lang: Lang }) {
             className="relative mt-6 inline-flex items-center gap-1.5 text-sm font-semibold"
             style={{ color: "var(--feature-color-strong)" }}
           >
-            {t("cta.preview", lang)}
+            {t(external ? "cta.visit" : "cta.preview", lang)}
             <ArrowRight className="transition-transform group-hover:translate-x-0.5" />
           </div>
         </Link>
-      ))}
+        );
+      })}
     </div>
   );
 }

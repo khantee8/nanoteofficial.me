@@ -17,7 +17,13 @@ export type ToolMapNode = {
   drillable?: boolean;
 };
 
-export type ToolMapEdge = { from: string; to: string; label: string };
+export type ToolMapEdge = {
+  from: string;
+  to: string;
+  label: string;
+  /** Drawn dashed when the thing at the far end does not exist yet. */
+  dashed?: boolean;
+};
 
 const COL_W = 234;
 const ROW_H = 100;
@@ -124,7 +130,19 @@ export function ToolsMap({
     const y1 = a.y + NODE_H / 2;
     const x2 = b.x;
     const y2 = b.y + NODE_H / 2;
-    return [{ key: i, label: e.label, x1, y1, x2, y2, mid: (x1 + x2) / 2, on: touches(e) }];
+    return [
+      {
+        key: i,
+        label: e.label,
+        dashed: e.dashed,
+        x1,
+        y1,
+        x2,
+        y2,
+        mid: (x1 + x2) / 2,
+        on: touches(e),
+      },
+    ];
   });
   const lit = (id: string) =>
     active === null ||
@@ -166,6 +184,7 @@ export function ToolsMap({
               fill="none"
               stroke={active && l.on ? "var(--brand-accent)" : "var(--muted)"}
               strokeWidth={active && l.on ? 2 : 1.25}
+              strokeDasharray={l.dashed ? "5 4" : undefined}
               markerEnd="url(#tools-arrow)"
               opacity={l.on ? 1 : 0.12}
               style={{ transition: "opacity 150ms" }}

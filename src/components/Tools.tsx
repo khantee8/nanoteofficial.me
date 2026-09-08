@@ -14,6 +14,7 @@ const MATURITY_VAR = {
   production: "var(--tool-production)",
   minimal: "var(--tool-minimal)",
   shell: "var(--tool-shell)",
+  planned: "var(--tool-planned)",
 } as const;
 
 /** Things outside my control are drawn dashed, whatever they are. */
@@ -50,18 +51,28 @@ export function Tools({ lang }: { lang: Lang }) {
       layer: at(tool.key).layer,
       row: at(tool.key).row,
       accent: MATURITY_VAR[tool.maturity],
+      // A planned tool has no graph behind it, so there is nothing to open.
+      dashed: tool.maturity === "planned",
       isPrivate: tool.repoVisibility === "private",
-      drillable: true,
+      drillable: tool.maturity !== "planned",
     })),
   ];
+
+  const planned = new Set(
+    tools.filter((tool) => tool.maturity === "planned").map((tool) => tool.key),
+  );
 
   const platformMapEdges: ToolMapEdge[] = toolEdges.map((edge) => ({
     from: edge.from,
     to: edge.to,
     label: pick(edge.label, lang),
+    dashed: planned.has(edge.to),
   }));
 
-  const views: ToolView[] = tools.map((tool) => {
+  // `planned` tools have no graph, so they contribute no drill-in view.
+  const withGraph = tools.filter((tool) => toolGraphs[tool.key]);
+
+  const views: ToolView[] = withGraph.map((tool) => {
     const graph = toolGraphs[tool.key]!;
     const inner = layoutGraph(
       graph.nodes.map((node) => node.id),
@@ -109,7 +120,7 @@ export function Tools({ lang }: { lang: Lang }) {
       />
 
       <div className="mt-6 flex flex-wrap items-center gap-3">
-        {(["production", "minimal", "shell"] as const).map((m) => (
+        {(["production", "minimal", "shell", "planned"] as const).map((m) => (
           <span
             key={m}
             className="inline-flex items-center gap-2 rounded-lg border border-[var(--border-soft)] px-3 py-1.5 text-sm text-[var(--muted)]"

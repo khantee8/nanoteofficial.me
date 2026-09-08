@@ -40,11 +40,19 @@ export type ToolItem = {
   name: LStr;
   tagline: LStr;
   purpose: LStr;
-  /** Stated honestly, including where that is unflattering. */
-  maturity: "production" | "minimal" | "shell";
+  /**
+   * Stated honestly, including where that is unflattering. `planned` is the
+   * one tier with no system behind it yet: it has no drill-in graph and no
+   * architecture page, and the map draws it dashed so it cannot be mistaken
+   * for something that ships.
+   */
+  maturity: "production" | "minimal" | "shell" | "planned";
   repoVisibility: "public" | "private";
-  /** Architecture page on tools.nanoteofficial.me. Every tool has one. */
-  href: string;
+  /**
+   * Architecture page on tools.nanoteofficial.me. Absent for `planned` tools —
+   * there is nothing to drill into.
+   */
+  href?: string;
   stack: string[];
 };
 
@@ -432,28 +440,34 @@ export const roadmap: RoadmapItem[] = [
     subdomain: "cyber.nanoteofficial.me",
     title: { en: "Cyber", th: "ไซเบอร์" },
     tagline: {
-      en: "Real-time threat monitoring for security professionals",
-      th: "ติดตามภัยคุกคามไซเบอร์แบบเรียลไทม์สำหรับมืออาชีพ",
+      en: "Threat intelligence in the open, ISO 27001 governance behind a login",
+      th: "ข่าวกรองภัยคุกคามแบบเปิด และการกำกับดูแล ISO 27001 หลังการเข้าสู่ระบบ",
     },
     description: {
-      en: "A live feed of cyber threats and industry-impacting events, designed to compress the time between detection and informed analysis for SOC teams and consultants.",
-      th: "ฟีดสดของภัยคุกคามไซเบอร์และเหตุการณ์ที่กระทบอุตสาหกรรม ออกแบบมาเพื่อย่นเวลาระหว่างการตรวจจับและการวิเคราะห์ของทีม SOC และที่ปรึกษา",
+      en: "What is being exploited right now, aggregated from free public feeds and readable without an account — and, for those invited, a persisted ISO/IEC 27001 workspace where controls, risks and evidence are actually tracked.",
+      th: "สิ่งที่กำลังถูกโจมตีอยู่ตอนนี้ รวบรวมจากฟีดสาธารณะที่ใช้ได้ฟรีและอ่านได้โดยไม่ต้องมีบัญชี — และสำหรับผู้ได้รับเชิญ คือพื้นที่ทำงาน ISO/IEC 27001 ที่บันทึกมาตรการควบคุม ความเสี่ยง และหลักฐานไว้จริง",
     },
     features: [
       {
-        en: "Live threat & CVE feed with severity scoring",
-        th: "ฟีดภัยคุกคามและ CVE พร้อมคะแนนความรุนแรง",
+        en: "Known-exploited vulnerabilities joined with EPSS likelihood scoring",
+        th: "ช่องโหว่ที่ถูกใช้โจมตีจริง จับคู่กับคะแนนความน่าจะเป็น EPSS",
       },
       {
-        en: "Industry-tagged impact analysis",
-        th: "วิเคราะห์ผลกระทบแยกตามอุตสาหกรรม",
+        en: "Ransomware victims, C2 infrastructure and infocon on one world map",
+        th: "เหยื่อแรนซัมแวร์ โครงสร้าง C2 และระดับ infocon บนแผนที่โลกเดียว",
       },
-      { en: "Vendor advisory aggregation", th: "รวมคำแนะนำจาก Vendor หลายเจ้า" },
-      { en: "Searchable incident history", th: "ค้นหาประวัติเหตุการณ์ย้อนหลังได้" },
+      {
+        en: "All 93 ISO/IEC 27001:2022 Annex A controls with gap assessment by theme",
+        th: "มาตรการควบคุม Annex A ของ ISO/IEC 27001:2022 ครบ 93 ข้อ พร้อมประเมินช่องว่างตามธีม",
+      },
+      {
+        en: "5×5 risk register and a Statement of Applicability that refuses to export an unjustified exclusion",
+        th: "ทะเบียนความเสี่ยง 5×5 และ Statement of Applicability ที่ปฏิเสธการส่งออกเมื่อมีข้อยกเว้นที่ไม่มีเหตุผลรองรับ",
+      },
     ],
-    status: "In design",
+    status: "Live",
     accent: "from-sky-500/20 to-sky-500/0 border-sky-500/30",
-    href: "/cyber",
+    href: "https://cyber.nanoteofficial.me",
   },
   {
     key: "kb",
@@ -578,6 +592,22 @@ export const tools: ToolItem[] = [
     stack: ["Next.js 16", "Auth.js", "Drizzle", "Neon Postgres"],
   },
   {
+    key: "cyber",
+    name: { en: "Cyber", th: "ไซเบอร์" },
+    tagline: {
+      en: "Live threat intelligence, and an ISMS workspace behind a login",
+      th: "ข่าวกรองภัยคุกคามแบบสด และพื้นที่ทำงาน ISMS หลังการเข้าสู่ระบบ",
+    },
+    purpose: {
+      en: "Two halves of the same job. The public half watches what is being exploited right now; the private half is where an organisation's controls, risks and evidence actually live.",
+      th: "งานเดียวกันสองด้าน ด้านสาธารณะเฝ้าดูสิ่งที่กำลังถูกโจมตีอยู่ตอนนี้ ส่วนด้านที่ปิดไว้คือที่เก็บมาตรการควบคุม ความเสี่ยง และหลักฐานขององค์กรจริง ๆ",
+    },
+    maturity: "production",
+    repoVisibility: "public",
+    href: "https://tools.nanoteofficial.me/cyber",
+    stack: ["Next.js 16", "Auth.js", "Drizzle", "Neon Postgres", "d3-geo"],
+  },
+  {
     key: "kb",
     name: { en: "Library", th: "ห้องสมุด" },
     tagline: {
@@ -609,6 +639,21 @@ export const tools: ToolItem[] = [
     href: "https://tools.nanoteofficial.me/finance",
     stack: ["Next.js 16", "Auth0"],
   },
+  {
+    key: "art",
+    name: { en: "Art", th: "งานศิลป์" },
+    tagline: {
+      en: "Planned — no repository, no deployment, no architecture yet",
+      th: "อยู่ในแผน — ยังไม่มีรีโพ ไม่มีการติดตั้ง และยังไม่มีสถาปัตยกรรม",
+    },
+    purpose: {
+      en: "On the map so the picture is complete, drawn dashed so it is not mistaken for a system. Nothing has been built; there is deliberately nothing to drill into.",
+      th: "อยู่บนแผนผังเพื่อให้ภาพรวมครบถ้วน และวาดด้วยเส้นประเพื่อไม่ให้เข้าใจผิดว่าเป็นระบบที่มีอยู่จริง ยังไม่ได้สร้างอะไรเลย จึงตั้งใจไม่ให้เจาะดูรายละเอียด",
+    },
+    maturity: "planned",
+    repoVisibility: "public",
+    stack: [],
+  },
 ];
 
 export const toolEdges: ToolEdge[] = [
@@ -625,6 +670,12 @@ export const toolEdges: ToolEdge[] = [
   { from: "portfolio", to: "kb", label: { en: "links here", th: "ลิงก์จากหน้านี้" } },
   { from: "portfolio", to: "exam", label: { en: "links here", th: "ลิงก์จากหน้านี้" } },
   { from: "portfolio", to: "finance", label: { en: "links here", th: "ลิงก์จากหน้านี้" } },
+  { from: "portfolio", to: "cyber", label: { en: "links here", th: "ลิงก์จากหน้านี้" } },
+  {
+    from: "portfolio",
+    to: "art",
+    label: { en: "listed, not built", th: "อยู่ในรายการ แต่ยังไม่ได้สร้าง" },
+  },
   {
     from: "company",
     to: "thai-funds-mcp",
@@ -748,6 +799,34 @@ export const toolGraphs: Record<string, ToolGraph> = {
       e("bank", "seed", "parsed and validated", "แปลงและตรวจความถูกต้อง"),
       e("seed", "pg", "loads the bank", "นำเข้าคลังข้อสอบ"),
       e("web", "pg", "answers and results", "คำตอบและผลลัพธ์"),
+    ],
+  },
+  cyber: {
+    nodes: [
+      n("public", "app", "Threat intel HUD & map", "หน้าจอข่าวกรองภัยคุกคามและแผนที่"),
+      n("workspace", "app", "ISMS workspace", "พื้นที่ทำงาน ISMS"),
+      n("auth", "service", "Request, approval, then sign-in", "ขอสิทธิ์ อนุมัติ แล้วจึงเข้าสู่ระบบ"),
+      n("intel", "service", "Feed aggregator", "ตัวรวมฟีดข้อมูล"),
+      n("catalogue", "service", "93 Annex A controls", "มาตรการควบคุม Annex A 93 ข้อ"),
+      n("soa", "service", "Statement of Applicability export", "การส่งออก Statement of Applicability"),
+      n("fallback", "datastore", "Committed fallback snapshot", "สแนปช็อตสำรองที่เก็บไว้ในรีโพ"),
+      n("pg", "datastore", "Controls, risks & sessions", "มาตรการควบคุม ความเสี่ยง และเซสชัน"),
+      n("feeds", "external", "Public threat feeds", "ฟีดภัยคุกคามสาธารณะ"),
+      n("mail", "external", "Transactional email", "อีเมลระบบ"),
+      n("snapshot", "job", "Fallback refresh — run by hand", "รีเฟรชข้อมูลสำรอง — สั่งด้วยมือ"),
+    ],
+    edges: [
+      e("public", "intel", "reads one 15-minute snapshot", "อ่านสแนปช็อตรอบ 15 นาที"),
+      e("intel", "feeds", "six key-less public sources", "หกแหล่งสาธารณะที่ไม่ต้องใช้คีย์"),
+      e("intel", "fallback", "degrades, stale-labelled, never blank", "ถอยไปใช้ข้อมูลเก่าที่ติดป้ายกำกับ ไม่ปล่อยหน้าว่าง"),
+      e("snapshot", "fallback", "recaptures from the live feeds", "เก็บข้อมูลใหม่จากฟีดสด"),
+      e("workspace", "auth", "gates every page behind it", "คุมทุกหน้าที่อยู่ด้านหลัง"),
+      e("auth", "mail", "sends sign-in links", "ส่งลิงก์เข้าสู่ระบบ"),
+      e("auth", "pg", "sessions, and approval re-read per request", "เซสชัน และอ่านสถานะอนุมัติใหม่ทุกคำขอ"),
+      e("workspace", "catalogue", "titles, themes and attributes", "ชื่อ ธีม และคุณลักษณะ"),
+      e("workspace", "pg", "status, risk scores, evidence links", "สถานะ คะแนนความเสี่ยง ลิงก์หลักฐาน"),
+      e("workspace", "soa", "export request", "คำขอส่งออก"),
+      e("soa", "pg", "refuses while an exclusion is unjustified", "ปฏิเสธตราบใดที่ยังมีข้อยกเว้นไม่มีเหตุผลรองรับ"),
     ],
   },
   kb: {

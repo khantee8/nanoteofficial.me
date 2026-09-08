@@ -75,9 +75,10 @@ The site's **only server code** and **only env-dependent feature**. `ContactForm
 
 ### Tools section (`#tools`) — the internal-toolchain map
 
-Added v0.5.0, became a map in v0.6.0. Renders the six shipped `khantee8` systems
-(`company, thai-funds-mcp, plan, exam, kb, finance`) as a connection graph rather
-than a card grid — the point of these systems is that they interlock.
+Added v0.5.0, became a map in v0.6.0. Renders the shipped `khantee8` systems
+(`company, thai-funds-mcp, plan, exam, cyber, kb, finance`) as a connection graph
+rather than a card grid — the point of these systems is that they interlock.
+`art` is on the map too, but as the one `planned` node (v0.8.0).
 
 Three pieces: `tools` + `toolEdges` in `profile.ts` (data), `graph-layout.ts`
 (placement), `ToolsMap.tsx` (`"use client"` SVG renderer).
@@ -88,9 +89,18 @@ so shortest-path would put them in the same column and draw a backwards-looking
 arrow. Don't "simplify" it to a BFS.
 
 Maturity is stated honestly and drives colour via `--tool-production` /
-`--tool-minimal` / `--tool-shell` (defined in both themes in `globals.css`).
-`finance` is marked `shell` because it has no persistence and a stubbed
-endpoint; the roadmap copy was corrected in v0.5.0 to match.
+`--tool-minimal` / `--tool-shell` / `--tool-planned` (defined in both themes in
+`globals.css`). `finance` is marked `shell` because it has no persistence and a
+stubbed endpoint; the roadmap copy was corrected in v0.5.0 to match.
+
+**The `planned` tier is load-bearing, not decorative.** A `planned` tool has no
+entry in `toolGraphs`, no `href`, and is drawn dashed and non-clickable — that is
+what lets `art` appear on the map without an invented architecture behind it.
+`Tools.tsx` derives all three behaviours from the data (`withGraph` filters the
+drill-in views; `drillable`/`dashed` come from the maturity), so adding another
+unbuilt system is a data edit alone. If you ever give `art` a real graph, delete
+the `planned` marking in the same commit — the tier exists to be honest, and a
+`planned` node with a drill-in would be worse than no tier at all.
 
 **Duplication to keep in mind:** the authoritative architecture model —
 nodes, edges, protocols, plus a private layer of env var names and schedules —
@@ -122,7 +132,8 @@ Pre-migration history: this repo's git log through v0.2.9.
 - The `postcss` package is overridden to `>=8.5.10` in `package.json` to resolve a known advisory — do not remove the override.
 - The scroll-spy IntersectionObserver in `HeaderNav.tsx` only watches sections that exist on the homepage (`about`, `company`, `roadmap`, `tools`, `experience`, `projects`, `contact`) — it has no effect on subdomain pages.
 - Homepage sections alternate tinted/plain via the `band` prop. Reordering sections means swapping `band` flags too, or the rhythm breaks. Current nav and section order is `about → company → roadmap (Builds) → tools → experience → projects → contact`.
-- The `cyber` and `art` preview shells describe systems with no repo and no deployment. This is a known, deliberate choice by the owner — raised and declined; do not "fix" it unprompted.
+- The `art` preview shell describes a system with no repo and no deployment. This is a known, deliberate choice by the owner — raised and declined; do not "fix" it unprompted.
+- **`/cyber` is now a mock of a system that really exists.** `cyber.nanoteofficial.me` shipped v1.0.0 on 2026-09-08, and as of v0.8.0 the roadmap card is marked `Live` and links straight to it. The `src/app/cyber/page.tsx` shell — with its hand-written fake CVE feed — was deliberately left in place; retiring it the way `/plan` was retired is open, unscheduled work. Do not present its fake feed as real data.
 - Certification vendor logos live in `public/logos/` as SVGs. Real logos (Cisco, ISC², Fortinet, Palo Alto, CompTIA) were sourced from Simple Icons CDN; others (EC-Council, PMI, ServiceNow, SEC Thailand) are hand-crafted SVGs.
 - CV download files (`public/cv-en.pdf`, `public/cv-th.pdf`) are copied from `/project/Profile/` — update them there first, then copy to `public/`. `/project/Profile/` is **not** tracked by git, so a deployed PDF's only durable history is this repo's commits on `public/`.
 
