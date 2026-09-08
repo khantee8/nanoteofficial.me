@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { fitLabel } from "@/lib/fitText";
 
 export type ToolMapNode = {
   id: string;
@@ -21,8 +22,11 @@ export type ToolMapEdge = { from: string; to: string; label: string };
 const COL_W = 234;
 const ROW_H = 100;
 const NODE_W = 178;
-const NODE_H = 64;
 const PAD = 20;
+const TEXT_X = 16;
+const LABEL_BASE = 13.5;
+/** Right-hand gutter: the lock badge lives here on private nodes. */
+const TEXT_AVAIL = NODE_W - TEXT_X - 26;
 
 export function ToolsMap({
   nodes,
@@ -44,6 +48,13 @@ export function ToolsMap({
     if (n.href) window.open(n.href, "_blank", "noopener,noreferrer");
   };
   const isInteractive = (n: ToolMapNode) => Boolean((n.drillable && onSelect) || n.href);
+
+  const fitted = new Map(nodes.map((n) => [n.id, fitLabel(n.label, TEXT_AVAIL, LABEL_BASE)]));
+  const maxLines = Math.max(1, ...[...fitted.values()].map((f) => f.lines.length));
+  const lineGap = LABEL_BASE + 2;
+  const labelTop = 23;
+  const subY = labelTop + (maxLines - 1) * lineGap + 19;
+  const NODE_H = subY + 19;
 
   const columns = Math.max(...nodes.map((n) => n.layer)) + 1;
   const perColumn = new Map<number, number>();
@@ -174,14 +185,18 @@ export function ToolsMap({
                 />
                 <rect width={4} height={NODE_H} rx={2} fill={n.accent} />
                 <text
-                  x={16}
-                  y={26}
+                  x={TEXT_X}
+                  y={labelTop}
                   className="fill-[var(--foreground)]"
-                  style={{ fontSize: 13.5, fontWeight: 600 }}
+                  style={{ fontSize: fitted.get(n.id)!.size, fontWeight: 600 }}
                 >
-                  {n.label}
+                  {fitted.get(n.id)!.lines.map((line, i) => (
+                    <tspan key={i} x={TEXT_X} dy={i === 0 ? 0 : lineGap}>
+                      {line}
+                    </tspan>
+                  ))}
                 </text>
-                <text x={16} y={45} className="fill-[var(--muted)]" style={{ fontSize: 11 }}>
+                <text x={TEXT_X} y={subY} className="fill-[var(--muted)]" style={{ fontSize: 11 }}>
                   {n.sub}
                 </text>
                 {n.isPrivate && (
