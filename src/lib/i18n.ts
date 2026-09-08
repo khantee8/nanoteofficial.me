@@ -31,7 +31,15 @@ type UiKey =
   | "tools.repo.public"
   | "tools.seeAll"
   | "tools.hint"
+  | "tools.drillHint"
+  | "tools.back"
   | "tools.mapLabel"
+  | "tools.kind.app"
+  | "tools.kind.service"
+  | "tools.kind.datastore"
+  | "tools.kind.external"
+  | "tools.kind.job"
+  | "tools.kind.channel"
   | "tools.footnote"
   | "section.company.eyebrow"
   | "section.company.title"
@@ -134,9 +142,20 @@ const dict: Record<UiKey, Record<Lang, string>> = {
   "tools.repo.private": { en: "Private repo", th: "รีโพส่วนตัว" },
   "tools.repo.public": { en: "Public repo", th: "รีโพสาธารณะ" },
   "tools.hint": {
-    en: "Hover a system to trace its connections. Click through for its architecture.",
-    th: "วางเมาส์บนระบบเพื่อดูเส้นเชื่อมต่อ คลิกเพื่อดูสถาปัตยกรรม",
+    en: "Hover a system to trace its connections. Click one to open it up right here — no new tab.",
+    th: "วางเมาส์บนระบบเพื่อดูเส้นเชื่อมต่อ คลิกเพื่อเปิดดูภายในได้ที่นี่เลย ไม่ต้องเปิดแท็บใหม่",
   },
+  "tools.drillHint": {
+    en: "Dashed outlines are things outside my control. Press Escape to go back.",
+    th: "เส้นประคือส่วนที่อยู่นอกการควบคุมของผม กด Escape เพื่อย้อนกลับ",
+  },
+  "tools.back": { en: "All systems", th: "ระบบทั้งหมด" },
+  "tools.kind.app": { en: "App", th: "แอป" },
+  "tools.kind.service": { en: "Service", th: "เซอร์วิส" },
+  "tools.kind.datastore": { en: "Data", th: "ข้อมูล" },
+  "tools.kind.external": { en: "External", th: "ภายนอก" },
+  "tools.kind.job": { en: "Scheduled", th: "ตามเวลา" },
+  "tools.kind.channel": { en: "Channel", th: "ช่องทาง" },
   "tools.mapLabel": {
     en: "Diagram of how the six systems connect",
     th: "แผนผังการเชื่อมต่อของทั้งหกระบบ",

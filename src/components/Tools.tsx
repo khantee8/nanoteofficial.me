@@ -1,7 +1,14 @@
-import { tools, toolEdges, pick } from "@/lib/profile";
+import {
+  tools,
+  toolEdges,
+  toolGraphs,
+  pick,
+  type ToolNodeKind,
+} from "@/lib/profile";
 import { t, type Lang } from "@/lib/i18n";
 import { layoutGraph } from "@/lib/graph-layout";
-import { ToolsMap, type ToolMapEdge, type ToolMapNode } from "@/components/ToolsMap";
+import { ToolsExplorer, type ToolView } from "@/components/ToolsExplorer";
+import type { ToolMapEdge, ToolMapNode } from "@/components/ToolsMap";
 
 const MATURITY_VAR = {
   production: "var(--tool-production)",
@@ -9,12 +16,24 @@ const MATURITY_VAR = {
   shell: "var(--tool-shell)",
 } as const;
 
-export function Tools({ lang }: { lang: Lang }) {
-  const order = ["portfolio", ...tools.map((t) => t.key)];
-  const placed = layoutGraph(order, toolEdges);
-  const at = (id: string) => placed.find((n) => n.id === id)!;
+/** Things outside my control are drawn dashed, whatever they are. */
+const DASHED: ReadonlySet<ToolNodeKind> = new Set(["external", "job", "channel"]);
 
-  const nodes: ToolMapNode[] = [
+const KIND_ACCENT: Record<ToolNodeKind, string> = {
+  app: "var(--brand-accent)",
+  service: "var(--brand-accent)",
+  datastore: "var(--tool-minimal)",
+  external: "var(--muted)",
+  job: "var(--tool-shell)",
+  channel: "var(--tool-shell)",
+};
+
+export function Tools({ lang }: { lang: Lang }) {
+  const order = ["portfolio", ...tools.map((tool) => tool.key)];
+  const placed = layoutGraph(order, toolEdges);
+  const at = (id: string) => placed.find((node) => node.id === id)!;
+
+  const platformNodes: ToolMapNode[] = [
     {
       id: "portfolio",
       label: "Portfolio",
@@ -32,21 +51,62 @@ export function Tools({ lang }: { lang: Lang }) {
       row: at(tool.key).row,
       accent: MATURITY_VAR[tool.maturity],
       isPrivate: tool.repoVisibility === "private",
-      href: tool.href,
+      drillable: true,
     })),
   ];
 
-  const edges: ToolMapEdge[] = toolEdges.map((e) => ({
-    from: e.from,
-    to: e.to,
-    label: pick(e.label, lang),
+  const platformMapEdges: ToolMapEdge[] = toolEdges.map((edge) => ({
+    from: edge.from,
+    to: edge.to,
+    label: pick(edge.label, lang),
   }));
+
+  const views: ToolView[] = tools.map((tool) => {
+    const graph = toolGraphs[tool.key]!;
+    const inner = layoutGraph(
+      graph.nodes.map((node) => node.id),
+      graph.edges,
+    );
+    const innerAt = (id: string) => inner.find((node) => node.id === id)!;
+
+    return {
+      key: tool.key,
+      name: pick(tool.name, lang),
+      tagline: pick(tool.tagline, lang),
+      maturityLabel: t(`tools.maturity.${tool.maturity}` as const, lang),
+      maturityVar: MATURITY_VAR[tool.maturity],
+      repoLabel: t(`tools.repo.${tool.repoVisibility}` as const, lang),
+      nodes: graph.nodes.map((node) => ({
+        id: node.id,
+        label: pick(node.label, lang),
+        sub: t(`tools.kind.${node.kind}` as const, lang),
+        layer: innerAt(node.id).layer,
+        row: innerAt(node.id).row,
+        accent: KIND_ACCENT[node.kind],
+        dashed: DASHED.has(node.kind),
+        isPrivate: false,
+      })),
+      edges: graph.edges.map((edge) => ({
+        from: edge.from,
+        to: edge.to,
+        label: pick(edge.label, lang),
+      })),
+    };
+  });
 
   return (
     <>
-      <ToolsMap nodes={nodes} edges={edges} label={t("tools.mapLabel", lang)} />
-
-      <p className="mt-3 text-xs text-[var(--muted)]">{t("tools.hint", lang)}</p>
+      <ToolsExplorer
+        platformNodes={platformNodes}
+        platformEdges={platformMapEdges}
+        views={views}
+        copy={{
+          mapLabel: t("tools.mapLabel", lang),
+          hint: t("tools.hint", lang),
+          drillHint: t("tools.drillHint", lang),
+          back: t("tools.back", lang),
+        }}
+      />
 
       <div className="mt-6 flex flex-wrap items-center gap-3">
         {(["production", "minimal", "shell"] as const).map((m) => (

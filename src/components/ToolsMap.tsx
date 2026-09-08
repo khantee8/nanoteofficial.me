@@ -9,8 +9,11 @@ export type ToolMapNode = {
   layer: number;
   row: number;
   accent: string;
+  dashed?: boolean;
   isPrivate: boolean;
   href?: string;
+  /** Clicking drills into this node in place rather than navigating away. */
+  drillable?: boolean;
 };
 
 export type ToolMapEdge = { from: string; to: string; label: string };
@@ -25,12 +28,22 @@ export function ToolsMap({
   nodes,
   edges,
   label,
+  onSelect,
 }: {
   nodes: ToolMapNode[];
   edges: ToolMapEdge[];
   label: string;
+  /** Supplied when a node can be drilled into without leaving the page. */
+  onSelect?: (id: string) => void;
 }) {
   const [active, setActive] = useState<string | null>(null);
+
+  // Drilling stays on the page — no navigation, no new tab.
+  const activate = (n: ToolMapNode) => {
+    if (n.drillable && onSelect) return onSelect(n.id);
+    if (n.href) window.open(n.href, "_blank", "noopener,noreferrer");
+  };
+  const isInteractive = (n: ToolMapNode) => Boolean((n.drillable && onSelect) || n.href);
 
   const columns = Math.max(...nodes.map((n) => n.layer)) + 1;
   const perColumn = new Map<number, number>();
@@ -133,22 +146,20 @@ export function ToolsMap({
                 opacity={on ? 1 : 0.3}
                 style={{
                   transition: "opacity 150ms",
-                  cursor: n.href ? "pointer" : "default",
+                  cursor: isInteractive(n) ? "pointer" : "default",
                 }}
                 onMouseEnter={() => setActive(n.id)}
                 onMouseLeave={() => setActive(null)}
                 onFocus={() => setActive(n.id)}
                 onBlur={() => setActive(null)}
-                tabIndex={n.href ? 0 : -1}
-                role={n.href ? "link" : undefined}
+                tabIndex={isInteractive(n) ? 0 : -1}
+                role={isInteractive(n) ? (n.drillable && onSelect ? "button" : "link") : undefined}
                 aria-label={`${n.label} — ${n.sub}`}
-                onClick={() => {
-                  if (n.href) window.open(n.href, "_blank", "noopener,noreferrer");
-                }}
+                onClick={() => activate(n)}
                 onKeyDown={(ev) => {
-                  if (n.href && (ev.key === "Enter" || ev.key === " ")) {
+                  if (isInteractive(n) && (ev.key === "Enter" || ev.key === " ")) {
                     ev.preventDefault();
-                    window.open(n.href, "_blank", "noopener,noreferrer");
+                    activate(n);
                   }
                 }}
               >
@@ -159,6 +170,7 @@ export function ToolsMap({
                   fill="var(--background)"
                   stroke={active === n.id ? n.accent : "var(--border)"}
                   strokeWidth={active === n.id ? 2 : 1}
+                  strokeDasharray={n.dashed ? "4 3" : undefined}
                 />
                 <rect width={4} height={NODE_H} rx={2} fill={n.accent} />
                 <text

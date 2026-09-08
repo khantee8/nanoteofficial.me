@@ -49,10 +49,15 @@ export type ToolItem = {
 };
 
 /**
- * How the tools connect. Mirrors `platformEdges` in the private
- * tools.nanoteofficial.me repo, which is the source of truth. Public-safe:
- * relationships only, never configuration.
+ * Public-safe internal graph for one tool, used by the #tools drill-down.
+ * Mirrors the `nodes`/`edges` of the same system in the private
+ * tools.nanoteofficial.me repo. Labels only — never configuration.
  */
+export type ToolNodeKind = "app" | "service" | "datastore" | "external" | "job" | "channel";
+export type ToolNode = { id: string; kind: ToolNodeKind; label: LStr };
+export type ToolGraphEdge = { from: string; to: string; label: LStr };
+export type ToolGraph = { nodes: ToolNode[]; edges: ToolGraphEdge[] };
+
 export type ToolEdge = { from: string; to: string; label: LStr };
 
 export type RoadmapItem = {
@@ -634,6 +639,146 @@ export const toolEdges: ToolEdge[] = [
     label: { en: "daily pull of published briefs", th: "ดึงบทสรุปที่เผยแพร่ทุกวัน" },
   },
 ];
+
+
+const n = (id: string, kind: ToolNodeKind, en: string, th: string): ToolNode => ({
+  id,
+  kind,
+  label: { en, th },
+});
+const e = (from: string, to: string, en: string, th: string): ToolGraphEdge => ({
+  from,
+  to,
+  label: { en, th },
+});
+
+/**
+ * Reciprocal relationships are written as a single edge with both labels
+ * joined. Two edges between one pair would make the graph cyclic, and the
+ * longest-path layout has no meaningful ordering on a cycle.
+ */
+export const toolGraphs: Record<string, ToolGraph> = {
+  company: {
+    nodes: [
+      n("web", "app", "Dashboard & console", "แดชบอร์ดและคอนโซล"),
+      n("agents", "service", "Six department agents", "เอเจนต์หกแผนก"),
+      n("batch", "service", "Async batch orchestrator", "ตัวจัดคิวงานแบบอะซิงก์"),
+      n("gate", "service", "Publish quality gate", "ด่านตรวจคุณภาพก่อนเผยแพร่"),
+      n("redis", "datastore", "Agent state store", "ที่เก็บสถานะเอเจนต์"),
+      n("pg", "datastore", "Knowledge base", "ฐานความรู้"),
+      n("anthropic", "external", "Claude API", "Claude API"),
+      n("sources", "external", "Public research sources", "แหล่งข้อมูลวิจัยสาธารณะ"),
+      n("schedule", "job", "Staggered department schedule", "ตารางเวลาแยกตามแผนก"),
+      n("sweep", "job", "Daily self-heal sweep", "รอบตรวจซ่อมตัวเองรายวัน"),
+      n("backstop", "job", "External poll backstop", "ตัวสำรองสำหรับดึงผลงาน"),
+      n("telegram", "channel", "Telegram bot", "บอต Telegram"),
+    ],
+    edges: [
+      e("schedule", "agents", "triggers a department", "สั่งให้แผนกเริ่มทำงาน"),
+      e("agents", "sources", "cited web research", "ค้นคว้าเว็บพร้อมอ้างอิง"),
+      e("agents", "batch", "hands off long runs", "ส่งต่องานที่ใช้เวลานาน"),
+      e("batch", "anthropic", "submits and collects batches", "ส่งและเก็บผลชุดงาน"),
+      e("backstop", "batch", "polls for finished work", "ตามเก็บงานที่เสร็จแล้ว"),
+      e("batch", "gate", "finished output", "ผลงานที่เสร็จแล้ว"),
+      e("gate", "pg", "publishes approved work only", "เผยแพร่เฉพาะงานที่ผ่านการตรวจ"),
+      e("agents", "redis", "run state and claims", "สถานะการรันและการจอง"),
+      e("sweep", "agents", "recovers stuck agents", "กู้เอเจนต์ที่ค้าง"),
+      e("web", "pg", "reads published work", "อ่านงานที่เผยแพร่แล้ว"),
+      e("web", "redis", "live agent state", "สถานะเอเจนต์แบบสด"),
+      e("agents", "telegram", "notifies the operator / two-way commands", "แจ้งเตือนผู้ดูแล / รับคำสั่งกลับสองทาง"),
+    ],
+  },
+  "thai-funds-mcp": {
+    nodes: [
+      n("auth", "service", "Constant-time gate", "ด่านตรวจแบบเวลาคงที่"),
+      n("mcp", "service", "MCP server — 7 tools", "เซิร์ฟเวอร์ MCP — 7 เครื่องมือ"),
+      n("cache", "service", "TTL cache", "แคชแบบมีอายุ"),
+      n("health", "service", "Health probe", "ตัวตรวจสุขภาพระบบ"),
+      n("redis", "datastore", "Alert dedupe & index", "กันแจ้งเตือนซ้ำและดัชนี"),
+      n("sec", "external", "Thai SEC open data", "ข้อมูลเปิด ก.ล.ต. ไทย"),
+      n("market", "external", "Market index data", "ข้อมูลดัชนีตลาด"),
+      n("fx", "external", "FX rates", "อัตราแลกเปลี่ยน"),
+      n("alerts", "channel", "Telegram alerts", "แจ้งเตือนผ่าน Telegram"),
+    ],
+    edges: [
+      e("auth", "mcp", "gates every tool call", "คุมทุกการเรียกเครื่องมือ"),
+      e("mcp", "cache", "reads through", "อ่านผ่านแคช"),
+      e("cache", "sec", "fund data", "ข้อมูลกองทุน"),
+      e("cache", "market", "index levels", "ระดับดัชนี"),
+      e("cache", "fx", "currency rates", "อัตราสกุลเงิน"),
+      e("mcp", "redis", "suppresses repeat alerts", "กันแจ้งเตือนซ้ำ"),
+      e("mcp", "alerts", "upstream failures", "ความล้มเหลวของต้นทาง"),
+      e("health", "redis", "reachability probe", "ตรวจการเชื่อมต่อ"),
+    ],
+  },
+  plan: {
+    nodes: [
+      n("web", "app", "Workspace", "พื้นที่ทำงาน"),
+      n("auth", "service", "Invite-only sign-in", "เข้าระบบเฉพาะผู้ได้รับเชิญ"),
+      n("slides", "service", "Slide pipeline", "สายการผลิตสไลด์"),
+      n("pg", "datastore", "Projects, tasks, decks", "โปรเจกต์ งาน และเด็คสไลด์"),
+      n("blob", "datastore", "Attachment storage", "ที่เก็บไฟล์แนบ"),
+      n("anthropic", "external", "Claude API", "Claude API"),
+      n("mail", "external", "Transactional email", "อีเมลระบบ"),
+    ],
+    edges: [
+      e("web", "auth", "gates the workspace", "คุมการเข้าพื้นที่ทำงาน"),
+      e("auth", "mail", "sends sign-in links", "ส่งลิงก์เข้าสู่ระบบ"),
+      e("auth", "pg", "sessions and roles", "เซสชันและสิทธิ์"),
+      e("web", "pg", "projects and tasks", "โปรเจกต์และงาน"),
+      e("web", "blob", "attachments", "ไฟล์แนบ"),
+      e("web", "slides", "generate a deck", "สั่งสร้างเด็ค"),
+      e("slides", "anthropic", "streamed generation", "สร้างแบบสตรีม"),
+      e("slides", "pg", "versioned decks", "เด็คแบบเก็บเวอร์ชัน"),
+    ],
+  },
+  exam: {
+    nodes: [
+      n("web", "app", "Study, practice & exam runner", "โหมดอ่าน ฝึก และจำลองสอบ"),
+      n("auth", "service", "Invite-only sign-in", "เข้าระบบเฉพาะผู้ได้รับเชิญ"),
+      n("bank", "service", "Versioned question bank", "คลังข้อสอบแบบเก็บเวอร์ชัน"),
+      n("seed", "job", "Seed pipeline", "สายงานนำเข้าข้อมูล"),
+      n("pg", "datastore", "Questions & sessions", "ข้อสอบและรอบการทำ"),
+      n("mail", "external", "Transactional email", "อีเมลระบบ"),
+    ],
+    edges: [
+      e("web", "auth", "gates all content", "คุมการเข้าถึงเนื้อหาทั้งหมด"),
+      e("auth", "mail", "sends sign-in links", "ส่งลิงก์เข้าสู่ระบบ"),
+      e("auth", "pg", "sessions", "เซสชัน"),
+      e("bank", "seed", "parsed and validated", "แปลงและตรวจความถูกต้อง"),
+      e("seed", "pg", "loads the bank", "นำเข้าคลังข้อสอบ"),
+      e("web", "pg", "answers and results", "คำตอบและผลลัพธ์"),
+    ],
+  },
+  kb: {
+    nodes: [
+      n("web", "app", "Reader & dashboard", "ตัวอ่านและแดชบอร์ด"),
+      n("sync", "service", "Pull & map", "ดึงและแปลงข้อมูล"),
+      n("pg", "datastore", "Cached items", "รายการที่แคชไว้"),
+      n("daily", "job", "Daily pull", "ดึงข้อมูลรายวัน"),
+      n("upstream", "external", "Company knowledge API", "API ฐานความรู้ของบริษัท"),
+    ],
+    edges: [
+      e("daily", "sync", "once a day", "วันละครั้ง"),
+      e("sync", "upstream", "pulls published briefs", "ดึงบทสรุปที่เผยแพร่แล้ว"),
+      e("sync", "pg", "caches locally", "แคชไว้ในระบบ"),
+      e("web", "pg", "reads the cache only", "อ่านจากแคชเท่านั้น"),
+    ],
+  },
+  finance: {
+    nodes: [
+      n("web", "app", "Role-based single-page app", "แอปหน้าเดียวแยกตามบทบาท"),
+      n("gate", "service", "Request gate", "ด่านตรวจคำขอ"),
+      n("assistant", "service", "Assistant endpoint — stubbed", "ส่วนผู้ช่วย — ยังเป็นตัวแทนว่าง"),
+      n("idp", "external", "Identity provider", "ผู้ให้บริการยืนยันตัวตน"),
+    ],
+    edges: [
+      e("web", "gate", "every request", "ทุกคำขอ"),
+      e("gate", "idp", "session and role", "เซสชันและบทบาท"),
+      e("web", "assistant", "placeholder response", "คืนค่าตัวแทนว่าง"),
+    ],
+  },
+};
 
 export function pick(s: LStr, lang: Lang): string {
   return s[lang];
