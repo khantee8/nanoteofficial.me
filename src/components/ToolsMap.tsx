@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { fitLabel } from "@/lib/fitText";
+import { estWidth, fitLabel } from "@/lib/fitText";
 
 export type ToolMapNode = {
   id: string;
@@ -78,6 +78,54 @@ export function ToolsMap({
 
   const touches = (e: ToolMapEdge) =>
     active === null || e.from === active || e.to === active;
+
+  const EDGE_FONT = 11;
+
+  /**
+   * Places an edge label clear of the node boxes where it can.
+   *
+   * The natural spot — the midpoint of the connector — often sits on top of a
+   * node, where the label collides with that node's own text. A label can also
+   * be wider than the gap between two columns, in which case no vertical offset
+   * clears it; rather than give up and overlap badly, every candidate is scored
+   * by overlap area and the least-bad one wins. Offsets are ordered
+   * nearest-first so a label only travels as far as it must.
+   */
+  const clearLabelY = (mid: number, baseY: number, text: string) => {
+    const half = estWidth(text, EDGE_FONT) / 2 + 3;
+    const boxes = nodes.map((n) => pos.get(n.id)!);
+    const overlapArea = (y: number) =>
+      boxes.reduce((sum, b) => {
+        const ox = Math.min(mid + half, b.x + NODE_W) - Math.max(mid - half, b.x);
+        const oy = Math.min(y + 3, b.y + NODE_H) - Math.max(y - 9, b.y);
+        return sum + (ox > 0 && oy > 0 ? ox * oy : 0);
+      }, 0);
+
+    let best = baseY - 8;
+    let bestScore = Infinity;
+    for (const dy of [-8, -22, 8, -36, 22, -50, 36, -58, 50, -66, 62, -74]) {
+      const score = overlapArea(baseY + dy);
+      if (score === 0) return baseY + dy;
+      if (score < bestScore) {
+        bestScore = score;
+        best = baseY + dy;
+      }
+    }
+    return best;
+  };
+
+  // Geometry is computed once so connectors and their labels can be drawn in
+  // two separate passes — see the label group below.
+  const laid = edges.flatMap((e, i) => {
+    const a = pos.get(e.from);
+    const b = pos.get(e.to);
+    if (!a || !b) return [];
+    const x1 = a.x + NODE_W;
+    const y1 = a.y + NODE_H / 2;
+    const x2 = b.x;
+    const y2 = b.y + NODE_H / 2;
+    return [{ key: i, label: e.label, x1, y1, x2, y2, mid: (x1 + x2) / 2, on: touches(e) }];
+  });
   const lit = (id: string) =>
     active === null ||
     active === id ||
@@ -111,39 +159,18 @@ export function ToolsMap({
         </defs>
 
         <g>
-          {edges.map((e, i) => {
-            const a = pos.get(e.from);
-            const b = pos.get(e.to);
-            if (!a || !b) return null;
-            const x1 = a.x + NODE_W;
-            const y1 = a.y + NODE_H / 2;
-            const x2 = b.x;
-            const y2 = b.y + NODE_H / 2;
-            const mid = (x1 + x2) / 2;
-            const on = touches(e);
-            return (
-              <g key={i} opacity={on ? 1 : 0.12} style={{ transition: "opacity 150ms" }}>
-                <path
-                  d={`M ${x1} ${y1} C ${mid} ${y1}, ${mid} ${y2}, ${x2} ${y2}`}
-                  fill="none"
-                  stroke={active && on ? "var(--brand-accent)" : "var(--muted)"}
-                  strokeWidth={active && on ? 2 : 1.25}
-                  markerEnd="url(#tools-arrow)"
-                />
-                {active && on && (
-                  <text
-                    x={mid}
-                    y={(y1 + y2) / 2 - 6}
-                    textAnchor="middle"
-                    className="fill-[var(--muted)]"
-                    style={{ fontSize: 11 }}
-                  >
-                    {e.label}
-                  </text>
-                )}
-              </g>
-            );
-          })}
+          {laid.map((l) => (
+            <path
+              key={l.key}
+              d={`M ${l.x1} ${l.y1} C ${l.mid} ${l.y1}, ${l.mid} ${l.y2}, ${l.x2} ${l.y2}`}
+              fill="none"
+              stroke={active && l.on ? "var(--brand-accent)" : "var(--muted)"}
+              strokeWidth={active && l.on ? 2 : 1.25}
+              markerEnd="url(#tools-arrow)"
+              opacity={l.on ? 1 : 0.12}
+              style={{ transition: "opacity 150ms" }}
+            />
+          ))}
         </g>
 
         <g>
@@ -215,6 +242,32 @@ export function ToolsMap({
             );
           })}
         </g>
+
+        {/* Labels paint after the nodes. SVG has no z-index — painting order is
+            document order — so drawing them alongside the connectors put them
+            underneath the node boxes. The halo keeps a label legible where it
+            crosses a connector. */}
+        {active && (
+          <g>
+            {laid
+              .filter((l) => l.on && l.label)
+              .map((l) => (
+                <text
+                  key={l.key}
+                  x={l.mid}
+                  y={clearLabelY(l.mid, (l.y1 + l.y2) / 2, l.label)}
+                  textAnchor="middle"
+                  className="fill-[var(--muted)]"
+                  stroke="var(--surface)"
+                  strokeWidth={4}
+                  strokeLinejoin="round"
+                  style={{ fontSize: EDGE_FONT, paintOrder: "stroke" }}
+                >
+                  {l.label}
+                </text>
+              ))}
+          </g>
+        )}
       </svg>
     </div>
   );
