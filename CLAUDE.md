@@ -27,13 +27,13 @@ docker compose up -d   # runs `next start` inside the container
 
 ### Subdomain routing (`src/proxy.ts`)
 
-Next.js 16 treats `src/proxy.ts` as a native proxy/middleware entry point — **do not create a `middleware.ts`**, it will conflict. The proxy rewrites `<sub>.nanoteofficial.me` → `/<sub>` so that `finance.nanoteofficial.me` serves `src/app/finance/page.tsx`, and so on for `cyber`, `kb`, `art`. These are preview shells, not live apps. The build output will show `ƒ Proxy (Middleware)` confirming it is active.
+Next.js 16 treats `src/proxy.ts` as a native proxy/middleware entry point — **do not create a `middleware.ts`**, it will conflict. The proxy rewrites `<sub>.nanoteofficial.me` → `/<sub>` so that `finance.nanoteofficial.me` serves `src/app/finance/page.tsx`, and so on for `kb`, `art`. These are preview shells, not live apps. `cyber` is no longer in `subdomainMap`: `cyber.nanoteofficial.me` is its own Vercel project with the domain bound directly to it, and `/cyber` on this site is a permanent redirect there (see Key constraints), not a subdomain rewrite. The build output will show `ƒ Proxy (Middleware)` confirming it is active.
 
 Adding a subdomain takes four edits, not two: `subdomainMap` in `proxy.ts`, `src/app/<sub>/page.tsx`, a `src/app/<sub>/opengraph-image.tsx`, and a `sitemap.ts` entry.
 
-There are five `opengraph-image.tsx` routes (root + the four subdomains). Each sets `runtime = "nodejs"`, calls `getLang()` so the OG card is localized, and **hardcodes its own accent hex** — the CSS feature tokens are not available to `ImageResponse`, so the color must be duplicated there by hand.
+There are four `opengraph-image.tsx` routes (root + the three subdomains `finance`, `kb`, `art` — `cyber`'s was deleted when `/cyber` became a redirect). Each sets `runtime = "nodejs"`, calls `getLang()` so the OG card is localized, and **hardcodes its own accent hex** — the CSS feature tokens are not available to `ImageResponse`, so the color must be duplicated there by hand.
 
-`sitemap.ts` lists `/finance`, `/cyber`, `/art` as **path** URLs (not subdomain URLs) and deliberately omits `/kb`.
+`sitemap.ts` lists `/finance` and `/art` as **path** URLs (not subdomain URLs) and deliberately omits `/kb` and `/cyber` — `/cyber` is a redirect, not a page to index.
 
 ### Content (`src/lib/profile.ts`)
 
@@ -133,7 +133,7 @@ Pre-migration history: this repo's git log through v0.2.9.
 - The scroll-spy IntersectionObserver in `HeaderNav.tsx` only watches sections that exist on the homepage (`about`, `company`, `roadmap`, `tools`, `experience`, `projects`, `contact`) — it has no effect on subdomain pages.
 - Homepage sections alternate tinted/plain via the `band` prop. Reordering sections means swapping `band` flags too, or the rhythm breaks. Current nav and section order is `about → company → roadmap (Builds) → tools → experience → projects → contact`.
 - The `art` preview shell describes a system with no repo and no deployment. This is a known, deliberate choice by the owner — raised and declined; do not "fix" it unprompted.
-- **`/cyber` is now a mock of a system that really exists.** `cyber.nanoteofficial.me` shipped v1.0.0 on 2026-09-08, and as of v0.8.0 the roadmap card is marked `Live` and links straight to it. The `src/app/cyber/page.tsx` shell — with its hand-written fake CVE feed — was deliberately left in place; retiring it the way `/plan` was retired is open, unscheduled work. Do not present its fake feed as real data.
+- **`/cyber` is a permanent redirect to the real deployment, like `/plan`.** `cyber.nanoteofficial.me` shipped v1.0.0 on 2026-09-08, and the roadmap card has been marked `Live` and linked straight to it since v0.8.0. The `src/app/cyber/page.tsx` shell — a hand-written fake CVE feed — was retired in v0.8.1: `next.config.ts` now redirects `/cyber` and `/cyber/:path*` (308) to `https://cyber.nanoteofficial.me`, and the shell page, its OG image, and the `cyber` entries in `proxy.ts`/`sitemap.ts` are gone.
 - Certification vendor logos live in `public/logos/` as SVGs. Real logos (Cisco, ISC², Fortinet, Palo Alto, CompTIA) were sourced from Simple Icons CDN; others (EC-Council, PMI, ServiceNow, SEC Thailand) are hand-crafted SVGs.
 - CV download files (`public/cv-en.pdf`, `public/cv-th.pdf`) are copied from `/project/Profile/` — update them there first, then copy to `public/`. `/project/Profile/` is **not** tracked by git, so a deployed PDF's only durable history is this repo's commits on `public/`.
 
