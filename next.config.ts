@@ -41,6 +41,16 @@ const nextConfig: NextConfig = {
         destination: "https://plan.nanoteofficial.me/:path*",
         permanent: true,
       },
+      {
+        source: "/cyber",
+        destination: "https://cyber.nanoteofficial.me",
+        permanent: true,
+      },
+      {
+        source: "/cyber/:path*",
+        destination: "https://cyber.nanoteofficial.me/:path*",
+        permanent: true,
+      },
     ];
   },
 };

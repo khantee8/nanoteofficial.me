@@ -5,7 +5,6 @@ import { useEffect } from "react";
 
 const map: Record<string, string> = {
   "/finance": "finance",
-  "/cyber": "cyber",
   "/kb": "kb",
   "/art": "art",
 };

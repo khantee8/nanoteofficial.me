@@ -3,7 +3,6 @@ import type { NextRequest } from "next/server";
 
 const subdomainMap: Record<string, string> = {
   finance: "/finance",
-  cyber: "/cyber",
   kb: "/kb",
   art: "/art",
 };

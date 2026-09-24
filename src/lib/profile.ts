@@ -670,7 +670,11 @@ export const toolEdges: ToolEdge[] = [
   { from: "portfolio", to: "kb", label: { en: "links here", th: "ลิงก์จากหน้านี้" } },
   { from: "portfolio", to: "exam", label: { en: "links here", th: "ลิงก์จากหน้านี้" } },
   { from: "portfolio", to: "finance", label: { en: "links here", th: "ลิงก์จากหน้านี้" } },
-  { from: "portfolio", to: "cyber", label: { en: "links here", th: "ลิงก์จากหน้านี้" } },
+  {
+    from: "portfolio",
+    to: "cyber",
+    label: { en: "permanent redirect", th: "เปลี่ยนเส้นทางถาวร" },
+  },
   {
     from: "portfolio",
     to: "art",
