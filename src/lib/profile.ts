@@ -826,6 +826,7 @@ export const toolGraphs: Record<string, ToolGraph> = {
       e("intel", "pg", "one read per refresh", "อ่านหนึ่งครั้งต่อการรีเฟรชหนึ่งรอบ"),
       e("intel", "fallback", "degrades, stale-labelled, never blank", "ถอยไปใช้ข้อมูลเก่าที่ติดป้ายกำกับ ไม่ปล่อยหน้าว่าง"),
       e("snapshot", "fallback", "recaptures from the live feeds", "เก็บข้อมูลใหม่จากฟีดสด"),
+      e("intel", "refresh", "starts it after the response once data is 30 min old", "สั่งเริ่มหลังส่งหน้าเว็บ เมื่อข้อมูลมีอายุครบ 30 นาที"),
       e("refresh", "feeds", "fetches the feeds", "ดึงข้อมูลจากฟีด"),
       e("refresh", "pg", "stores the last good copy", "บันทึกข้อมูลชุดล่าสุดที่ดึงสำเร็จ"),
       e("workspace", "auth", "gates every page behind it", "คุมทุกหน้าที่อยู่ด้านหลัง"),
