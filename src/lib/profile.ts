@@ -599,8 +599,8 @@ export const tools: ToolItem[] = [
       th: "ข่าวกรองภัยคุกคามแบบสด และพื้นที่ทำงาน ISMS หลังการเข้าสู่ระบบ",
     },
     purpose: {
-      en: "Two halves of the same job. The public half watches what is being exploited right now; the private half is where an organisation's controls, risks and evidence actually live.",
-      th: "งานเดียวกันสองด้าน ด้านสาธารณะเฝ้าดูสิ่งที่กำลังถูกโจมตีอยู่ตอนนี้ ส่วนด้านที่ปิดไว้คือที่เก็บมาตรการควบคุม ความเสี่ยง และหลักฐานขององค์กรจริง ๆ",
+      en: "Two halves of the same job. The public half watches what is being exploited right now; the private half is where each customer's controls, risks and evidence live, organised into a folder tree and per-year assessments.",
+      th: "งานเดียวกันสองด้าน ด้านสาธารณะเฝ้าดูสิ่งที่กำลังถูกโจมตีอยู่ตอนนี้ ส่วนด้านที่ปิดไว้คือที่เก็บมาตรการควบคุม ความเสี่ยง และหลักฐานของลูกค้าแต่ละราย จัดเก็บเป็นโครงสร้างโฟลเดอร์และการประเมินรายปี",
     },
     maturity: "production",
     repoVisibility: "public",
@@ -808,13 +808,13 @@ export const toolGraphs: Record<string, ToolGraph> = {
   cyber: {
     nodes: [
       n("public", "app", "Threat intel HUD & map", "หน้าจอข่าวกรองภัยคุกคามและแผนที่"),
-      n("workspace", "app", "ISMS workspace", "พื้นที่ทำงาน ISMS"),
+      n("workspace", "app", "GRC workspace — customers, folders, assessments", "พื้นที่ทำงาน GRC — ลูกค้า โฟลเดอร์ และการประเมิน"),
       n("auth", "service", "Request, approval, then sign-in", "ขอสิทธิ์ อนุมัติ แล้วจึงเข้าสู่ระบบ"),
       n("intel", "service", "Feed aggregator", "ตัวรวมฟีดข้อมูล"),
       n("catalogue", "service", "93 Annex A controls", "มาตรการควบคุม Annex A 93 ข้อ"),
       n("soa", "service", "Statement of Applicability export", "การส่งออก Statement of Applicability"),
       n("fallback", "datastore", "Committed fallback snapshot", "สแนปช็อตสำรองที่เก็บไว้ในรีโพ"),
-      n("pg", "datastore", "Controls, risks & sessions", "มาตรการควบคุม ความเสี่ยง และเซสชัน"),
+      n("pg", "datastore", "Customers, folders, assessments, risks & sessions", "ลูกค้า โฟลเดอร์ การประเมิน ความเสี่ยง และเซสชัน"),
       n("feeds", "external", "Public threat feeds", "ฟีดภัยคุกคามสาธารณะ"),
       n("mail", "external", "Transactional email", "อีเมลระบบ"),
       n("snapshot", "job", "Fallback refresh — run by hand", "รีเฟรชข้อมูลสำรอง — สั่งด้วยมือ"),
