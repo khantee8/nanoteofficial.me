@@ -5,6 +5,7 @@ import type { Lang } from "@/lib/i18n";
 const CERT_META: Record<string, { vendor: string; color: string; category: string; logo: string }> = {
   "CISSP":    { vendor: "ISC²",        color: "#009CDE", category: "Cybersecurity",      logo: "/logos/isc2.svg" },
   "CEH":      { vendor: "EC-Council",  color: "#B91C1C", category: "Ethical Hacking",     logo: "/logos/eccouncil.svg" },
+  "ISO/IEC 27001 Lead Implementer": { vendor: "PECB", color: "#C8102E", category: "ISMS", logo: "/logos/pecb.svg" },
   "CCNP-Enterprise": { vendor: "Cisco", color: "#049FD9", category: "Enterprise Network", logo: "/logos/cisco.svg" },
   "CCNP-Security":   { vendor: "Cisco", color: "#049FD9", category: "Network Security",  logo: "/logos/cisco.svg" },
   "Fortinet FCP":    { vendor: "Fortinet", color: "#EE3124", category: "Network Security", logo: "/logos/fortinet.svg" },

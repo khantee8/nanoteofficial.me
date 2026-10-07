@@ -274,6 +274,7 @@ export const profile = {
   certifications: [
     "CISSP",
     "CEH",
+    "ISO/IEC 27001 Lead Implementer",
     "CCNP-Enterprise",
     "CCNP-Security",
     "Fortinet FCP",
