@@ -44,3 +44,7 @@ next-env.d.ts
 # git worktrees (used for isolated implementation work)
 /.worktrees
 /.superpowers
+
+# CV files are private — sources live in /project/Profile/, never in this public repo
+/public/*.pdf
+/public/cv/

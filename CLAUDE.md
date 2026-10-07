@@ -134,8 +134,8 @@ Pre-migration history: this repo's git log through v0.2.9.
 - Homepage sections alternate tinted/plain via the `band` prop. Reordering sections means swapping `band` flags too, or the rhythm breaks. Current nav and section order is `about → company → roadmap (Builds) → tools → experience → projects → contact`.
 - The `art` preview shell describes a system with no repo and no deployment. This is a known, deliberate choice by the owner — raised and declined; do not "fix" it unprompted.
 - **`/cyber` is a permanent redirect to the real deployment, like `/plan`.** `cyber.nanoteofficial.me` shipped v1.0.0 on 2026-09-08, and the roadmap card has been marked `Live` and linked straight to it since v0.8.0. The `src/app/cyber/page.tsx` shell — a hand-written fake CVE feed — was retired in v0.8.1: `next.config.ts` now redirects `/cyber` and `/cyber/:path*` (308) to `https://cyber.nanoteofficial.me`, and the shell page, its OG image, and the `cyber` entries in `proxy.ts`/`sitemap.ts` are gone.
-- Certification vendor logos live in `public/logos/` as SVGs. Real logos (Cisco, ISC², Fortinet, Palo Alto, CompTIA) were sourced from Simple Icons CDN; others (EC-Council, PMI, ServiceNow, SEC Thailand) are hand-crafted SVGs.
-- CV download files (`public/cv-en.pdf`, `public/cv-th.pdf`) are copied from `/project/Profile/` — update them there first, then copy to `public/`. `/project/Profile/` is **not** tracked by git, so a deployed PDF's only durable history is this repo's commits on `public/`.
+- Certification vendor logos live in `public/logos/` as SVGs. Real logos (Cisco, ISC², Fortinet, Palo Alto, CompTIA) were sourced from Simple Icons CDN; others (EC-Council, PMI, ServiceNow, SEC Thailand, PECB) are hand-crafted SVGs.
+- **The CV is private and must not be in this repo or on the site.** `public/cv-en.pdf` and `public/cv-th.pdf` were removed in v0.9.2 (nothing on the site linked to them, but they were reachable by direct URL and tracked in this public repo). `.gitignore` blocks `/public/*.pdf` and `/public/cv/`. The source CVs live in `/project/Profile/`, which is not tracked by git — do not copy them into `public/`.
 
 ## Releases
 
