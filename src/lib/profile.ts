@@ -273,8 +273,8 @@ export const profile = {
   ] as Education[],
   certifications: [
     "CISSP",
-    "CEH",
     "ISO/IEC 27001 Lead Implementer",
+    "CEH",
     "CCNP-Enterprise",
     "CCNP-Security",
     "Fortinet FCP",
