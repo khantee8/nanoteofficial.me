@@ -129,7 +129,7 @@ Pre-migration history: this repo's git log through v0.2.9.
 ## Key constraints
 
 - `/kb` is intentionally excluded from `sitemap.ts` and blocked in `robots.ts` (private page). `/plan` is a permanent redirect (`next.config.ts`) to `plan.nanoteofficial.me`, not a page on this site.
-- The `postcss` package is overridden to `>=8.5.10` in `package.json` to resolve a known advisory — do not remove the override.
+- The `postcss` package is overridden to `>=8.5.23` in `package.json` to resolve known advisories (floor raised from 8.5.10 in v0.9.3) — do not remove the override.
 - The scroll-spy IntersectionObserver in `HeaderNav.tsx` only watches sections that exist on the homepage (`about`, `company`, `roadmap`, `tools`, `experience`, `projects`, `contact`) — it has no effect on subdomain pages.
 - Homepage sections alternate tinted/plain via the `band` prop. Reordering sections means swapping `band` flags too, or the rhythm breaks. Current nav and section order is `about → company → roadmap (Builds) → tools → experience → projects → contact`.
 - The `art` preview shell describes a system with no repo and no deployment. This is a known, deliberate choice by the owner — raised and declined; do not "fix" it unprompted.
